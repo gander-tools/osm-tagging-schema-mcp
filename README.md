@@ -78,7 +78,7 @@ docker run -i ghcr.io/gander-tools/osm-tagging-schema-mcp:latest
 
 ```bash
 # Add to Claude Code
-claude mcp add @gander-tools/osm-tagging-schema-mcp
+claude mcp add --transport stdio osm-tagging-schema -- npx -y @gander-tools/osm-tagging-schema-mcp
 
 # Use in conversations
 # Ask Claude: "What OSM tags are available for restaurants?"
