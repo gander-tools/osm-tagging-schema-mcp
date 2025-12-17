@@ -11,6 +11,9 @@ dist/
 build/
 *.tsbuildinfo
 
+# Generated version info (created during Release Please)
+src/version.json
+
 # npm pack tarballs
 *.tgz
 
