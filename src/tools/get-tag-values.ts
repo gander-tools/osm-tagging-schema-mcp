@@ -1,15 +1,20 @@
 import { z } from "zod";
 import type { OsmToolDefinition } from "../types/index.js";
 import { schemaLoader } from "../utils/schema-loader.js";
+import { limitOption } from "./common-options.js";
 import type { TagValuesResponse } from "./types.js";
 
 /**
  * Get all possible values for a given tag key with localized names
  *
  * @param tagKey - The tag key to get values for (e.g., "amenity", "building")
+ * @param options - Optional parameters to control output
  * @returns Response object with key, keyName, values array, and valuesDetailed array
  */
-export async function getTagValues(tagKey: string): Promise<TagValuesResponse> {
+export async function getTagValues(
+	tagKey: string,
+	options?: { limit?: number },
+): Promise<TagValuesResponse> {
 	const schema = await schemaLoader.loadSchema();
 
 	// Collect all unique values for the tag key
@@ -65,7 +70,12 @@ export async function getTagValues(tagKey: string): Promise<TagValuesResponse> {
 	const valuesDetailed: { value: string; valueName: string }[] = [];
 	const sortedValueKeys = Array.from(valueKeys).sort();
 
-	for (const valueKey of sortedValueKeys) {
+	// Apply limit if specified
+	const limitedValueKeys = options?.limit
+		? sortedValueKeys.slice(0, options.limit)
+		: sortedValueKeys;
+
+	for (const valueKey of limitedValueKeys) {
 		// Add to simple values array
 		values.push(valueKey);
 
@@ -96,6 +106,11 @@ export async function getTagValues(tagKey: string): Promise<TagValuesResponse> {
  */
 const GetTagValues: OsmToolDefinition<{
 	tagKey: z.ZodString;
+	options: z.ZodOptional<
+		z.ZodObject<{
+			limit: z.ZodOptional<z.ZodNumber>;
+		}>
+	>;
 }> = {
 	name: "get_tag_values" as const,
 
@@ -108,11 +123,19 @@ const GetTagValues: OsmToolDefinition<{
 				.describe(
 					"The OpenStreetMap tag key to retrieve values for (e.g., 'amenity', 'building', 'highway', 'natural', 'shop'). Supports both simple keys and namespaced keys with colons (e.g., 'addr:street', 'name:en'). The tool will search both field definitions and preset tags to find all documented values. Case-sensitive, use lowercase for standard OSM keys.",
 				),
+			options: z
+				.object({
+					limit: limitOption,
+				})
+				.optional()
+				.describe(
+					"Options to control query output: 'limit' restricts the maximum number of values returned (useful for tags with many values like 'name').",
+				),
 		},
 	}),
 
-	handler: async ({ tagKey }, _extra) => {
-		const response = await getTagValues(tagKey.trim());
+	handler: async ({ tagKey, options }, _extra) => {
+		const response = await getTagValues(tagKey.trim(), options);
 
 		return {
 			content: [

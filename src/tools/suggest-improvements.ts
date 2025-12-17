@@ -4,6 +4,7 @@ import { z } from "zod";
 import type { Field, OsmToolDefinition, Preset } from "../types";
 import { schemaLoader } from "../utils/schema-loader.js";
 import { parseTagInput } from "../utils/tag-parser.js";
+import { limitOption, summaryOption } from "./common-options.js";
 
 const fields = fieldsRaw as unknown as Record<string, Field>;
 const presets = presetsRaw as unknown as Record<string, Preset>;
@@ -42,6 +43,68 @@ export interface ImprovementResult {
 	matchedPresets: string[];
 	/** Detailed preset information */
 	matchedPresetsDetailed: PresetDetailed[];
+	/** Optional human-readable summary (only included if options.summary=true) */
+	summary?: string;
+}
+
+/**
+ * Generate a human-readable summary of improvement suggestions
+ *
+ * @param result - Improvement result to summarize
+ * @param tags - Original tag collection
+ * @returns Human-readable summary text
+ */
+function generateImprovementSummary(
+	result: ImprovementResult,
+	tags: Record<string, string>,
+): string {
+	const lines: string[] = [];
+
+	// Matched presets
+	if (result.matchedPresetsDetailed.length > 0) {
+		lines.push("✓ Matched Presets:");
+		for (const preset of result.matchedPresetsDetailed.slice(0, 3)) {
+			lines.push(`  - ${preset.name} (${preset.id})`);
+		}
+		if (result.matchedPresetsDetailed.length > 3) {
+			lines.push(`  ... and ${result.matchedPresetsDetailed.length - 3} more`);
+		}
+	} else {
+		lines.push("⚠ No matching presets found for these tags");
+	}
+
+	// Suggestions summary
+	const requiredSuggestions = result.suggestions.filter((s) => !s.message.startsWith("Optional"));
+	const optionalSuggestions = result.suggestions.filter((s) => s.message.startsWith("Optional"));
+
+	if (result.suggestions.length > 0) {
+		lines.push(
+			`\n📝 Suggestions: ${requiredSuggestions.length} required, ${optionalSuggestions.length} optional`,
+		);
+
+		if (requiredSuggestions.length > 0) {
+			lines.push("\nRecommended fields to add:");
+			for (const suggestion of requiredSuggestions.slice(0, 5)) {
+				lines.push(`  + ${suggestion.key} (${suggestion.keyName})`);
+			}
+		}
+
+		if (optionalSuggestions.length > 0) {
+			lines.push("\nOptional fields for more detail:");
+			for (const suggestion of optionalSuggestions.slice(0, 3)) {
+				lines.push(`  + ${suggestion.key} (${suggestion.keyName})`);
+			}
+		}
+	} else {
+		lines.push("\n✓ No additional fields suggested - tags appear complete");
+	}
+
+	// Current tags
+	const tagCount = Object.keys(tags).length;
+	lines.push(`\nCurrent tags: ${tagCount}`);
+	lines.push(`Potential tags after improvements: ${tagCount + result.suggestions.length}`);
+
+	return lines.join("\n");
 }
 
 /**
@@ -51,10 +114,12 @@ export interface ImprovementResult {
  * and recommendations based on matched presets.
  *
  * @param tags - Tag collection to analyze
+ * @param options - Optional parameters to control output
  * @returns Improvement suggestions with operations and localized names
  */
 export async function suggestImprovements(
 	tags: Record<string, string>,
+	options?: { summary?: boolean; limit?: number },
 ): Promise<ImprovementResult> {
 	const result: ImprovementResult = {
 		suggestions: [],
@@ -83,12 +148,14 @@ export async function suggestImprovements(
 		});
 	}
 
+	// Determine max presets to process based on limit option
+	const maxPresets = options?.limit ? Math.min(options.limit, 5) : 5;
+
 	// Suggest missing fields from matched presets
 	if (matchedPresetIds.length > 0) {
 		const suggestedFields = new Set<string>();
 
-		for (const presetId of matchedPresetIds.slice(0, 5)) {
-			// Limit to first 5 presets
+		for (const presetId of matchedPresetIds.slice(0, maxPresets)) {
 			const preset = presets[presetId as keyof typeof presets];
 			if (!preset) continue;
 
@@ -98,6 +165,11 @@ export async function suggestImprovements(
 			// Check fields
 			if ("fields" in preset && preset.fields) {
 				for (const fieldId of preset.fields) {
+					// Stop if we've reached the limit
+					if (options?.limit && result.suggestions.length >= options.limit) {
+						break;
+					}
+
 					const fieldKey = getFieldKey(fieldId);
 					if (fieldKey && !tags[fieldKey] && !suggestedFields.has(fieldKey)) {
 						suggestedFields.add(fieldKey);
@@ -120,6 +192,11 @@ export async function suggestImprovements(
 			if ("moreFields" in preset && preset.moreFields) {
 				for (const fieldId of preset.moreFields.slice(0, 3)) {
 					// Limit optional fields
+					// Stop if we've reached the limit
+					if (options?.limit && result.suggestions.length >= options.limit) {
+						break;
+					}
+
 					const fieldKey = getFieldKey(fieldId);
 					if (fieldKey && !tags[fieldKey] && !suggestedFields.has(fieldKey)) {
 						suggestedFields.add(fieldKey);
@@ -138,6 +215,11 @@ export async function suggestImprovements(
 				}
 			}
 		}
+	}
+
+	// Generate summary if requested
+	if (options?.summary) {
+		result.summary = generateImprovementSummary(result, tags);
 	}
 
 	return result;
@@ -210,6 +292,12 @@ function getFieldKey(fieldId: string): string | null {
 
 const SuggestImprovements: OsmToolDefinition<{
 	tags: z.ZodUnion<readonly [z.ZodString, z.ZodRecord<z.ZodString, z.ZodString>]>;
+	options: z.ZodOptional<
+		z.ZodObject<{
+			summary: z.ZodDefault<z.ZodOptional<z.ZodBoolean>>;
+			limit: z.ZodOptional<z.ZodNumber>;
+		}>
+	>;
 }> = {
 	name: "suggest_improvements" as const,
 	config: () => ({
@@ -221,13 +309,22 @@ const SuggestImprovements: OsmToolDefinition<{
 				.describe(
 					'Collection of existing OpenStreetMap tags to analyze in one of three formats: 1) JSON object (e.g., {"amenity": "restaurant", "name": "Test Cafe"}), 2) JSON string (e.g., \'{"amenity":"parking"}\'), or 3) flat text format with one tag per line (e.g., "amenity=restaurant\\nname=Test"). The tool will identify matching presets and suggest additional fields that would make this feature more complete. Minimum one tag required.',
 				),
+			options: z
+				.object({
+					summary: summaryOption,
+					limit: limitOption,
+				})
+				.optional()
+				.describe(
+					"Options to control suggestion output: 'summary' adds a human-readable summary, 'limit' restricts the number of suggestions returned.",
+				),
 		},
 	}),
-	handler: async ({ tags }, _extra) => {
+	handler: async ({ tags, options }, _extra) => {
 		// Parse tags using the shared parser (handles string, JSON, and object formats)
 		const parsedTags = typeof tags === "string" ? parseTagInput(tags) : parseTagInput(tags);
 
-		const result = await suggestImprovements(parsedTags);
+		const result = await suggestImprovements(parsedTags, options);
 		return {
 			content: [{ type: "text" as const, text: JSON.stringify(result, null, 2) }],
 		};
