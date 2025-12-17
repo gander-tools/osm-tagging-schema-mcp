@@ -1,6 +1,6 @@
 {
 	"name": "@gander-tools/osm-tagging-schema-mcp",
-	"version": "3.1.0",
+	"version": "3.2.0",
 	"description": "MCP server for querying and validating OpenStreetMap tags",
 	"mcpName": "io.github.gander-tools/osm-tagging-schema-mcp",
 	"type": "module",
