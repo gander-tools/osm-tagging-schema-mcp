@@ -42,6 +42,17 @@ jobs:
               - 'package.json'
               - 'package-lock.json'
               - 'tsconfig*.json'
+              - 'biome.json'
+              - 'Dockerfile*'
+              - '.dockerignore'
+              - '.github/workflows/**'
+              - '.github/actions/**'
+              - 'lefthook.yml'
+              - '.c8rc.json'
+              - '.nvmrc'
+              - '.npmrc'
+              - 'server.json'
+              - '.env.example'
 
   # Fast fuzzing run on PRs (5 minutes)
   fuzz-pr:
