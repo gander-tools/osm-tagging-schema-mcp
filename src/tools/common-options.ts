@@ -85,6 +85,41 @@ export const formatOption = z
 	);
 
 /**
+ * Diff format enum values
+ */
+const diffFormatEnum = {
+	unified: "unified",
+	split: "split",
+	summary: "summary",
+} as const;
+
+/**
+ * Zod schema for diff format option
+ *
+ * Controls how tag differences are displayed.
+ * Default: "unified" (unified diff format)
+ */
+export const diffFormatOption = z
+	.enum(diffFormatEnum)
+	.optional()
+	.default("unified")
+	.describe(
+		"Diff output format. Options: 'unified' (default, shows changes with +/- symbols), 'split' (side-by-side old/new), 'summary' (statistics only).",
+	);
+
+/**
+ * Zod schema for showUnchanged option
+ *
+ * Controls whether unchanged tags are shown in diff output.
+ * Default: false (hide unchanged tags)
+ */
+export const showUnchangedOption = z
+	.boolean()
+	.optional()
+	.default(false)
+	.describe("Show unchanged tags in diff output. Default: false (only show changes).");
+
+/**
  * Complete options schema
  *
  * Combines all common options. Tools can use this as-is or create custom
@@ -130,3 +165,12 @@ export const queryOptionsSchema = z
 	})
 	.optional()
 	.describe("Options to control query result limits and output format.");
+
+/** Options for comparison tools (diffFormat, showUnchanged) */
+export const comparisonOptionsSchema = z
+	.object({
+		diffFormat: diffFormatOption,
+		showUnchanged: showUnchangedOption,
+	})
+	.optional()
+	.describe("Options to control diff output format and visibility of unchanged tags.");
