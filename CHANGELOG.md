@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.2.0](https://github.com/gander-tools/osm-tagging-schema-mcp/compare/v3.1.0...v3.2.0) (2025-12-17)
+
+
+### Features
+
+* **ci:** add reusable composite actions for GitHub workflows ([c70c526](https://github.com/gander-tools/osm-tagging-schema-mcp/commit/c70c52646cf63de85d3e752b2df1824bba491d97))
+
+
+### Bug Fixes
+
+* **ci:** resolve composite action checkout dependency issue ([cc22355](https://github.com/gander-tools/osm-tagging-schema-mcp/commit/cc22355da00c21f6c9fdc1f07627c152624e867d))
+
+
+### Documentation
+
+* add comprehensive dependency management guide ([8715944](https://github.com/gander-tools/osm-tagging-schema-mcp/commit/871594406a639444dcc05440ee84b0e1eff6876d))
+
 ## [3.1.0](https://github.com/gander-tools/osm-tagging-schema-mcp/compare/v3.0.1...v3.1.0) (2025-12-04)
 
 
