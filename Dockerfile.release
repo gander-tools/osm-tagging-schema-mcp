@@ -10,7 +10,7 @@
 # This digest references a manifest list supporting: linux/amd64, linux/arm64, linux/arm/v7, linux/arm/v6, linux/s390x
 # Docker BuildKit automatically uses the target platform for multi-arch builds
 # To update: curl -s https://hub.docker.com/v2/repositories/library/node/tags/24-alpine | jq -r '.digest'
-FROM node:24-alpine@sha256:2867d550cf9d8bb50059a0fff528741f11a84d985c732e60e19e8e75c7239c43
+FROM node:24-alpine@sha256:7e0bd0460b26eb3854ea5b99b887a6a14d665d14cae694b78ae2936d14b2befb
 
 # Set working directory
 WORKDIR /app
