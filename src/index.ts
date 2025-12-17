@@ -11,6 +11,7 @@ import { prompts } from "./prompts/index.js";
 import { tools } from "./tools/index.js";
 import { logger } from "./utils/logger.js";
 import { schemaLoader } from "./utils/schema-loader.js";
+import { formatVersionInfo, getVersionInfo } from "./version.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const pkg = JSON.parse(readFileSync(join(__dirname, "../package.json"), "utf-8"));
@@ -324,13 +325,14 @@ async function startHttpServer(server: McpServer, config: TransportConfig): Prom
 		});
 
 		httpServer.listen(config.port, config.host, () => {
+			const versionInfo = getVersionInfo();
 			logger.info(
-				`OSM Tagging Schema MCP Server running on http://${config.host}:${config.port}`,
+				`OSM Tagging Schema MCP Server ${formatVersionInfo(versionInfo)} running on http://${config.host}:${config.port}`,
 				"main",
 			);
 			logger.info(`CORS enabled for origins: ${config.corsOrigins.join(", ")}`, "main");
 			console.error(
-				`OSM Tagging Schema MCP Server running on http://${config.host}:${config.port}`,
+				`OSM Tagging Schema MCP Server ${formatVersionInfo(versionInfo)} running on http://${config.host}:${config.port}`,
 			);
 			console.error(`CORS enabled for origins: ${config.corsOrigins.join(", ")}`);
 			resolve();
@@ -344,7 +346,8 @@ async function startHttpServer(server: McpServer, config: TransportConfig): Prom
 async function main() {
 	const config = getTransportConfig();
 
-	logger.info("Starting OSM Tagging Schema MCP Server", "main");
+	const versionInfo = getVersionInfo();
+	logger.info(`Starting OSM Tagging Schema MCP Server ${formatVersionInfo(versionInfo)}`, "main");
 	logger.info(`Transport: ${config.type}`, "main");
 
 	// Create server and preload schema for optimal performance
@@ -362,8 +365,13 @@ async function main() {
 	} else {
 		const transport = new StdioServerTransport();
 		await server.connect(transport);
-		logger.info("OSM Tagging Schema MCP Server running on stdio", "main");
-		console.error("OSM Tagging Schema MCP Server running on stdio");
+		logger.info(
+			`OSM Tagging Schema MCP Server ${formatVersionInfo(versionInfo)} running on stdio`,
+			"main",
+		);
+		console.error(
+			`OSM Tagging Schema MCP Server ${formatVersionInfo(versionInfo)} running on stdio`,
+		);
 	}
 }
 

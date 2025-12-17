@@ -67,6 +67,21 @@ jobs:
       - name: Setup Node.js and Install Dependencies
         uses: ./.github/actions/setup-node-and-install
 
+      - name: Generate version.json
+        env:
+          RELEASE_VERSION: ${{ needs.create-release.outputs.version }}
+        run: |
+          BUILD_TIMESTAMP=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+          echo "Generating src/version.json with version $RELEASE_VERSION and build timestamp $BUILD_TIMESTAMP"
+          cat > src/version.json <<EOF
+          {
+            "version": "$RELEASE_VERSION",
+            "buildTimestamp": "$BUILD_TIMESTAMP"
+          }
+          EOF
+          echo "✓ Generated src/version.json:"
+          cat src/version.json
+
       - name: Verify package.json version matches release version
         env:
           RELEASE_VERSION: ${{ needs.create-release.outputs.version }}
@@ -87,6 +102,12 @@ jobs:
 
       - name: Run Tests
         uses: ./.github/actions/run-tests
+
+      - name: Copy version.json to dist/
+        run: |
+          cp src/version.json dist/version.json
+          echo "✓ Copied version.json to dist/"
+          ls -lh dist/version.json
 
       - name: Verify build artifacts
         run: |
