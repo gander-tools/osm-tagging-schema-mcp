@@ -216,4 +216,85 @@ describe("validateTagCollection", () => {
 			assert.strictEqual(result.errorCount, 1);
 		});
 	});
+
+	describe("Options Parameter", () => {
+		it("should not include summary by default", async () => {
+			const tags = {
+				amenity: "parking",
+				parking: "surface",
+			};
+
+			const result = await validateTagCollection(tags);
+
+			assert.ok(result);
+			assert.strictEqual(result.summary, undefined);
+		});
+
+		it("should include summary when options.summary=true", async () => {
+			const tags = {
+				amenity: "parking",
+				parking: "surface",
+			};
+
+			const result = await validateTagCollection(tags, { summary: true });
+
+			assert.ok(result);
+			assert.ok(result.summary);
+			assert.strictEqual(typeof result.summary, "string");
+			assert.ok(result.summary.includes("✓"));
+		});
+
+		it("should generate summary for valid tags", async () => {
+			const tags = {
+				amenity: "parking",
+				parking: "surface",
+				capacity: "50",
+			};
+
+			const result = await validateTagCollection(tags, { summary: true });
+
+			assert.ok(result);
+			assert.ok(result.summary);
+			assert.ok(result.summary.includes("All tags are valid"));
+			assert.ok(result.summary.includes("3 total tags"));
+			assert.ok(result.summary.includes("3 valid"));
+			assert.ok(result.summary.includes("0 deprecated"));
+			assert.ok(result.summary.includes("0 errors"));
+		});
+
+		it("should generate summary for deprecated tags", async () => {
+			// Use first deprecated entry
+			const deprecatedEntry = deprecated[0];
+			const oldKey = Object.keys(deprecatedEntry.old)[0];
+			if (!oldKey) return;
+			const oldValue = deprecatedEntry.old[oldKey as keyof typeof deprecatedEntry.old];
+
+			const tags = {
+				[oldKey]: oldValue as string,
+				amenity: "parking",
+			};
+
+			const result = await validateTagCollection(tags, { summary: true });
+
+			assert.ok(result);
+			assert.ok(result.summary);
+			assert.ok(result.summary.includes("Deprecated tags found"));
+			assert.ok(result.summary.includes("Suggested:"));
+		});
+
+		it("should generate summary for invalid tags", async () => {
+			const tags = {
+				amenity: "",
+				parking: "surface",
+			};
+
+			const result = await validateTagCollection(tags, { summary: true });
+
+			assert.ok(result);
+			assert.ok(result.summary);
+			assert.ok(result.summary.includes("have errors"));
+			assert.ok(result.summary.includes("✗ Errors:"));
+			assert.ok(result.summary.includes("Fix errors"));
+		});
+	});
 });

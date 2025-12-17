@@ -1,6 +1,7 @@
 import { z } from "zod";
 import type { GeometryType, OsmToolDefinition } from "../types/index.js";
 import { schemaLoader } from "../utils/schema-loader.js";
+import { limitOption } from "./common-options.js";
 import type { PresetSearchResult, TagDetailed } from "./types.js";
 
 /**
@@ -141,6 +142,12 @@ const SearchPresets: OsmToolDefinition<{
 	keyword: z.ZodString;
 	limit: z.ZodOptional<z.ZodNumber>;
 	geometry: z.ZodOptional<z.ZodEnum<GeometryEnum>>;
+	options: z.ZodOptional<
+		z.ZodObject<{
+			limit: z.ZodOptional<z.ZodNumber>;
+			geometry: z.ZodOptional<z.ZodEnum<GeometryEnum>>;
+		}>
+	>;
 }> = {
 	name: "search_presets" as const,
 
@@ -157,19 +164,40 @@ const SearchPresets: OsmToolDefinition<{
 				.number()
 				.optional()
 				.describe(
-					"Maximum number of preset results to return (optional, no default limit). Use this to get faster responses when you only need a few results, or to avoid overwhelming output when searching broad terms. Example: limit=10 returns only the first 10 matches.",
+					"(Deprecated: use options.limit instead) Maximum number of preset results to return (optional, no default limit). Use this to get faster responses when you only need a few results, or to avoid overwhelming output when searching broad terms. Example: limit=10 returns only the first 10 matches.",
 				),
 			geometry: z
 				.enum(geometryEnum)
 				.optional()
 				.describe(
-					"Filter results to only presets that support a specific geometry type (optional). Valid values: 'point' (nodes/POIs), 'vertex' (nodes along ways), 'line' (open ways like roads/rivers), 'area' (closed ways/areas like buildings/parks), 'relation' (complex features). Example: geometry='area' returns only presets that can be applied to area features.",
+					"(Deprecated: use options.geometry instead) Filter results to only presets that support a specific geometry type (optional). Valid values: 'point' (nodes/POIs), 'vertex' (nodes along ways), 'line' (open ways like roads/rivers), 'area' (closed ways/areas like buildings/parks), 'relation' (complex features). Example: geometry='area' returns only presets that can be applied to area features.",
+				),
+			options: z
+				.object({
+					limit: limitOption,
+					geometry: z
+						.enum(geometryEnum)
+						.optional()
+						.describe(
+							"Filter results to only presets that support a specific geometry type. Valid values: 'point', 'vertex', 'line', 'area', 'relation'.",
+						),
+				})
+				.optional()
+				.describe(
+					"Options to control search behavior: 'limit' sets maximum number of results, 'geometry' filters by geometry type.",
 				),
 		},
 	}),
 
-	handler: async ({ keyword, limit, geometry }, _extra) => {
-		const results = await searchPresets(keyword.trim(), { limit, geometry });
+	handler: async ({ keyword, limit, geometry, options }, _extra) => {
+		// Support both old parameters and new options for backward compatibility
+		const effectiveLimit = options?.limit ?? limit;
+		const effectiveGeometry = options?.geometry ?? geometry;
+
+		const results = await searchPresets(keyword.trim(), {
+			limit: effectiveLimit,
+			geometry: effectiveGeometry,
+		});
 
 		return {
 			content: [

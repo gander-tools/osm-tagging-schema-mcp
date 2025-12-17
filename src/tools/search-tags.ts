@@ -1,6 +1,7 @@
 import { z } from "zod";
 import type { OsmToolDefinition } from "../types/index.js";
 import { schemaLoader } from "../utils/schema-loader.js";
+import { limitOption } from "./common-options.js";
 import { getTagValues } from "./get-tag-values.js";
 import type { KeyMatch, SearchTagsResponse, ValueMatch } from "./types.js";
 
@@ -190,6 +191,11 @@ export async function searchTags(keyword: string, limit?: number): Promise<Searc
 const SearchTags: OsmToolDefinition<{
 	keyword: z.ZodString;
 	limit: z.ZodOptional<z.ZodNumber>;
+	options: z.ZodOptional<
+		z.ZodObject<{
+			limit: z.ZodOptional<z.ZodNumber>;
+		}>
+	>;
 }> = {
 	name: "search_tags" as const,
 
@@ -206,13 +212,23 @@ const SearchTags: OsmToolDefinition<{
 				.number()
 				.optional()
 				.describe(
-					"Maximum total number of results to return across both keyMatches and valueMatches combined (default: 100). Use lower values for faster responses when you only need a few results.",
+					"(Deprecated: use options.limit instead) Maximum total number of results to return across both keyMatches and valueMatches combined (default: 100). Use lower values for faster responses when you only need a few results.",
+				),
+			options: z
+				.object({
+					limit: limitOption,
+				})
+				.optional()
+				.describe(
+					"Options to control search behavior: 'limit' sets maximum number of results (default: 100).",
 				),
 		},
 	}),
 
-	handler: async ({ keyword, limit }, _extra) => {
-		const response = await searchTags(keyword.trim(), limit);
+	handler: async ({ keyword, limit, options }, _extra) => {
+		// Support both old 'limit' parameter and new 'options.limit' for backward compatibility
+		const effectiveLimit = options?.limit ?? limit;
+		const response = await searchTags(keyword.trim(), effectiveLimit);
 
 		return {
 			content: [
