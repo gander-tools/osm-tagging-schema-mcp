@@ -250,7 +250,7 @@ jobs:
 
       # Image Signing with Cosign
       - name: Install Cosign
-        uses: sigstore/cosign-installer@29bcfa8619aeb12eaac78d31157172c86183b05c
+        uses: sigstore/cosign-installer@4d14d7f17e7112af04ea6108fbb4bfc714c00390
 
       - name: Sign container image with Cosign
         env:
