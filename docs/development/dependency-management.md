@@ -308,37 +308,6 @@ The project extends a shared Renovate configuration with custom settings:
 - Respects package.json version ranges
 - Creates conventional commit messages
 
-**Additional protections from `config:recommended` preset**:
-- Automatically detects and flags vulnerable dependencies
-- Prioritizes security updates over normal dependencies
-- Closes PRs for unpublished versions
-- Respects npm deprecation warnings
-
-#### Best Practices
-
-1. **Monitor Renovate activity**: Check PRs regularly for security/deprecated labels
-2. **Review closed PRs**: If Renovate closes a PR, check why (unpublished version = red flag)
-3. **Trust the safety net**: With these protections, you won't accidentally merge withdrawn/vulnerable packages
-4. **Security PRs**: May automerge faster than 3 days (check preset for exceptions)
-
-#### Edge Cases
-
-**Q: What if a package is deprecated AFTER automerge but BEFORE 3 days?**
-
-A: Renovate checks deprecation status before automerge. Timeline:
-```
-Day 0: 1.0.0 released → PR created
-Day 1: 1.0.0 deprecated → Renovate adds label, blocks automerge
-Day 3: minimumReleaseAge passed → automerge STILL BLOCKED ✅
-```
-
-**Q: Can I manually merge a deprecated/vulnerable version?**
-
-A: Yes, but not recommended. The PR will have clear warnings/labels. Consider:
-1. Why was it deprecated? (bug, security, better alternative?)
-2. Is the fix version available? (check for newer PR)
-3. Is manual intervention really needed? (usually not)
-
 ### Viewing Renovate Activity
 
 **Check Renovate Dashboard:**
