@@ -205,32 +205,50 @@ describe("HTTP Transport Integration Tests", () => {
 				"@modelcontextprotocol/sdk/server/streamableHttp.js"
 			);
 			const { randomUUID } = await import("node:crypto");
+			const { EventEmitter } = await import("node:events");
 
 			const transport = new StreamableHTTPServerTransport({
 				sessionIdGenerator: () => randomUUID(),
 			});
 
 			let statusCode = 0;
+			const headers: Record<string, string | string[]> = {};
 
-			const mockReq = {
+			// Create a proper mock request that extends EventEmitter
+			const mockReq = Object.assign(new EventEmitter(), {
 				method: "GET",
 				url: "/mcp",
 				headers: {
 					accept: "application/json", // Wrong Accept header
 				},
-			} as http.IncomingMessage;
+				httpVersion: "1.1",
+				socket: new EventEmitter(),
+			}) as http.IncomingMessage;
 
-			const mockRes = {
-				writeHead(code: number) {
+			// Create a proper mock response with all necessary methods
+			const mockRes = Object.assign(new EventEmitter(), {
+				writeHead(code: number, _headers?: Record<string, string | string[]>) {
 					statusCode = code;
+					if (_headers) {
+						Object.assign(headers, _headers);
+					}
 					return this;
 				},
-				end() {},
+				setHeader(name: string, value: string | string[]) {
+					headers[name] = value;
+				},
+				getHeader(name: string) {
+					return headers[name];
+				},
+				end() {
+					return this;
+				},
 				write() {
 					return true;
 				},
-				on() {},
-			} as unknown as http.ServerResponse;
+				headersSent: false,
+				writableEnded: false,
+			}) as unknown as http.ServerResponse;
 
 			await transport.handleRequest(mockReq, mockRes);
 
@@ -242,12 +260,15 @@ describe("HTTP Transport Integration Tests", () => {
 				"@modelcontextprotocol/sdk/server/streamableHttp.js"
 			);
 			const { randomUUID } = await import("node:crypto");
+			const { EventEmitter } = await import("node:events");
+			const { Readable } = await import("node:stream");
 
 			const transport = new StreamableHTTPServerTransport({
 				sessionIdGenerator: () => randomUUID(),
 			});
 
 			let statusCode = 0;
+			const headers: Record<string, string | string[]> = {};
 
 			const initRequest = {
 				jsonrpc: "2.0",
@@ -260,30 +281,51 @@ describe("HTTP Transport Integration Tests", () => {
 				},
 			};
 
-			const mockReq = {
+			// Create a readable stream with the request body
+			const requestBody = JSON.stringify(initRequest);
+			const bodyStream = Readable.from([requestBody]);
+
+			// Create a proper mock request that extends the readable stream
+			const mockReq = Object.assign(bodyStream, {
 				method: "POST",
 				url: "/mcp",
 				headers: {
 					"content-type": "application/json",
 					accept: "application/json, text/event-stream",
+					"content-length": Buffer.byteLength(requestBody).toString(),
 				},
-			} as http.IncomingMessage;
+				httpVersion: "1.1",
+				socket: new EventEmitter(),
+			}) as http.IncomingMessage;
 
-			const mockRes = {
-				writeHead(code: number, _headers?: Record<string, string>) {
+			// Create a proper mock response with all necessary methods
+			const mockRes = Object.assign(new EventEmitter(), {
+				writeHead(code: number, _headers?: Record<string, string | string[]>) {
 					statusCode = code;
+					if (_headers) {
+						Object.assign(headers, _headers);
+					}
 					return this;
 				},
-				end() {},
+				setHeader(name: string, value: string | string[]) {
+					headers[name] = value;
+				},
+				getHeader(name: string) {
+					return headers[name];
+				},
+				end() {
+					return this;
+				},
 				write() {
 					return true;
 				},
-				on() {},
+				headersSent: false,
+				writableEnded: false,
 				flushHeaders() {},
-			} as unknown as http.ServerResponse;
+			}) as unknown as http.ServerResponse;
 
 			// We expect this to not throw
-			await transport.handleRequest(mockReq, mockRes, initRequest);
+			await transport.handleRequest(mockReq, mockRes);
 
 			// The transport should accept the request (status 200 for HTTP stream)
 			assert.ok(
@@ -297,6 +339,8 @@ describe("HTTP Transport Integration Tests", () => {
 				"@modelcontextprotocol/sdk/server/streamableHttp.js"
 			);
 			const { randomUUID } = await import("node:crypto");
+			const { EventEmitter } = await import("node:events");
+			const { Readable } = await import("node:stream");
 
 			let generatedSessionId: string | undefined;
 
@@ -318,28 +362,51 @@ describe("HTTP Transport Integration Tests", () => {
 				},
 			};
 
-			const mockReq = {
+			// Create a readable stream with the request body
+			const requestBody = JSON.stringify(initRequest);
+			const bodyStream = Readable.from([requestBody]);
+
+			// Create a proper mock request that extends the readable stream
+			const mockReq = Object.assign(bodyStream, {
 				method: "POST",
 				url: "/mcp",
 				headers: {
 					"content-type": "application/json",
 					accept: "application/json, text/event-stream",
+					"content-length": Buffer.byteLength(requestBody).toString(),
 				},
-			} as http.IncomingMessage;
+				httpVersion: "1.1",
+				socket: new EventEmitter(),
+			}) as http.IncomingMessage;
 
-			const mockRes = {
-				writeHead() {
+			const headers: Record<string, string | string[]> = {};
+
+			// Create a proper mock response with all necessary methods
+			const mockRes = Object.assign(new EventEmitter(), {
+				writeHead(_code: number, _headers?: Record<string, string | string[]>) {
+					if (_headers) {
+						Object.assign(headers, _headers);
+					}
 					return this;
 				},
-				end() {},
+				setHeader(name: string, value: string | string[]) {
+					headers[name] = value;
+				},
+				getHeader(name: string) {
+					return headers[name];
+				},
+				end() {
+					return this;
+				},
 				write() {
 					return true;
 				},
-				on() {},
+				headersSent: false,
+				writableEnded: false,
 				flushHeaders() {},
-			} as unknown as http.ServerResponse;
+			}) as unknown as http.ServerResponse;
 
-			await transport.handleRequest(mockReq, mockRes, initRequest);
+			await transport.handleRequest(mockReq, mockRes);
 
 			// Session ID should be generated
 			assert.ok(generatedSessionId, "Session ID should be generated");
