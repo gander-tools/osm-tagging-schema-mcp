@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.5.0](https://github.com/gander-tools/osm-tagging-schema-mcp/compare/v3.4.0...v3.5.0) (2025-12-29)
+
+
+### Features
+
+* add docker inspect command to build summary ([4dab811](https://github.com/gander-tools/osm-tagging-schema-mcp/commit/4dab81173826c9f4cfa27b73b5dba4331d98fbf2))
+
+
+### Bug Fixes
+
+* **ci:** change docker publish trigger to release event only ([#442](https://github.com/gander-tools/osm-tagging-schema-mcp/issues/442)) ([b67c7dd](https://github.com/gander-tools/osm-tagging-schema-mcp/commit/b67c7dd00fd5d30f1ef7442e00713dd4c874b3f3))
+* **ci:** use explicit checkout refs for docker builds ([8518111](https://github.com/gander-tools/osm-tagging-schema-mcp/commit/85181112464e0fc3c594a055b06855d33106d5e6))
+* **ci:** use explicit checkout refs for docker builds ([#444](https://github.com/gander-tools/osm-tagging-schema-mcp/issues/444)) ([5b51806](https://github.com/gander-tools/osm-tagging-schema-mcp/commit/5b51806ee938f4bae86ad07286f15e05e10fea13))
+
+
+### Code Refactoring
+
+* unify Dockerfile with multi-stage build using named targets ([e2685de](https://github.com/gander-tools/osm-tagging-schema-mcp/commit/e2685de74c78b9df5922d362e0aa7482fd62d9f1))
+
 ## [3.4.0](https://github.com/gander-tools/osm-tagging-schema-mcp/compare/v3.3.0...v3.4.0) (2025-12-29)
 
 
