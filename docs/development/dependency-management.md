@@ -289,21 +289,58 @@ For this project's complexity and requirements, **Renovate is the better choice*
 
 ### Current Renovate Configuration
 
-The project extends a shared Renovate configuration:
+The project extends a shared Renovate configuration with custom settings:
 
 ```json
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["github>gander-settings/renovate:automerge"]
+  "extends": ["github>gander-settings/renovate:automerge"],
+  "prCreation": "not-pending",
+  "rebaseWhen": "conflicted"
 }
 ```
 
 **Shared Configuration** (`github>gander-settings/renovate:automerge`):
-- Automerges minor and patch updates
+- Automerges minor and patch updates after 3-day stability period (`stabilityDays: 3`)
 - Groups dependency updates logically
 - Follows semantic versioning rules
 - Respects package.json version ranges
 - Creates conventional commit messages
+
+**Custom Configuration**:
+- `prCreation: "not-pending"` - Creates PRs only after stability period passes (prevents daily PR updates)
+- `rebaseWhen: "conflicted"` - Only rebases when conflicts occur (reduces unnecessary updates)
+
+### Preventing Constant PR Updates
+
+**Problem**: With `stabilityDays: 3`, Renovate by default creates PRs immediately and updates them daily with new versions. This resets the 3-day waiting period, preventing PRs from ever being merged.
+
+**Solution**: Use `"prCreation": "not-pending"` to delay PR creation until after the stability period:
+
+**Default Behavior** (without `prCreation`):
+1. Day 0: New version released → PR created immediately
+2. Day 1: Newer version released → PR updated (stability counter resets)
+3. Day 2: Newer version released → PR updated (stability counter resets)
+4. Day 3: Newer version released → PR updated (stability counter resets)
+5. Result: **PR never merges** because counter constantly resets
+
+**With `prCreation: "not-pending"`**:
+1. Day 0: New version released → No PR created (waiting for stability)
+2. Day 1: Newer version released → No PR created (waiting for stability)
+3. Day 2: Newer version released → No PR created (waiting for stability)
+4. Day 3: No new version for 3 days → **PR created with stable version**
+5. Result: **PR can be merged immediately** (stability period already passed)
+
+**Benefits**:
+- ✅ Fewer PRs created (only for versions that pass stability period)
+- ✅ PRs are ready to merge immediately (no waiting)
+- ✅ Reduces noise from constant updates
+- ✅ Better for high-frequency dependency updates
+
+**Trade-offs**:
+- ⚠️ Slightly delayed visibility of new versions (wait for stability period)
+- ⚠️ May miss very recent versions if newer versions keep releasing
+- ✅ **Overall better experience** for projects with stability requirements
 
 ### Viewing Renovate Activity
 
