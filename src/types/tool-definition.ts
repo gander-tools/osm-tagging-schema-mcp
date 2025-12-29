@@ -1,5 +1,5 @@
 /**
- * Tool definition types for MCP SDK v1.25 McpServer API
+ * Tool definition types for MCP SDK McpServer API
  *
  * This module defines the interface structure for MCP tools following
  * the new registerTool() pattern with McpServer.
