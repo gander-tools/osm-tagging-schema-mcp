@@ -15,24 +15,6 @@ export interface SchemaStats {
 }
 
 /**
- * Category information interface
- */
-export interface CategoryInfo {
-	name: string;
-	count: number;
-}
-
-/**
- * Tag search result interface
- * @deprecated Use SearchTagsResponse instead (Phase 8.4 refactor)
- */
-export interface TagSearchResult {
-	key: string;
-	value: string;
-	presetName?: string;
-}
-
-/**
  * Key match result (Phase 8.4 format)
  * When a keyword matches a tag key, return ALL values for that key
  */
@@ -63,16 +45,6 @@ export interface SearchTagsResponse {
 }
 
 /**
- * Value information with localized name and optional description
- * @deprecated Use TagValuesResponse instead (Phase 8.3 refactor)
- */
-export interface ValueInfo {
-	value: string; // The actual value key (e.g., "surface", "underground")
-	name: string; // Localized title (e.g., "Surface", "Underground")
-	description?: string; // Optional description
-}
-
-/**
  * Detailed value information with localized name (Phase 8.3 format)
  */
 export interface ValueDetailed {
@@ -88,27 +60,6 @@ export interface TagValuesResponse {
 	keyName: string; // Localized key name (e.g., "Amenity")
 	values: string[]; // Simple array of values
 	valuesDetailed: ValueDetailed[]; // Detailed values with names
-}
-
-/**
- * Tag information interface
- */
-export interface TagInfo {
-	key: string;
-	name?: string; // Preset name (e.g., "Parking Lot") or field label
-	values: ValueInfo[]; // Array of structured value information
-	type?: string;
-	hasFieldDefinition: boolean;
-}
-
-/**
- * Related tag result interface
- */
-export interface RelatedTag {
-	key: string;
-	value?: string;
-	frequency: number;
-	presetExamples?: string[];
 }
 
 /**
@@ -144,12 +95,4 @@ export interface PresetDetails {
 	fields?: string[]; // Expanded field references
 	moreFields?: string[]; // Expanded field references
 	// icon removed in Phase 8.5
-}
-
-/**
- * Preset tags interface
- */
-export interface PresetTags {
-	tags: Record<string, string>;
-	addTags?: Record<string, string>;
 }
