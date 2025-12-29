@@ -163,6 +163,25 @@ jobs:
         with:
           ref: ${{ needs.extract-version.outputs.checkout-ref }}
 
+      - name: Get build info
+        id: build-info
+        run: |
+          COMMIT_SHA=$(git rev-parse HEAD)
+          COMMIT_SHORT=$(git rev-parse --short HEAD)
+          COMMIT_MSG=$(git log -1 --format=%s)
+          COMMIT_DATE=$(git log -1 --format=%ci)
+
+          # Get package version from package.json
+          PACKAGE_VERSION=$(node -p "require('./package.json').version")
+
+          {
+            echo "commit-sha=$COMMIT_SHA"
+            echo "commit-short=$COMMIT_SHORT"
+            echo "commit-msg=$COMMIT_MSG"
+            echo "commit-date=$COMMIT_DATE"
+            echo "package-version=$PACKAGE_VERSION"
+          } >> "$GITHUB_OUTPUT"
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f
 
@@ -331,3 +350,71 @@ jobs:
           else
             echo "::error::✗ Webhook failed with HTTP $HTTP_CODE"
           fi
+
+      # Generate Job Summary
+      - name: Generate build summary
+        if: always()
+        run: |
+          VERSION_TAG="${{ needs.extract-version.outputs.version-tag }}"
+          IS_RELEASE="${{ needs.extract-version.outputs.is-release }}"
+          CHECKOUT_REF="${{ needs.extract-version.outputs.checkout-ref }}"
+          COMMIT_SHA="${{ steps.build-info.outputs.commit-sha }}"
+          COMMIT_SHORT="${{ steps.build-info.outputs.commit-short }}"
+          COMMIT_MSG="${{ steps.build-info.outputs.commit-msg }}"
+          COMMIT_DATE="${{ steps.build-info.outputs.commit-date }}"
+          PACKAGE_VERSION="${{ steps.build-info.outputs.package-version }}"
+          DIGEST="${{ steps.digest.outputs.digest }}"
+
+          # Determine build type label
+          if [ "$IS_RELEASE" = "true" ]; then
+            BUILD_TYPE="🚀 Release"
+          elif [ "$VERSION_TAG" = "edge" ]; then
+            BUILD_TYPE="🔧 Edge (Development)"
+          elif [[ "$VERSION_TAG" == pr-* ]]; then
+            BUILD_TYPE="🔍 Pull Request"
+          else
+            BUILD_TYPE="❓ Unknown"
+          fi
+
+          cat >> "$GITHUB_STEP_SUMMARY" << EOF
+          ## 🐳 Docker Build Summary
+
+          ### Build Information
+
+          | Property | Value |
+          |----------|-------|
+          | **Build Type** | $BUILD_TYPE |
+          | **Version Tag** | \`$VERSION_TAG\` |
+          | **Package Version** | \`$PACKAGE_VERSION\` |
+
+          ### Source
+
+          | Property | Value |
+          |----------|-------|
+          | **Checkout Ref** | \`$CHECKOUT_REF\` |
+          | **Commit SHA** | \`$COMMIT_SHA\` |
+          | **Commit (short)** | \`$COMMIT_SHORT\` |
+          | **Commit Date** | $COMMIT_DATE |
+          | **Commit Message** | $COMMIT_MSG |
+
+          ### Docker Image
+
+          | Property | Value |
+          |----------|-------|
+          | **Registry** | \`${{ env.REGISTRY }}\` |
+          | **Image** | \`${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}\` |
+          | **Digest** | \`$DIGEST\` |
+          | **Platforms** | \`linux/amd64\`, \`linux/arm64\` |
+
+          ### Image Tags
+
+          \`\`\`
+          ${{ steps.meta.outputs.tags }}
+          \`\`\`
+
+          ### Pull Command
+
+          \`\`\`bash
+          docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:$VERSION_TAG
+          \`\`\`
+          EOF
