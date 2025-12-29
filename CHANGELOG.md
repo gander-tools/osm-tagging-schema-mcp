@@ -5,6 +5,32 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.6.0](https://github.com/gander-tools/osm-tagging-schema-mcp/compare/v3.5.0...v3.6.0) (2025-12-29)
+
+
+### Features
+
+* add compare_tags tool for tag diff visualization ([de30a67](https://github.com/gander-tools/osm-tagging-schema-mcp/commit/de30a67f232eaa3fec6ef960199ad688bff8be51))
+* add MCP SDK 1.25 compliance for display name priority ([d05781f](https://github.com/gander-tools/osm-tagging-schema-mcp/commit/d05781fa092fd51adbc81856674044a8332bb1d2))
+* add options parameter for tool output control ([48e6863](https://github.com/gander-tools/osm-tagging-schema-mcp/commit/48e6863a86df3cbfff1dac84617ca30e4575a73a))
+* extract tool descriptions to centralized metadata file ([77e2ba6](https://github.com/gander-tools/osm-tagging-schema-mcp/commit/77e2ba6269695ca44c856789f713fd8005e3bf0f))
+* **hooks:** add integration tests to pre-push hook ([75d5bd0](https://github.com/gander-tools/osm-tagging-schema-mcp/commit/75d5bd066cea0f76e6cc9b74d1dd9a4300050b84))
+* **scripts:** add check-only scripts for CI/CD ([468c68b](https://github.com/gander-tools/osm-tagging-schema-mcp/commit/468c68bb984506bcbf8b45c9354e70dda9f50f76))
+* **tools:** add name and title to tool config output ([#452](https://github.com/gander-tools/osm-tagging-schema-mcp/issues/452)) ([cdbccbb](https://github.com/gander-tools/osm-tagging-schema-mcp/commit/cdbccbbb33043cf6d9cfaa103fbd552cacf6c9fe))
+
+
+### Bug Fixes
+
+* **ci:** use check-only commands in CI/CD pipeline ([c81f476](https://github.com/gander-tools/osm-tagging-schema-mcp/commit/c81f4767ae89b6388a57be0b6e17ae06c582cc9f))
+* update tool descriptions to pass quality tests ([3c03a69](https://github.com/gander-tools/osm-tagging-schema-mcp/commit/3c03a69b0bfd8c655ca271097b7d0d6334c4518c))
+* use InMemoryTransport in prompts integration tests ([8c6910d](https://github.com/gander-tools/osm-tagging-schema-mcp/commit/8c6910dd7229c61bd75065947230cbf8f59ad8f0))
+
+
+### Code Refactoring
+
+* replace repetitive metadata validation with parameterized helper functions ([ff66228](https://github.com/gander-tools/osm-tagging-schema-mcp/commit/ff66228a053ee95534608696027ac72f531db522))
+* **scripts:** rename linting scripts for clearer naming ([c91c3b4](https://github.com/gander-tools/osm-tagging-schema-mcp/commit/c91c3b464c24e0d054fbe612f2eba362fdc0cfce))
+
 ## [3.5.0](https://github.com/gander-tools/osm-tagging-schema-mcp/compare/v3.4.0...v3.5.0) (2025-12-29)
 
 
