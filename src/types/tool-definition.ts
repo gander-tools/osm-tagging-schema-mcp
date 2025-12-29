@@ -22,6 +22,9 @@ export interface ToolConfig<
 	TInputSchema extends ZodRawShape = ZodRawShape,
 	TOutputSchema extends ZodRawShape = ZodRawShape,
 > {
+	/** Tool identifier (e.g., "validate_tag") */
+	name?: string;
+
 	/** Tool display title (optional) */
 	title?: string;
 

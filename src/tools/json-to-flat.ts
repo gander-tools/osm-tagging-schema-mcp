@@ -77,6 +77,8 @@ const JsonToFlat: OsmToolDefinition<{
 		const metadata = requireToolMetadata("json_to_flat");
 
 		return {
+			name: metadata.name,
+			title: metadata.title,
 			description: metadata.description,
 			inputSchema: {
 				tags: z

@@ -305,6 +305,8 @@ const SuggestImprovements: OsmToolDefinition<{
 		const metadata = requireToolMetadata("suggest_improvements");
 
 		return {
+			name: metadata.name,
+			title: metadata.title,
 			description: metadata.description,
 			inputSchema: {
 				tags: z

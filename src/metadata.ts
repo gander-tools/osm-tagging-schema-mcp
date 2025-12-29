@@ -34,11 +34,6 @@ export interface ToolMetadata {
 	description: string;
 	/** Optional human-readable title for UI display (MCP SDK 1.25) */
 	title?: string;
-	/** Optional annotations for client customization (MCP SDK 1.25) */
-	annotations?: {
-		/** Optional client-side display name override */
-		title?: string;
-	};
 	/** Parameter metadata */
 	parameters: Record<string, ToolParameterMetadata>;
 }

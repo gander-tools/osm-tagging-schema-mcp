@@ -156,6 +156,8 @@ const SearchPresets: OsmToolDefinition<{
 		const metadata = requireToolMetadata("search_presets");
 
 		return {
+			name: metadata.name,
+			title: metadata.title,
 			description: metadata.description,
 			inputSchema: {
 				keyword: z.string().describe(metadata.parameters.searchName!.description),

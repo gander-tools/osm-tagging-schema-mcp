@@ -119,6 +119,8 @@ const GetTagValues: OsmToolDefinition<{
 		const metadata = requireToolMetadata("get_tag_values");
 
 		return {
+			name: metadata.name,
+			title: metadata.title,
 			description: metadata.description,
 			inputSchema: {
 				tagKey: z.string().describe(metadata.parameters.tagKey!.description),

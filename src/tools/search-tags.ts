@@ -204,6 +204,8 @@ const SearchTags: OsmToolDefinition<{
 		const metadata = requireToolMetadata("search_tags");
 
 		return {
+			name: metadata.name,
+			title: metadata.title,
 			description: metadata.description,
 			inputSchema: {
 				keyword: z.string().describe(metadata.parameters.keyword!.description),

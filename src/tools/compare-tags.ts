@@ -255,6 +255,8 @@ const CompareTags: OsmToolDefinition = {
 		const metadata = requireToolMetadata("compare_tags");
 
 		return {
+			name: metadata.name,
+			title: metadata.title,
 			description: metadata.description,
 			inputSchema: {
 				oldTags: z
