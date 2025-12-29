@@ -1,10 +1,14 @@
 name: Docker Build and Publish
 
 on:
-  # Automatic trigger when a new release is published
-  release:
+  # Automatic trigger after successful Release Please workflow
+  # Note: This triggers AFTER the entire workflow completes, ensuring dist.tar.gz is uploaded
+  workflow_run:
+    workflows: ["Release Please"]
     types:
-      - published
+      - completed
+    branches:
+      - master
 
   # Manual trigger with build type selection
   workflow_dispatch:
@@ -40,6 +44,7 @@ jobs:
       should-build: ${{ steps.version.outputs.should-build }}
       is-release: ${{ steps.version.outputs.is-release }}
       checkout-ref: ${{ steps.version.outputs.checkout-ref }}
+      git-tag: ${{ steps.version.outputs.git-tag }}
 
     permissions:
       contents: read
@@ -56,24 +61,35 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           VERSION_TAG=""
+          GIT_TAG=""
           SHOULD_BUILD="false"
           IS_RELEASE="false"
           CHECKOUT_REF=""
 
-          # release - triggered when a new release is published
-          if [ "${{ github.event_name }}" = "release" ]; then
-            VERSION_TAG="${{ github.event.release.tag_name }}"
-
-            if [ -z "$VERSION_TAG" ]; then
-              echo "::error::Failed to get tag from release event"
+          # workflow_run - triggered after Release Please workflow completes
+          if [ "${{ github.event_name }}" = "workflow_run" ]; then
+            # Check if workflow_run was successful
+            if [ "${{ github.event.workflow_run.conclusion }}" != "success" ]; then
+              echo "::warning::Release Please workflow did not succeed, skipping Docker build"
               echo "should-build=false" >> "$GITHUB_OUTPUT"
-              exit 1
+              exit 0
             fi
 
+            # Get the latest release (created by Release Please)
+            GIT_TAG=$(gh release list --limit 1 --json tagName,isDraft --jq '.[] | select(.isDraft == false) | .tagName')
+
+            if [ -z "$GIT_TAG" ]; then
+              echo "::warning::No release found from Release Please workflow (might be just a push without release)"
+              echo "should-build=false" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+
+            # Strip 'v' prefix for Docker tags (v3.6.0 -> 3.6.0)
+            VERSION_TAG="${GIT_TAG#v}"
             IS_RELEASE="true"
             SHOULD_BUILD="true"
-            CHECKOUT_REF="refs/tags/$VERSION_TAG"
-            echo "✅ Building Docker image for version: $VERSION_TAG (from release event)"
+            CHECKOUT_REF="refs/tags/$GIT_TAG"
+            echo "✅ Building Docker image for version: $VERSION_TAG (git tag: $GIT_TAG) from Release Please workflow"
 
           # workflow_dispatch - manual trigger with build type selection
           elif [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
@@ -81,26 +97,28 @@ jobs:
 
             case "$BUILD_TYPE" in
               release)
-                VERSION_TAG="${{ inputs.version }}"
+                GIT_TAG="${{ inputs.version }}"
 
                 # Validate version format
-                if ! [[ "$VERSION_TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-                  echo "::error::Invalid version format: '$VERSION_TAG'. Expected semantic version (e.g., v1.2.3)"
+                if ! [[ "$GIT_TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+                  echo "::error::Invalid version format: '$GIT_TAG'. Expected semantic version (e.g., v1.2.3)"
                   echo "should-build=false" >> "$GITHUB_OUTPUT"
                   exit 1
                 fi
 
                 # Check if release exists
-                if ! gh release view "$VERSION_TAG" --repo "${{ github.repository }}" > /dev/null 2>&1; then
-                  echo "::error::Release $VERSION_TAG does not exist. Create release first via release-please workflow."
+                if ! gh release view "$GIT_TAG" --repo "${{ github.repository }}" > /dev/null 2>&1; then
+                  echo "::error::Release $GIT_TAG does not exist. Create release first via release-please workflow."
                   echo "should-build=false" >> "$GITHUB_OUTPUT"
                   exit 1
                 fi
 
+                # Strip 'v' prefix for Docker tags (v3.6.0 -> 3.6.0)
+                VERSION_TAG="${GIT_TAG#v}"
                 IS_RELEASE="true"
                 SHOULD_BUILD="true"
-                CHECKOUT_REF="refs/tags/$VERSION_TAG"
-                echo "✅ Manual Docker build for version: $VERSION_TAG"
+                CHECKOUT_REF="refs/tags/$GIT_TAG"
+                echo "✅ Manual Docker build for version: $VERSION_TAG (git tag: $GIT_TAG)"
                 ;;
 
               edge)
@@ -140,6 +158,7 @@ jobs:
 
           {
             echo "version-tag=$VERSION_TAG"
+            echo "git-tag=$GIT_TAG"
             echo "is-release=$IS_RELEASE"
             echo "should-build=$SHOULD_BUILD"
             echo "checkout-ref=$CHECKOUT_REF"
@@ -202,19 +221,16 @@ jobs:
             type=raw,value=${{ needs.extract-version.outputs.version-tag }},enable=${{ needs.extract-version.outputs.is-release == 'true' }},priority=900
             type=edge,enable=${{ needs.extract-version.outputs.version-tag == 'edge' }},priority=800
             type=raw,value=${{ needs.extract-version.outputs.version-tag }},enable=${{ startsWith(needs.extract-version.outputs.version-tag, 'pr-') }},priority=700
-            type=semver,pattern={{major}},enable=${{ needs.extract-version.outputs.is-release == 'true' && startsWith(github.ref, 'refs/tags/v') }},priority=600
-            type=semver,pattern={{major}}.{{minor}},enable=${{ needs.extract-version.outputs.is-release == 'true' && startsWith(github.ref, 'refs/tags/v') }},priority=500
-            type=semver,pattern={{major}}.{{minor}}.{{patch}},enable=${{ needs.extract-version.outputs.is-release == 'true' && startsWith(github.ref, 'refs/tags/v') }},priority=400
 
       - name: Download dist/ artifact from GitHub Release (release builds only)
         if: needs.extract-version.outputs.is-release == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          VERSION_TAG="${{ needs.extract-version.outputs.version-tag }}"
-          echo "📦 Downloading dist.tar.gz from release $VERSION_TAG"
+          GIT_TAG="${{ needs.extract-version.outputs.git-tag }}"
+          echo "📦 Downloading dist.tar.gz from release $GIT_TAG"
 
-          gh release download "$VERSION_TAG" \
+          gh release download "$GIT_TAG" \
             --repo ${{ github.repository }} \
             --pattern 'dist.tar.gz'
 
