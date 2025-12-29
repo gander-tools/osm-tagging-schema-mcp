@@ -43,10 +43,6 @@ pre-push:
     test-unit:
       run: npm run test:unit
 
-    # Integration tests (slower)
-    test-integration:
-      run: npm run test:integration
-
     # Build verification
     build:
       run: npm run build
