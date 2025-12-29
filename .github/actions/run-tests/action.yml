@@ -38,12 +38,12 @@ runs:
     - name: Run linter
       if: inputs.run-lint == 'true'
       shell: bash
-      run: npm run lint:check
+      run: npm run lint
 
     - name: Run format check
       if: inputs.run-format == 'true'
       shell: bash
-      run: npm run format:check
+      run: npm run format
 
     - name: Run unit tests
       if: inputs.run-unit-tests == 'true'
