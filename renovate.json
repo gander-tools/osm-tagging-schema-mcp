@@ -4,6 +4,7 @@
 	"prCreation": "immediate",
 	"rebaseWhen": "never",
 	"minimumReleaseAge": "3 days",
+	"minimumReleaseAgeBehaviour": "timestamp-optional",
 	"packageRules": [
 		{
 			"description": "Block automerge for deprecated packages",
