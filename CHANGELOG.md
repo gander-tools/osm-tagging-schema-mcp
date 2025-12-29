@@ -5,6 +5,32 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.4.0](https://github.com/gander-tools/osm-tagging-schema-mcp/compare/v3.3.0...v3.4.0) (2025-12-29)
+
+
+### Features
+
+* Add Renovate config validation workflow ([0f5431c](https://github.com/gander-tools/osm-tagging-schema-mcp/commit/0f5431c03522070cede3e7cdf82bf6f85a925ae9))
+
+
+### Bug Fixes
+
+* add minimumReleaseAgeBehaviour to handle Renovate 42.0.0 changes ([2ddb350](https://github.com/gander-tools/osm-tagging-schema-mcp/commit/2ddb350f2fd33712d65f388a16ea5bbd33f574b1))
+* **deps:** update dependency @modelcontextprotocol/sdk to ~1.25.0 ([3ff973c](https://github.com/gander-tools/osm-tagging-schema-mcp/commit/3ff973cbb38160bc583ae83566de9f6679bc019d))
+* remove invalid matchDeprecated from Renovate config ([d0706dd](https://github.com/gander-tools/osm-tagging-schema-mcp/commit/d0706dd687cf577651b974e2a4ad91d3aac18ff7))
+* Skip HTTP transport mock tests incompatible with SDK v1.25.0 ([fe9957f](https://github.com/gander-tools/osm-tagging-schema-mcp/commit/fe9957fd0531d1e91f8511511df3dbfea1785133))
+* Update HTTP transport test mocks for SDK v1.25.0 ([012abba](https://github.com/gander-tools/osm-tagging-schema-mcp/commit/012abba302b67dc71efd6b422491e0d138a89861))
+
+
+### Documentation
+
+* update MCP SDK version reference to v1.25 ([#439](https://github.com/gander-tools/osm-tagging-schema-mcp/issues/439)) ([2dee34d](https://github.com/gander-tools/osm-tagging-schema-mcp/commit/2dee34d02d6b50a64d16a96175196ba7aece664a))
+
+
+### Code Refactoring
+
+* clean up after MCP SDK 1.25.0 update ([abbd69e](https://github.com/gander-tools/osm-tagging-schema-mcp/commit/abbd69e489ec9b4f90b24fb7bebdeeb74db73614))
+
 ## [3.3.0](https://github.com/gander-tools/osm-tagging-schema-mcp/compare/v3.2.0...v3.3.0) (2025-12-17)
 
 
