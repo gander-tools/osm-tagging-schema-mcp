@@ -28,21 +28,23 @@ This guide focuses on Docker container deployment, which is recommended for prod
 
 ## Build Architecture
 
-Docker images are built using a **dual strategy** for optimal security and performance:
+Docker images are built using a **unified multi-stage Dockerfile** with two build targets:
 
 **Release Builds (version tags like `v1.0.0`):**
-- Use `Dockerfile.release` (simplified, artifact-based)
+- Use `docker build --target release` (artifact-based)
 - Download pre-built `dist/` from NPM publish workflow
 - **Same code as NPM package** with SLSA Level 3 attestations
 - Faster builds (no TypeScript compilation)
 - Complete provenance chain: Docker → dist.tar.gz → NPM package
 
 **Development Builds (PRs, master branch, `edge` tag):**
-- Use `Dockerfile` (multi-stage build)
+- Use `docker build .` (default target, multi-stage build)
 - Compile TypeScript from source during build
 - Independent of NPM publish workflow
 
-**Security Benefits:**
+**Architectural Benefits:**
+- Single Dockerfile for both build modes (easier maintenance)
+- Shared runtime configuration (non-root user, health checks, etc.)
 - Release images inherit SLSA attestations from NPM build
 - Verifiable consistency between NPM and Docker distributions
 - Single build artifact reduces attack surface

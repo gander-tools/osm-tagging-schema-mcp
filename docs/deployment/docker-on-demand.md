@@ -7,10 +7,10 @@ This document describes how to trigger Docker image builds on-demand for Pull Re
 The `publish-docker.yml` workflow handles both version tag releases and on-demand PR builds. For Pull Requests, it allows you to build and publish Docker images on-demand without automatically building on every PR push. This saves CI resources and provides flexibility to build only when needed.
 
 **Key Features:**
-- Both release and on-demand builds use the **same Dockerfile** (`Dockerfile.release`)
-- Release builds use prebuilt `dist/` from GitHub Release
-- On-demand builds compile `dist/` from source before building Docker image
-- This ensures PR builds match production release builds exactly
+- Both release and development builds use the **same multi-stage Dockerfile**
+- Release builds use `--target release` with prebuilt `dist/` from GitHub Release
+- Development builds use default target with TypeScript compilation from source
+- Shared runtime configuration ensures consistency across all builds
 
 **Build Triggers:**
 - ✅ **Version tags** (v*.*.*): Automatic release builds
@@ -411,7 +411,7 @@ The `publish-docker.yml` workflow handles two types of builds:
 | **When** | Tag push | Pull Requests |
 | **Tags** | `latest`, semver (e.g., `1`, `1.2`, `1.2.3`) | `pr-<number>`, `pr-<number>-<sha>` |
 | **dist/ Source** | Downloaded from GitHub Release | Built from source |
-| **Dockerfile** | `Dockerfile.release` | `Dockerfile.release` (same as release) |
+| **Build Target** | `--target release` | Default (development) |
 | **Platforms** | linux/amd64, linux/arm64 | linux/amd64, linux/arm64 |
 | **Security** | Trivy, Cosign | Trivy, Cosign |
 | **Post-Build** | Webhook notification | PR comment |
@@ -457,7 +457,7 @@ The `publish-docker.yml` workflow handles two types of builds:
 │                      │
 │ Both use same steps: │
 │ • Build image        │
-│   (Dockerfile.release)│
+│   (multistage Dockerfile)│
 │ • Push tags          │
 │ • Scan (Trivy)       │
 │ • Sign (Cosign)      │
