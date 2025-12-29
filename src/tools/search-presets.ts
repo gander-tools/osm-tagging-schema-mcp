@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { getToolMetadata } from "../metadata.js";
+import { requireToolMetadata } from "../metadata.js";
 import type { GeometryType, OsmToolDefinition } from "../types/index.js";
 import { schemaLoader } from "../utils/schema-loader.js";
 import { limitOption } from "./common-options.js";
@@ -153,10 +153,7 @@ const SearchPresets: OsmToolDefinition<{
 	name: "search_presets" as const,
 
 	config: () => {
-		const metadata = getToolMetadata("search_presets");
-		if (!metadata) {
-			throw new Error("Tool metadata not found for search_presets");
-		}
+		const metadata = requireToolMetadata("search_presets");
 
 		return {
 			description: metadata.description,

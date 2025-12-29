@@ -3,7 +3,7 @@ import deprecatedRaw from "@openstreetmap/id-tagging-schema/dist/deprecated.json
 };
 import fieldsRaw from "@openstreetmap/id-tagging-schema/dist/fields.json" with { type: "json" };
 import { z } from "zod";
-import { getToolMetadata } from "../metadata.js";
+import { requireToolMetadata } from "../metadata.js";
 import type { DeprecatedTag, Field, OsmToolDefinition } from "../types";
 import { schemaLoader } from "../utils/schema-loader.js";
 
@@ -249,10 +249,7 @@ const ValidateTag: OsmToolDefinition<{
 }> = {
 	name: "validate_tag" as const,
 	config: () => {
-		const metadata = getToolMetadata("validate_tag");
-		if (!metadata) {
-			throw new Error("Tool metadata not found for validate_tag");
-		}
+		const metadata = requireToolMetadata("validate_tag");
 
 		return {
 			description: metadata.description,

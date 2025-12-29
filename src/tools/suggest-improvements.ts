@@ -1,7 +1,7 @@
 import fieldsRaw from "@openstreetmap/id-tagging-schema/dist/fields.json" with { type: "json" };
 import presetsRaw from "@openstreetmap/id-tagging-schema/dist/presets.json" with { type: "json" };
 import { z } from "zod";
-import { getToolMetadata } from "../metadata.js";
+import { requireToolMetadata } from "../metadata.js";
 import type { Field, OsmToolDefinition, Preset } from "../types";
 import { schemaLoader } from "../utils/schema-loader.js";
 import { parseTagInput } from "../utils/tag-parser.js";
@@ -302,10 +302,7 @@ const SuggestImprovements: OsmToolDefinition<{
 }> = {
 	name: "suggest_improvements" as const,
 	config: () => {
-		const metadata = getToolMetadata("suggest_improvements");
-		if (!metadata) {
-			throw new Error("Tool metadata not found for suggest_improvements");
-		}
+		const metadata = requireToolMetadata("suggest_improvements");
 
 		return {
 			description: metadata.description,

@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { getToolMetadata } from "../metadata.js";
+import { requireToolMetadata } from "../metadata.js";
 import type { OsmToolDefinition } from "../types/index.js";
 import { parseTagInput } from "../utils/tag-parser.js";
 import { validationOptionsSchema } from "./common-options.js";
@@ -140,10 +140,7 @@ const ValidateTagCollection: OsmToolDefinition<{
 }> = {
 	name: "validate_tag_collection" as const,
 	config: () => {
-		const metadata = getToolMetadata("validate_tag_collection");
-		if (!metadata) {
-			throw new Error("Tool metadata not found for validate_tag_collection");
-		}
+		const metadata = requireToolMetadata("validate_tag_collection");
 
 		return {
 			description: metadata.description,

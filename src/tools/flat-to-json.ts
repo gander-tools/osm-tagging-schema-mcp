@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { getToolMetadata } from "../metadata.js";
+import { requireToolMetadata } from "../metadata.js";
 import type { OsmToolDefinition } from "../types/index.js";
 import { parseTagInput } from "../utils/tag-parser.js";
 
@@ -36,10 +36,7 @@ const FlatToJson: OsmToolDefinition<{
 }> = {
 	name: "flat_to_json" as const,
 	config: () => {
-		const metadata = getToolMetadata("flat_to_json");
-		if (!metadata) {
-			throw new Error("Tool metadata not found for flat_to_json");
-		}
+		const metadata = requireToolMetadata("flat_to_json");
 
 		return {
 			description: metadata.description,
