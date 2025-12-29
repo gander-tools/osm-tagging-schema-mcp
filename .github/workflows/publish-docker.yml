@@ -39,6 +39,7 @@ jobs:
       version-tag: ${{ steps.version.outputs.version-tag }}
       should-build: ${{ steps.version.outputs.should-build }}
       is-release: ${{ steps.version.outputs.is-release }}
+      checkout-ref: ${{ steps.version.outputs.checkout-ref }}
 
     permissions:
       contents: read
@@ -57,6 +58,7 @@ jobs:
           VERSION_TAG=""
           SHOULD_BUILD="false"
           IS_RELEASE="false"
+          CHECKOUT_REF=""
 
           # release - triggered when a new release is published
           if [ "${{ github.event_name }}" = "release" ]; then
@@ -70,6 +72,7 @@ jobs:
 
             IS_RELEASE="true"
             SHOULD_BUILD="true"
+            CHECKOUT_REF="refs/tags/$VERSION_TAG"
             echo "✅ Building Docker image for version: $VERSION_TAG (from release event)"
 
           # workflow_dispatch - manual trigger with build type selection
@@ -96,6 +99,7 @@ jobs:
 
                 IS_RELEASE="true"
                 SHOULD_BUILD="true"
+                CHECKOUT_REF="refs/tags/$VERSION_TAG"
                 echo "✅ Manual Docker build for version: $VERSION_TAG"
                 ;;
 
@@ -103,7 +107,8 @@ jobs:
                 VERSION_TAG="edge"
                 IS_RELEASE="false"
                 SHOULD_BUILD="true"
-                echo "✅ Edge build from current commit"
+                CHECKOUT_REF="refs/heads/${{ github.event.repository.default_branch }}"
+                echo "✅ Edge build from ${{ github.event.repository.default_branch }} branch"
                 ;;
 
               pr)
@@ -118,7 +123,8 @@ jobs:
                 VERSION_TAG="pr-$PR_NUMBER"
                 IS_RELEASE="false"
                 SHOULD_BUILD="true"
-                echo "✅ PR build for PR #$PR_NUMBER"
+                CHECKOUT_REF="refs/pull/$PR_NUMBER/head"
+                echo "✅ PR build for PR #$PR_NUMBER (from refs/pull/$PR_NUMBER/head)"
                 ;;
 
               *)
@@ -136,6 +142,7 @@ jobs:
             echo "version-tag=$VERSION_TAG"
             echo "is-release=$IS_RELEASE"
             echo "should-build=$SHOULD_BUILD"
+            echo "checkout-ref=$CHECKOUT_REF"
           } >> "$GITHUB_OUTPUT"
 
   build-and-push:
@@ -153,6 +160,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        with:
+          ref: ${{ needs.extract-version.outputs.checkout-ref }}
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f
