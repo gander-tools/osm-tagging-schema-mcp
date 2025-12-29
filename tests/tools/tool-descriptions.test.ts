@@ -236,7 +236,7 @@ describe("Tool Descriptions Quality", () => {
 		});
 	});
 
-	describe("Tool Metadata Fields (MCP SDK 1.25)", () => {
+	describe("Tool Metadata Fields", () => {
 		it("every tool should have a name field in config()", () => {
 			for (const tool of tools) {
 				const config = tool.config();
