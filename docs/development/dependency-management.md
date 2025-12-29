@@ -356,6 +356,112 @@ Day 6: typescript@5.3.2 is 3 days old → PR #103 MERGES with 5.3.2 ✅
 - **Problem with default behavior**: PR constantly updates to latest version, resetting the 3-day counter indefinitely
 - **This strategy**: Creates PR immediately (visibility), locks the version (no updates), automerges after 3 days from publication (stability guarantee)
 
+### Safety: Handling Withdrawn/Vulnerable Packages
+
+**Question**: What happens if a package version is withdrawn or found vulnerable before the 3-day period expires?
+
+**Answer**: Renovate has built-in protections:
+
+#### 1. Unpublished Versions (completely removed from npm)
+
+When a version is **unpublished** from npm registry:
+
+```
+Day 1: package@1.0.0 → PR #1 created
+Day 2: CRITICAL BUG → package@1.0.0 UNPUBLISHED from npm
+Day 3: Renovate detects version no longer exists
+       → Automatically CLOSES PR #1 ✅
+```
+
+**How it works**:
+- Renovate periodically checks if versions still exist in registry
+- If version is unpublished, PR is automatically closed with comment
+- Works even with `rebaseWhen: "never"` (Renovate still checks registry)
+
+#### 2. Deprecated Versions (flagged but still available)
+
+When a version is **marked as deprecated**:
+
+```
+Day 1: package@1.0.0 → PR #1 created
+Day 2: Maintainers mark 1.0.0 as deprecated (bug found)
+Day 3: Renovate detects deprecated flag
+       → Adds "deprecated" label to PR #1
+       → BLOCKS automerge (packageRule) ❌
+```
+
+**How it works**:
+- Renovate checks `deprecated` field in npm package metadata
+- Adds label to PR for visibility
+- `matchDeprecated: true` rule **blocks automerge**
+- PR remains open for manual review/closure
+
+#### 3. Security Vulnerabilities (CVE/GitHub Advisory)
+
+When a **security vulnerability** is discovered:
+
+```
+Day 1: lodash@4.17.20 → PR #50 created
+Day 2: CVE-2021-XXXX published for 4.17.20
+Day 3: Renovate detects vulnerability
+       → Adds "security" label to PR #50
+       → Creates NEW PR #51 for lodash@4.17.21 (fixed version)
+       → PR #51 may have higher priority (shorter minimumReleaseAge)
+```
+
+**How it works**:
+- Renovate integrates with npm audit and GitHub Security Advisories
+- Vulnerable PRs are labeled but not auto-closed
+- New PR created for patched version (may bypass normal rules)
+- `config:recommended` preset includes vulnerability protections
+
+#### Protection Configuration
+
+Our configuration includes explicit protection rules:
+
+```json
+{
+  "packageRules": [
+    {
+      "description": "Block automerge for deprecated packages",
+      "matchDeprecated": true,
+      "automerge": false
+    }
+  ]
+}
+```
+
+**Additional protections from `config:recommended` preset**:
+- Automatically detects and flags vulnerable dependencies
+- Prioritizes security updates over normal dependencies
+- Closes PRs for unpublished versions
+- Respects npm deprecation warnings
+
+#### Best Practices
+
+1. **Monitor Renovate activity**: Check PRs regularly for security/deprecated labels
+2. **Review closed PRs**: If Renovate closes a PR, check why (unpublished version = red flag)
+3. **Trust the safety net**: With these protections, you won't accidentally merge withdrawn/vulnerable packages
+4. **Security PRs**: May automerge faster than 3 days (check preset for exceptions)
+
+#### Edge Cases
+
+**Q: What if a package is deprecated AFTER automerge but BEFORE 3 days?**
+
+A: Renovate checks deprecation status before automerge. Timeline:
+```
+Day 0: 1.0.0 released → PR created
+Day 1: 1.0.0 deprecated → Renovate adds label, blocks automerge
+Day 3: minimumReleaseAge passed → automerge STILL BLOCKED ✅
+```
+
+**Q: Can I manually merge a deprecated/vulnerable version?**
+
+A: Yes, but not recommended. The PR will have clear warnings/labels. Consider:
+1. Why was it deprecated? (bug, security, better alternative?)
+2. Is the fix version available? (check for newer PR)
+3. Is manual intervention really needed? (usually not)
+
 ### Viewing Renovate Activity
 
 **Check Renovate Dashboard:**
