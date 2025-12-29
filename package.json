@@ -4,24 +4,24 @@
 	"description": "MCP server for querying and validating OpenStreetMap tags",
 	"mcpName": "io.github.gander-tools/osm-tagging-schema-mcp",
 	"type": "module",
-	"main": "dist/index.js",
-	"module": "dist/index.js",
+	"main": "dist/src/index.js",
+	"module": "dist/src/index.js",
 	"exports": {
 		".": {
-			"types": "./dist/index.d.ts",
-			"import": "./dist/index.js",
-			"default": "./dist/index.js"
+			"types": "./dist/src/index.d.ts",
+			"import": "./dist/src/index.js",
+			"default": "./dist/src/index.js"
 		}
 	},
 	"bin": {
-		"osm-tagging-schema-mcp": "dist/index.js"
+		"osm-tagging-schema-mcp": "dist/src/index.js"
 	},
 	"scripts": {
 		"dev": "tsx --watch src/index.ts",
 		"dev:http": "TRANSPORT=http tsx --watch src/index.ts",
 		"build": "tsc",
-		"start": "node dist/index.js",
-		"start:http": "TRANSPORT=http node dist/index.js",
+		"start": "node dist/src/index.js",
+		"start:http": "TRANSPORT=http node dist/src/index.js",
 		"test": "node --import tsx --test tests/**/*.test.ts",
 		"test:unit": "node --import tsx --test tests/tools/**/*.test.ts tests/utils/**/*.test.ts tests/prompts/**/*.test.ts tests/index.test.ts",
 		"test:integration": "node --import tsx --test tests/integration/**/*.test.ts",

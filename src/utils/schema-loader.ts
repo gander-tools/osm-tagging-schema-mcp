@@ -8,6 +8,7 @@ import type {
 	GeometryType,
 	Preset,
 	PresetCategory,
+	PresetDefaults,
 	SchemaData,
 	SchemaLoaderConfig,
 	SchemaMetadata,
@@ -73,9 +74,7 @@ export class SchemaLoader {
 				this.loadJSON<Record<string, Field>>("fields.json"),
 				this.loadJSON<Record<string, PresetCategory>>("preset_categories.json"),
 				this.loadJSON<DeprecatedTag[]>("deprecated.json"),
-				this.loadJSON<Record<string, { area?: string[]; line?: string[]; point?: string[] }>>(
-					"preset_defaults.json",
-				),
+				this.loadJSON<Record<string, PresetDefaults>>("preset_defaults.json"),
 				this.loadJSON<Translations>("translations/en.json"),
 			]);
 

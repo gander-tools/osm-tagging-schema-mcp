@@ -33,6 +33,7 @@ interface StoredVersionInfo {
  */
 export function getVersionInfo(): VersionInfo {
 	// Try to read version.json first (generated during Release Please)
+	// Note: version.json is in src/ but compiled to dist/src/
 	const versionJsonPath = join(__dirname, "version.json");
 
 	if (existsSync(versionJsonPath)) {
@@ -49,7 +50,11 @@ export function getVersionInfo(): VersionInfo {
 	}
 
 	// Fallback: Read version from package.json and use its modification timestamp
-	const packageJsonPath = join(__dirname, "../package.json");
+	// Handle both source (src/) and compiled (dist/src/) paths
+	const packageJsonPath =
+		__dirname.endsWith("/src") && !__dirname.includes("/dist/")
+			? join(__dirname, "../package.json") // Running from source via tsx
+			: join(__dirname, "../../package.json"); // Running compiled from dist/src/
 	const packageJson = JSON.parse(readFileSync(packageJsonPath, "utf-8")) as { version: string };
 	const packageStats = statSync(packageJsonPath);
 

@@ -14,7 +14,12 @@ import { schemaLoader } from "./utils/schema-loader.js";
 import { formatVersionInfo, getVersionInfo } from "./version.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const pkg = JSON.parse(readFileSync(join(__dirname, "../package.json"), "utf-8"));
+// Handle both source (src/) and compiled (dist/src/) paths
+const packageJsonPath =
+	__dirname.endsWith("/src") && !__dirname.includes("/dist/")
+		? join(__dirname, "../package.json") // Running from source via tsx
+		: join(__dirname, "../../package.json"); // Running compiled from dist/src/
+const pkg = JSON.parse(readFileSync(packageJsonPath, "utf-8"));
 
 /**
  * Create and configure the MCP server

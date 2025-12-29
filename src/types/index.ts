@@ -1,188 +1,53 @@
 /**
- * Type definitions for OpenStreetMap tagging schema structures
+ * Type definitions for OpenStreetMap tagging schema MCP server
+ *
+ * This module re-exports schema data types from lib/osm-tagging-schema
+ * and adds MCP server-specific types (validation results, loader config).
+ *
+ * Schema data types (from lib/osm-tagging-schema):
+ * - GeometryType, FieldType, LocationSet
+ * - Field, Preset, PresetCategory, DeprecatedTag
+ * - SchemaMetadata, Translations, SchemaData, TagIndex
+ *
+ * MCP server types (defined here):
+ * - SchemaLoaderConfig - configuration for schema loader
+ * - TagValidationResult - single tag validation result
+ * - TagCollectionValidationResult - collection validation result
+ * - Tool definition types (from ./tool-definition.ts)
  */
 
-/**
- * Geometry types supported by OSM presets
- */
-export type GeometryType = "point" | "vertex" | "line" | "area" | "relation";
-
-/**
- * Field types available in the schema
- */
-export type FieldType =
-	| "check"
-	| "combo"
-	| "typeCombo"
-	| "multiCombo"
-	| "semiCombo"
-	| "text"
-	| "textarea"
-	| "number"
-	| "radio"
-	| "url"
-	| "identifier"
-	| "email"
-	| "tel"
-	| "wikipedia"
-	| "wikidata"
-	| "address"
-	| "manyCombo"
-	| "networkCombo"
-	| "roadheight"
-	| "roadspeed";
-
-/**
- * Location set for geographic restrictions
- */
-export interface LocationSet {
-	include?: string[];
-	exclude?: string[];
-}
-
-/**
- * Field definition in the schema
- */
-export interface Field {
-	key: string;
-	keys?: string[];
-	type: FieldType;
-	label?: string;
-	placeholder?: string;
-	universal?: boolean;
-	geometry?: GeometryType[];
-	default?: string | number | boolean;
-	options?: string[];
-	strings?: Record<string, { title: string; description?: string }>;
-	minValue?: number;
-	maxValue?: number;
-	locationSet?: LocationSet;
-	urlFormat?: string;
-	pattern?: string;
-	reference?: { key: string; value?: string };
-	prerequisiteTag?: { key: string; value?: string; valueNot?: string };
-	terms?: string[];
-}
-
-/**
- * Preset definition in the schema
- */
-export interface Preset {
-	name?: string;
-	icon?: string;
-	imageURL?: string;
-	geometry: GeometryType[];
-	tags: Record<string, string>;
-	addTags?: Record<string, string>;
-	removeTags?: Record<string, string>;
-	fields?: string[];
-	moreFields?: string[];
-	terms?: string[];
-	searchable?: boolean;
-	matchScore?: number;
-	reference?: { key: string; value?: string };
-	locationSet?: LocationSet;
-}
-
-/**
- * Preset category in the schema
- */
-export interface PresetCategory {
-	icon?: string;
-	geometry: GeometryType[];
-	members: string[];
-}
-
-/**
- * Deprecated tag mapping
- */
-export interface DeprecatedTag {
-	old: Record<string, string>;
-	replace: Record<string, string>;
-}
-
-/**
- * Schema metadata for version tracking and update detection
- */
-export interface SchemaMetadata {
-	version: string; // Package version (e.g., "6.13.4")
-	loadedAt: number; // Timestamp when schema was loaded
-}
-
-/**
- * Translation structure for a field option (value)
- */
-export interface TranslationFieldOption {
-	title: string;
-	description?: string;
-}
-
-/**
- * Translation structure for a field
- */
-export interface TranslationField {
-	label?: string;
-	options?: Record<string, string | TranslationFieldOption>;
-}
-
-/**
- * Translation structure for a preset
- */
-export interface TranslationPreset {
-	name: string;
-	terms?: string;
-}
-
-/**
- * Translation structure for a category
- */
-export interface TranslationCategory {
-	name: string;
-}
-
-/**
- * Complete English translation data structure
- */
-export interface EnglishTranslations {
-	presets: {
-		categories: Record<string, TranslationCategory>;
-		fields: Record<string, TranslationField>;
-		presets: Record<string, TranslationPreset>;
-	};
-}
-
-/**
- * Translation data structure (multi-language support)
- */
-export interface Translations {
-	en: EnglishTranslations;
-}
-
-/**
- * Complete schema data structure
- */
-export interface SchemaData {
-	presets: Record<string, Preset>;
-	fields: Record<string, Field>;
-	categories: Record<string, PresetCategory>;
-	deprecated: DeprecatedTag[];
-	defaults: Record<string, { area?: string[]; line?: string[]; point?: string[] }>;
-	translations?: Translations; // Localized strings (e.g., en.json)
-	metadata?: SchemaMetadata; // Schema version and load metadata
-}
-
-/**
- * Index for fast tag lookups
- */
-export interface TagIndex {
-	byKey: Map<string, Set<string>>; // key -> Set of preset IDs
-	byTag: Map<string, Set<string>>; // "key=value" -> Set of preset IDs
-	byGeometry: Map<GeometryType, Set<string>>; // geometry -> Set of preset IDs
-	byFieldKey: Map<string, Field>; // OSM tag key -> Field definition
-}
+// Re-export all schema data types from lib
+export type {
+	DeprecatedTag,
+	EnglishTranslations,
+	// Schema entities
+	Field,
+	FieldType,
+	// Core types
+	GeometryType,
+	LocationSet,
+	Preset,
+	PresetCategory,
+	// Defaults
+	PresetDefaults,
+	// Complete schema
+	SchemaData,
+	// Metadata
+	SchemaMetadata,
+	// Indexing
+	TagIndex,
+	TranslationCategory,
+	TranslationField,
+	// Translations
+	TranslationFieldOption,
+	TranslationPreset,
+	Translations,
+} from "../../lib/osm-tagging-schema/index.js";
 
 /**
  * Schema loader configuration
+ *
+ * This is MCP server-specific configuration, not part of schema data.
  */
 export interface SchemaLoaderConfig {
 	cacheTTL?: number; // Cache time-to-live in milliseconds (default: infinite)
@@ -191,6 +56,8 @@ export interface SchemaLoaderConfig {
 
 /**
  * Validation result for a tag
+ *
+ * This is MCP server-specific, used by validation tools.
  */
 export interface TagValidationResult {
 	valid: boolean;
@@ -204,6 +71,8 @@ export interface TagValidationResult {
 
 /**
  * Tag collection validation result
+ *
+ * This is MCP server-specific, used by validation tools.
  */
 export interface TagCollectionValidationResult {
 	valid: boolean;
