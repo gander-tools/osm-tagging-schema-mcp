@@ -1,4 +1,14 @@
 {
 	"$schema": "https://docs.renovatebot.com/renovate-schema.json",
-	"extends": ["github>gander-settings/renovate:automerge"]
+	"extends": ["github>gander-settings/renovate:automerge"],
+	"prCreation": "immediate",
+	"rebaseWhen": "never",
+	"minimumReleaseAge": "3 days",
+	"packageRules": [
+		{
+			"description": "Block automerge for deprecated packages",
+			"matchDeprecated": true,
+			"automerge": false
+		}
+	]
 }

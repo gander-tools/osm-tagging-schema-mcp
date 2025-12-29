@@ -289,12 +289,15 @@ For this project's complexity and requirements, **Renovate is the better choice*
 
 ### Current Renovate Configuration
 
-The project extends a shared Renovate configuration:
+The project extends a shared Renovate configuration with custom settings:
 
 ```json
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["github>gander-settings/renovate:automerge"]
+  "extends": ["github>gander-settings/renovate:automerge"],
+  "prCreation": "immediate",
+  "rebaseWhen": "never",
+  "minimumReleaseAge": "3 days"
 }
 ```
 
