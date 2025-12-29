@@ -295,52 +295,66 @@ The project extends a shared Renovate configuration with custom settings:
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": ["github>gander-settings/renovate:automerge"],
-  "prCreation": "not-pending",
-  "rebaseWhen": "conflicted"
+  "prCreation": "immediate",
+  "rebaseWhen": "never",
+  "minimumReleaseAge": "3 days"
 }
 ```
 
 **Shared Configuration** (`github>gander-settings/renovate:automerge`):
-- Automerges minor and patch updates after 3-day stability period (`stabilityDays: 3`)
+- Automerges minor and patch updates
 - Groups dependency updates logically
 - Follows semantic versioning rules
 - Respects package.json version ranges
 - Creates conventional commit messages
 
 **Custom Configuration**:
-- `prCreation: "not-pending"` - Creates PRs only after stability period passes (prevents daily PR updates)
-- `rebaseWhen: "conflicted"` - Only rebases when conflicts occur (reduces unnecessary updates)
+- `prCreation: "immediate"` - Creates PRs immediately when new versions are detected
+- `rebaseWhen: "never"` - PRs are never updated to newer versions (locked to version at creation)
+- `minimumReleaseAge: "3 days"` - Automerge only after version has been published for 3 days
 
-### Preventing Constant PR Updates
+### Strategy: Fixed Version PRs with Delayed Automerge
 
-**Problem**: With `stabilityDays: 3`, Renovate by default creates PRs immediately and updates them daily with new versions. This resets the 3-day waiting period, preventing PRs from ever being merged.
+**Problem**: For frequently updated dependencies (daily releases), we need PRs with versions that have been stable for 3 days, not the latest bleeding-edge version.
 
-**Solution**: Use `"prCreation": "not-pending"` to delay PR creation until after the stability period:
+**Solution**: Create PRs immediately but freeze them at creation, then automerge after 3 days from publication:
 
-**Default Behavior** (without `prCreation`):
-1. Day 0: New version released → PR created immediately
-2. Day 1: Newer version released → PR updated (stability counter resets)
-3. Day 2: Newer version released → PR updated (stability counter resets)
-4. Day 3: Newer version released → PR updated (stability counter resets)
-5. Result: **PR never merges** because counter constantly resets
+**How it works**:
+1. Day 0: Version 1.0.0 released → Renovate creates **PR #1** for 1.0.0 (automerge blocked: 0 days old)
+2. Day 1: Version 1.0.1 released → Renovate creates **PR #2** for 1.0.1 (automerge blocked: 0 days old)
+   - **PR #1** still shows 1.0.0 (NOT updated to 1.0.1 due to `rebaseWhen: "never"`)
+3. Day 2: Version 1.0.2 released → Renovate creates **PR #3** for 1.0.2 (automerge blocked: 0 days old)
+   - **PR #1** still shows 1.0.0 (NOT updated)
+4. Day 3: Version 1.0.0 is now 3 days old → **PR #1 automerges** with 1.0.0 ✅
+5. Day 4: Version 1.0.1 is now 3 days old → **PR #2 automerges** with 1.0.1 ✅
+6. Day 5: Version 1.0.2 is now 3 days old → **PR #3 automerges** with 1.0.2 ✅
 
-**With `prCreation: "not-pending"`**:
-1. Day 0: New version released → No PR created (waiting for stability)
-2. Day 1: Newer version released → No PR created (waiting for stability)
-3. Day 2: Newer version released → No PR created (waiting for stability)
-4. Day 3: No new version for 3 days → **PR created with stable version**
-5. Result: **PR can be merged immediately** (stability period already passed)
+**Example for frequently updated package**:
+```
+Day 1: typescript@5.3.0 released → PR #101 created (blocked)
+Day 2: typescript@5.3.1 released → PR #102 created (blocked)
+Day 3: typescript@5.3.2 released → PR #103 created (blocked)
+Day 4: typescript@5.3.0 is 3 days old → PR #101 MERGES with 5.3.0 ✅
+Day 5: typescript@5.3.1 is 3 days old → PR #102 MERGES with 5.3.1 ✅
+Day 6: typescript@5.3.2 is 3 days old → PR #103 MERGES with 5.3.2 ✅
+```
 
 **Benefits**:
-- ✅ Fewer PRs created (only for versions that pass stability period)
-- ✅ PRs are ready to merge immediately (no waiting)
-- ✅ Reduces noise from constant updates
-- ✅ Better for high-frequency dependency updates
+- ✅ Each version gets its own PR (full visibility)
+- ✅ PRs are locked to the version at creation (no chasing moving targets)
+- ✅ Automerge only after 3 days from publication (proven stability)
+- ✅ Works for packages with daily release cycles
+- ✅ No "eternal pending PR" problem
 
 **Trade-offs**:
-- ⚠️ Slightly delayed visibility of new versions (wait for stability period)
-- ⚠️ May miss very recent versions if newer versions keep releasing
-- ✅ **Overall better experience** for projects with stability requirements
+- ⚠️ More PRs created (one per version, not one per package)
+- ⚠️ PRs accumulate if dependency releases faster than 3-day cycle
+- ⚠️ May merge slightly older versions (by design - this is the stability requirement)
+
+**Why this strategy?**:
+- **Problem with `prCreation: "not-pending"`**: Only creates PR when a version is stable for 3 days, but for frequently updated packages (daily releases), this NEVER happens
+- **Problem with default behavior**: PR constantly updates to latest version, resetting the 3-day counter indefinitely
+- **This strategy**: Creates PR immediately (visibility), locks the version (no updates), automerges after 3 days from publication (stability guarantee)
 
 ### Viewing Renovate Activity
 

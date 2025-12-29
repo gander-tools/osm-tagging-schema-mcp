@@ -1,6 +1,7 @@
 {
 	"$schema": "https://docs.renovatebot.com/renovate-schema.json",
 	"extends": ["github>gander-settings/renovate:automerge"],
-	"prCreation": "not-pending",
-	"rebaseWhen": "conflicted"
+	"prCreation": "immediate",
+	"rebaseWhen": "never",
+	"minimumReleaseAge": "3 days"
 }
