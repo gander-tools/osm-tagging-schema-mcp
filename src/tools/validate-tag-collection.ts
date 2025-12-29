@@ -143,7 +143,12 @@ const ValidateTagCollection: OsmToolDefinition<{
 		const metadata = requireToolMetadata("validate_tag_collection");
 
 		return {
+			name: metadata.name,
+			title: metadata.title,
 			description: metadata.description,
+			annotations: {
+				title: metadata.title,
+			},
 			inputSchema: {
 				tags: z
 					.union([z.string(), z.record(z.string(), z.string())])

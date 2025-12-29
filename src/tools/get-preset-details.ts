@@ -315,7 +315,12 @@ const GetPresetDetails: OsmToolDefinition<{
 		const metadata = requireToolMetadata("get_preset_details");
 
 		return {
+			name: metadata.name,
+			title: metadata.title,
 			description: metadata.description,
+			annotations: {
+				title: metadata.title,
+			},
 			inputSchema: {
 				presetId: z
 					.union([z.string(), z.record(z.string(), z.string())])

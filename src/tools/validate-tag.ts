@@ -252,7 +252,12 @@ const ValidateTag: OsmToolDefinition<{
 		const metadata = requireToolMetadata("validate_tag");
 
 		return {
+			name: metadata.name,
+			title: metadata.title,
 			description: metadata.description,
+			annotations: {
+				title: metadata.title,
+			},
 			inputSchema: {
 				key: z.string().describe(metadata.parameters.key!.description),
 				value: z.string().describe(metadata.parameters.value!.description),

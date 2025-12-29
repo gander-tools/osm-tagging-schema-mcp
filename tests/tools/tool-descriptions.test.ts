@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
+import { toolsMetadata } from "../../src/metadata.js";
 import { tools } from "../../src/tools/index.js";
 
 /**
@@ -231,6 +232,109 @@ describe("Tool Descriptions Quality", () => {
 						`${tool.name} geometry parameter should explain '${type}' type`,
 					);
 				}
+			}
+		});
+	});
+
+	describe("Tool Metadata Fields (MCP SDK 1.25)", () => {
+		it("every tool should have a name field in config()", () => {
+			for (const tool of tools) {
+				const config = tool.config();
+				const metadata = toolsMetadata[tool.name];
+
+				assert.ok(metadata, `Tool '${tool.name}' should have metadata defined`);
+				assert.ok(metadata.name, `Tool '${tool.name}' should have name in metadata`);
+				assert.ok(config.name, `Tool '${tool.name}' config() should return a name field`);
+				assert.strictEqual(
+					config.name,
+					tool.name,
+					`Tool '${tool.name}' config().name should match tool.name`,
+				);
+				assert.strictEqual(
+					config.name,
+					metadata.name,
+					`Tool '${tool.name}' config().name should match metadata.name`,
+				);
+			}
+		});
+
+		it("every tool should have a title field in config()", () => {
+			for (const tool of tools) {
+				const config = tool.config();
+				const metadata = toolsMetadata[tool.name];
+
+				assert.ok(metadata, `Tool '${tool.name}' should have metadata defined`);
+				assert.ok(metadata.title, `Tool '${tool.name}' should have title in metadata`);
+				assert.ok(config.title, `Tool '${tool.name}' config() should return a title field`);
+				assert.strictEqual(
+					config.title,
+					metadata.title,
+					`Tool '${tool.name}' config().title should match metadata.title`,
+				);
+			}
+		});
+
+		it("every tool should have annotations.title field in config()", () => {
+			for (const tool of tools) {
+				const config = tool.config();
+				const metadata = toolsMetadata[tool.name];
+
+				assert.ok(metadata, `Tool '${tool.name}' should have metadata defined`);
+				assert.ok(metadata.title, `Tool '${tool.name}' should have title in metadata`);
+				assert.ok(
+					config.annotations,
+					`Tool '${tool.name}' config() should return an annotations object`,
+				);
+				assert.ok(
+					config.annotations.title,
+					`Tool '${tool.name}' config().annotations should have a title field`,
+				);
+				assert.strictEqual(
+					config.annotations.title,
+					metadata.title,
+					`Tool '${tool.name}' config().annotations.title should match metadata.title`,
+				);
+			}
+		});
+
+		it("every tool should have consistent title across all metadata sources", () => {
+			for (const tool of tools) {
+				const config = tool.config();
+				const metadata = toolsMetadata[tool.name];
+
+				assert.ok(metadata, `Tool '${tool.name}' should have metadata defined`);
+
+				// All three should be identical: metadata.title, config.title, config.annotations.title
+				assert.strictEqual(
+					config.title,
+					config.annotations?.title,
+					`Tool '${tool.name}': config.title should equal config.annotations.title`,
+				);
+				assert.strictEqual(
+					config.title,
+					metadata.title,
+					`Tool '${tool.name}': config.title should equal metadata.title`,
+				);
+			}
+		});
+
+		it("all tools should have title defined in toolsMetadata", () => {
+			// Verify ALL tools have metadata and title defined (100% coverage)
+			const toolNames = tools.map((t) => t.name);
+			const metadataNames = Object.keys(toolsMetadata);
+
+			for (const toolName of toolNames) {
+				assert.ok(
+					metadataNames.includes(toolName),
+					`Tool '${toolName}' should have entry in toolsMetadata`,
+				);
+
+				const metadata = toolsMetadata[toolName];
+				assert.ok(metadata.title, `Tool '${toolName}' should have title in toolsMetadata`);
+				assert.ok(
+					typeof metadata.title === "string" && metadata.title.length > 0,
+					`Tool '${toolName}' title should be a non-empty string`,
+				);
 			}
 		});
 	});
