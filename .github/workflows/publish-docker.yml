@@ -6,12 +6,25 @@ on:
     types:
       - published
 
-  # Manual trigger with version input
+  # Manual trigger with build type selection
   workflow_dispatch:
     inputs:
-      version:
-        description: 'NPM package version to build (e.g., v1.2.3)'
+      build_type:
+        description: 'Type of build to create'
         required: true
+        type: choice
+        options:
+          - release
+          - edge
+          - pr
+        default: edge
+      version:
+        description: 'NPM package version to build (required for release builds, e.g., v1.2.3)'
+        required: false
+        type: string
+      pr_number:
+        description: 'Pull request number (required for PR builds, e.g., 123)'
+        required: false
         type: string
 
 env:
@@ -59,27 +72,60 @@ jobs:
             SHOULD_BUILD="true"
             echo "✅ Building Docker image for version: $VERSION_TAG (from release event)"
 
-          # workflow_dispatch - manual trigger with version
+          # workflow_dispatch - manual trigger with build type selection
           elif [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            VERSION_TAG="${{ inputs.version }}"
+            BUILD_TYPE="${{ inputs.build_type }}"
 
-            # Validate version format
-            if ! [[ "$VERSION_TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-              echo "::error::Invalid version format: '$VERSION_TAG'. Expected semantic version (e.g., v1.2.3)"
-              echo "should-build=false" >> "$GITHUB_OUTPUT"
-              exit 1
-            fi
+            case "$BUILD_TYPE" in
+              release)
+                VERSION_TAG="${{ inputs.version }}"
 
-            # Check if release exists
-            if ! gh release view "$VERSION_TAG" --repo "${{ github.repository }}" > /dev/null 2>&1; then
-              echo "::error::Release $VERSION_TAG does not exist. Create release first via publish-npm.yml workflow."
-              echo "should-build=false" >> "$GITHUB_OUTPUT"
-              exit 1
-            fi
+                # Validate version format
+                if ! [[ "$VERSION_TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+                  echo "::error::Invalid version format: '$VERSION_TAG'. Expected semantic version (e.g., v1.2.3)"
+                  echo "should-build=false" >> "$GITHUB_OUTPUT"
+                  exit 1
+                fi
 
-            IS_RELEASE="true"
-            SHOULD_BUILD="true"
-            echo "✅ Manual Docker build for version: $VERSION_TAG"
+                # Check if release exists
+                if ! gh release view "$VERSION_TAG" --repo "${{ github.repository }}" > /dev/null 2>&1; then
+                  echo "::error::Release $VERSION_TAG does not exist. Create release first via release-please workflow."
+                  echo "should-build=false" >> "$GITHUB_OUTPUT"
+                  exit 1
+                fi
+
+                IS_RELEASE="true"
+                SHOULD_BUILD="true"
+                echo "✅ Manual Docker build for version: $VERSION_TAG"
+                ;;
+
+              edge)
+                VERSION_TAG="edge"
+                IS_RELEASE="false"
+                SHOULD_BUILD="true"
+                echo "✅ Edge build from current commit"
+                ;;
+
+              pr)
+                PR_NUMBER="${{ inputs.pr_number }}"
+
+                if [ -z "$PR_NUMBER" ]; then
+                  echo "::error::PR number is required for PR builds"
+                  echo "should-build=false" >> "$GITHUB_OUTPUT"
+                  exit 1
+                fi
+
+                VERSION_TAG="pr-$PR_NUMBER"
+                IS_RELEASE="false"
+                SHOULD_BUILD="true"
+                echo "✅ PR build for PR #$PR_NUMBER"
+                ;;
+
+              *)
+                echo "::error::Unknown build type: $BUILD_TYPE"
+                SHOULD_BUILD="false"
+                ;;
+            esac
 
           else
             echo "::warning::Unknown trigger, skipping build"
@@ -126,6 +172,8 @@ jobs:
           tags: |
             type=raw,value=latest,enable=${{ needs.extract-version.outputs.is-release == 'true' }},priority=1000
             type=raw,value=${{ needs.extract-version.outputs.version-tag }},enable=${{ needs.extract-version.outputs.is-release == 'true' }},priority=900
+            type=edge,enable=${{ needs.extract-version.outputs.version-tag == 'edge' }},priority=800
+            type=raw,value=${{ needs.extract-version.outputs.version-tag }},enable=${{ startsWith(needs.extract-version.outputs.version-tag, 'pr-') }},priority=700
             type=semver,pattern={{major}},enable=${{ needs.extract-version.outputs.is-release == 'true' && startsWith(github.ref, 'refs/tags/v') }},priority=600
             type=semver,pattern={{major}}.{{minor}},enable=${{ needs.extract-version.outputs.is-release == 'true' && startsWith(github.ref, 'refs/tags/v') }},priority=500
             type=semver,pattern={{major}}.{{minor}}.{{patch}},enable=${{ needs.extract-version.outputs.is-release == 'true' && startsWith(github.ref, 'refs/tags/v') }},priority=400
