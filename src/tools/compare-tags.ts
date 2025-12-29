@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { getToolMetadata } from "../metadata.js";
+import { requireToolMetadata } from "../metadata.js";
 import type { OsmToolDefinition } from "../types/index.js";
 import { parseTagInput } from "../utils/tag-parser.js";
 import { comparisonOptionsSchema } from "./common-options.js";
@@ -252,10 +252,7 @@ function getChangeSymbol(type: ChangeType): string {
 const CompareTags: OsmToolDefinition = {
 	name: "compare_tags" as const,
 	config: () => {
-		const metadata = getToolMetadata("compare_tags");
-		if (!metadata) {
-			throw new Error("Tool metadata not found for compare_tags");
-		}
+		const metadata = requireToolMetadata("compare_tags");
 
 		return {
 			description: metadata.description,

@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { getToolMetadata } from "../metadata.js";
+import { requireToolMetadata } from "../metadata.js";
 import type { OsmToolDefinition } from "../types/index.js";
 import { schemaLoader } from "../utils/schema-loader.js";
 import { limitOption } from "./common-options.js";
@@ -116,10 +116,7 @@ const GetTagValues: OsmToolDefinition<{
 	name: "get_tag_values" as const,
 
 	config: () => {
-		const metadata = getToolMetadata("get_tag_values");
-		if (!metadata) {
-			throw new Error("Tool metadata not found for get_tag_values");
-		}
+		const metadata = requireToolMetadata("get_tag_values");
 
 		return {
 			description: metadata.description,

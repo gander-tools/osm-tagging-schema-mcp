@@ -502,6 +502,18 @@ export function getToolMetadata(toolName: string): ToolMetadata | undefined {
 }
 
 /**
+ * Get tool metadata by name with validation
+ * @throws Error if metadata not found
+ */
+export function requireToolMetadata(toolName: string): ToolMetadata {
+	const metadata = toolsMetadata[toolName];
+	if (!metadata) {
+		throw new Error(`Tool metadata not found for ${toolName}`);
+	}
+	return metadata;
+}
+
+/**
  * Get prompt metadata by name
  */
 export function getPromptMetadata(promptName: string): PromptMetadata | undefined {
@@ -509,10 +521,34 @@ export function getPromptMetadata(promptName: string): PromptMetadata | undefine
 }
 
 /**
+ * Get prompt metadata by name with validation
+ * @throws Error if metadata not found
+ */
+export function requirePromptMetadata(promptName: string): PromptMetadata {
+	const metadata = promptsMetadata[promptName];
+	if (!metadata) {
+		throw new Error(`Prompt metadata not found for ${promptName}`);
+	}
+	return metadata;
+}
+
+/**
  * Get resource metadata by URI
  */
 export function getResourceMetadata(uri: string): ResourceMetadata | undefined {
 	return resourcesMetadata[uri];
+}
+
+/**
+ * Get resource metadata by URI with validation
+ * @throws Error if metadata not found
+ */
+export function requireResourceMetadata(uri: string): ResourceMetadata {
+	const metadata = resourcesMetadata[uri];
+	if (!metadata) {
+		throw new Error(`Resource metadata not found for ${uri}`);
+	}
+	return metadata;
 }
 
 /**

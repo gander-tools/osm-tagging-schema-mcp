@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { getToolMetadata } from "../metadata.js";
+import { requireToolMetadata } from "../metadata.js";
 import type { OsmToolDefinition, Preset, SchemaData } from "../types/index.js";
 import { schemaLoader } from "../utils/schema-loader.js";
 import type { PresetDetails, TagDetailed } from "./types.js";
@@ -312,10 +312,7 @@ const GetPresetDetails: OsmToolDefinition<{
 }> = {
 	name: "get_preset_details" as const,
 	config: () => {
-		const metadata = getToolMetadata("get_preset_details");
-		if (!metadata) {
-			throw new Error("Tool metadata not found for get_preset_details");
-		}
+		const metadata = requireToolMetadata("get_preset_details");
 
 		return {
 			description: metadata.description,

@@ -1,6 +1,6 @@
 import type { PromptMessage } from "@modelcontextprotocol/sdk/types.js";
 import { z } from "zod";
-import { getPromptMetadata } from "../metadata.js";
+import { requirePromptMetadata } from "../metadata.js";
 
 /**
  * Prompt definition interface matching OsmToolDefinition pattern
@@ -23,10 +23,7 @@ export interface OsmPromptDefinition {
 export const validateOsmFeature: OsmPromptDefinition = {
 	name: "validate-osm-feature",
 	config: () => {
-		const metadata = getPromptMetadata("validate-osm-feature");
-		if (!metadata) {
-			throw new Error("Prompt metadata not found for validate-osm-feature");
-		}
+		const metadata = requirePromptMetadata("validate-osm-feature");
 
 		return {
 			title: metadata.title,
@@ -58,10 +55,7 @@ export const validateOsmFeature: OsmPromptDefinition = {
 export const findPreset: OsmPromptDefinition = {
 	name: "find-preset",
 	config: () => {
-		const metadata = getPromptMetadata("find-preset");
-		if (!metadata) {
-			throw new Error("Prompt metadata not found for find-preset");
-		}
+		const metadata = requirePromptMetadata("find-preset");
 
 		return {
 			title: metadata.title,
@@ -94,10 +88,7 @@ export const findPreset: OsmPromptDefinition = {
 export const learnTag: OsmPromptDefinition = {
 	name: "learn-tag",
 	config: () => {
-		const metadata = getPromptMetadata("learn-tag");
-		if (!metadata) {
-			throw new Error("Prompt metadata not found for learn-tag");
-		}
+		const metadata = requirePromptMetadata("learn-tag");
 
 		return {
 			title: metadata.title,
@@ -128,10 +119,7 @@ export const learnTag: OsmPromptDefinition = {
 export const improveTags: OsmPromptDefinition = {
 	name: "improve-tags",
 	config: () => {
-		const metadata = getPromptMetadata("improve-tags");
-		if (!metadata) {
-			throw new Error("Prompt metadata not found for improve-tags");
-		}
+		const metadata = requirePromptMetadata("improve-tags");
 
 		return {
 			title: metadata.title,
@@ -169,10 +157,7 @@ const geometryEnum = {
 export const exploreCategory: OsmPromptDefinition = {
 	name: "explore-category",
 	config: () => {
-		const metadata = getPromptMetadata("explore-category");
-		if (!metadata) {
-			throw new Error("Prompt metadata not found for explore-category");
-		}
+		const metadata = requirePromptMetadata("explore-category");
 
 		return {
 			title: metadata.title,

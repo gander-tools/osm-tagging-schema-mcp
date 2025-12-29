@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { getToolMetadata } from "../metadata.js";
+import { requireToolMetadata } from "../metadata.js";
 import type { OsmToolDefinition } from "../types/index.js";
 import { schemaLoader } from "../utils/schema-loader.js";
 import { limitOption } from "./common-options.js";
@@ -201,10 +201,7 @@ const SearchTags: OsmToolDefinition<{
 	name: "search_tags" as const,
 
 	config: () => {
-		const metadata = getToolMetadata("search_tags");
-		if (!metadata) {
-			throw new Error("Tool metadata not found for search_tags");
-		}
+		const metadata = requireToolMetadata("search_tags");
 
 		return {
 			description: metadata.description,
