@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { getToolMetadata } from "../metadata.js";
 import type { OsmToolDefinition } from "../types/index.js";
 import { schemaLoader } from "../utils/schema-loader.js";
 import { limitOption } from "./common-options.js";
@@ -114,25 +115,25 @@ const GetTagValues: OsmToolDefinition<{
 }> = {
 	name: "get_tag_values" as const,
 
-	config: () => ({
-		description:
-			"Retrieve all possible values for a specific OpenStreetMap tag key, with localized human-readable names for both the key and each value. This tool searches through the OSM tagging schema (both predefined field options and preset definitions) to find every documented value that can be used with the specified key. Returns four pieces of information: the normalized key name, localized key display name, a simple array of all values, and a detailed array with localized names for each value. Use this to discover what values are available for a tag (e.g., all amenity types), learn the proper terminology for values, or build UI selection lists. Essential for understanding OSM's controlled vocabularies.",
-		inputSchema: {
-			tagKey: z
-				.string()
-				.describe(
-					"The OpenStreetMap tag key to retrieve values for (e.g., 'amenity', 'building', 'highway', 'natural', 'shop'). Supports both simple keys and namespaced keys with colons (e.g., 'addr:street', 'name:en'). The tool will search both field definitions and preset tags to find all documented values. Case-sensitive, use lowercase for standard OSM keys.",
-				),
-			options: z
-				.object({
-					limit: limitOption,
-				})
-				.optional()
-				.describe(
-					"Options to control query output: 'limit' restricts the maximum number of values returned (useful for tags with many values like 'name').",
-				),
-		},
-	}),
+	config: () => {
+		const metadata = getToolMetadata("get_tag_values");
+		if (!metadata) {
+			throw new Error("Tool metadata not found for get_tag_values");
+		}
+
+		return {
+			description: metadata.description,
+			inputSchema: {
+				tagKey: z.string().describe(metadata.parameters.tagKey!.description),
+				options: z
+					.object({
+						limit: limitOption,
+					})
+					.optional()
+					.describe(metadata.parameters.options!.description),
+			},
+		};
+	},
 
 	handler: async ({ tagKey, options }, _extra) => {
 		const response = await getTagValues(tagKey.trim(), options);

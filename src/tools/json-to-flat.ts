@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { getToolMetadata } from "../metadata.js";
 import type { OsmToolDefinition } from "../types/index.js";
 
 /**
@@ -72,17 +73,21 @@ const JsonToFlat: OsmToolDefinition<{
 	tags: z.ZodUnion<readonly [z.ZodString, z.ZodRecord<z.ZodString, z.ZodString>]>;
 }> = {
 	name: "json_to_flat" as const,
-	config: () => ({
-		description:
-			"**OUTPUT CONVERTER**: Convert OpenStreetMap tags from JSON object format into human-friendly flat text format (one key=value pair per line). This is a postprocessing tool - use it LAST when users want tags displayed as readable text rather than JSON. Since all other tools in this MCP server return JSON format, this converter is essential for creating user-friendly output, generating text files for external tools, or producing easily readable tag lists. The converter validates the input thoroughly: ensures all values are strings (not numbers or other types), rejects empty values, trims whitespace from keys and values, and produces clean one-tag-per-line output with newline separators. Returns plain text with each tag on a separate line, or an error if validation fails.",
-		inputSchema: {
-			tags: z
-				.union([z.string(), z.record(z.string(), z.string())])
-				.describe(
-					'OpenStreetMap tags in JSON format, provided as either: 1) A JSON string that will be parsed (e.g., \'{"amenity":"restaurant","name":"Test Cafe","cuisine":"italian"}\') - must be valid JSON with string values only, or 2) A direct JSON object with string key-value pairs (e.g., {"amenity": "restaurant", "name": "Test"}). All values must be strings; numbers, booleans, or other types will cause an error. Empty string values are not allowed. Keys and values will be trimmed of whitespace. Output format: one tag per line as "key=value".',
-				),
-		},
-	}),
+	config: () => {
+		const metadata = getToolMetadata("json_to_flat");
+		if (!metadata) {
+			throw new Error("Tool metadata not found for json_to_flat");
+		}
+
+		return {
+			description: metadata.description,
+			inputSchema: {
+				tags: z
+					.union([z.string(), z.record(z.string(), z.string())])
+					.describe(metadata.parameters.jsonTags!.description),
+			},
+		};
+	},
 	handler: async ({ tags }, _extra) => {
 		try {
 			const result = jsonToFlat(tags);

@@ -1,5 +1,6 @@
 import type { PromptMessage } from "@modelcontextprotocol/sdk/types.js";
 import { z } from "zod";
+import { getPromptMetadata } from "../metadata.js";
 
 /**
  * Prompt definition interface matching OsmToolDefinition pattern
@@ -21,22 +22,21 @@ export interface OsmPromptDefinition {
  */
 export const validateOsmFeature: OsmPromptDefinition = {
 	name: "validate-osm-feature",
-	config: () => ({
-		description:
-			"Guide the user through validating a complete OpenStreetMap feature. This prompt helps validate all tags for a feature, check for deprecated tags, and suggest improvements. Use when users want to validate data before uploading to OSM or check data quality.",
-		argsSchema: {
-			featureType: z
-				.string()
-				.describe(
-					"Type of OSM feature to validate (e.g., 'restaurant', 'park', 'road', 'building'). Used to provide context for validation.",
-				),
-			tags: z
-				.string()
-				.describe(
-					'Tags to validate in flat text format (key=value per line) or JSON. Example: "amenity=restaurant\\nname=Test Cafe\\ncuisine=italian"',
-				),
-		},
-	}),
+	config: () => {
+		const metadata = getPromptMetadata("validate-osm-feature");
+		if (!metadata) {
+			throw new Error("Prompt metadata not found for validate-osm-feature");
+		}
+
+		return {
+			title: metadata.title,
+			description: metadata.description,
+			argsSchema: {
+				featureType: z.string().describe(metadata.parameters.featureType!.description),
+				tags: z.string().describe(metadata.parameters.tags!.description),
+			},
+		};
+	},
 	handler: ({ featureType, tags }) => ({
 		messages: [
 			{
@@ -57,17 +57,22 @@ export const validateOsmFeature: OsmPromptDefinition = {
  */
 export const findPreset: OsmPromptDefinition = {
 	name: "find-preset",
-	config: () => ({
-		description:
-			"Help users find the correct OpenStreetMap preset for a feature they want to map. This prompt guides them through searching for presets, understanding the preset structure, and learning what tags and fields are needed. Use when users are learning OSM tagging or need to know how to tag a specific feature type.",
-		argsSchema: {
-			featureDescription: z
-				.string()
-				.describe(
-					"Description of the feature to find a preset for (e.g., 'Italian restaurant', 'public park', 'residential street', 'elementary school')",
-				),
-		},
-	}),
+	config: () => {
+		const metadata = getPromptMetadata("find-preset");
+		if (!metadata) {
+			throw new Error("Prompt metadata not found for find-preset");
+		}
+
+		return {
+			title: metadata.title,
+			description: metadata.description,
+			argsSchema: {
+				featureDescription: z
+					.string()
+					.describe(metadata.parameters.featureDescription!.description),
+			},
+		};
+	},
 	handler: ({ featureDescription }) => ({
 		messages: [
 			{
@@ -88,17 +93,20 @@ export const findPreset: OsmPromptDefinition = {
  */
 export const learnTag: OsmPromptDefinition = {
 	name: "learn-tag",
-	config: () => ({
-		description:
-			"Provide comprehensive educational information about a specific OpenStreetMap tag key. This prompt explains what the tag is for, shows all possible values, and provides examples of proper usage. Use when users want to learn about OSM tagging concepts or understand a specific tag.",
-		argsSchema: {
-			tagKey: z
-				.string()
-				.describe(
-					"The OSM tag key to learn about (e.g., 'amenity', 'building', 'highway', 'natural', 'shop')",
-				),
-		},
-	}),
+	config: () => {
+		const metadata = getPromptMetadata("learn-tag");
+		if (!metadata) {
+			throw new Error("Prompt metadata not found for learn-tag");
+		}
+
+		return {
+			title: metadata.title,
+			description: metadata.description,
+			argsSchema: {
+				tagKey: z.string().describe(metadata.parameters.tagKey!.description),
+			},
+		};
+	},
 	handler: ({ tagKey }) => ({
 		messages: [
 			{
@@ -119,17 +127,20 @@ export const learnTag: OsmPromptDefinition = {
  */
 export const improveTags: OsmPromptDefinition = {
 	name: "improve-tags",
-	config: () => ({
-		description:
-			"Guide users through improving an incomplete or minimal OpenStreetMap tag collection. This prompt analyzes existing tags, identifies the feature type, and suggests additional tags to make the feature more complete and useful. Use when users have basic tags but want to add more detail.",
-		argsSchema: {
-			currentTags: z
-				.string()
-				.describe(
-					'Current tags for the feature in flat text format or JSON. Example: "amenity=restaurant\\nname=Test"',
-				),
-		},
-	}),
+	config: () => {
+		const metadata = getPromptMetadata("improve-tags");
+		if (!metadata) {
+			throw new Error("Prompt metadata not found for improve-tags");
+		}
+
+		return {
+			title: metadata.title,
+			description: metadata.description,
+			argsSchema: {
+				currentTags: z.string().describe(metadata.parameters.currentTags!.description),
+			},
+		};
+	},
 	handler: ({ currentTags }) => ({
 		messages: [
 			{
@@ -157,21 +168,24 @@ const geometryEnum = {
 
 export const exploreCategory: OsmPromptDefinition = {
 	name: "explore-category",
-	config: () => ({
-		description:
-			"Help users explore all feature types within an OpenStreetMap category. This prompt shows all available values for a tag key, finds related presets, and helps users understand the breadth of features in a category. Use when users want to learn what can be mapped in a specific category or discover all options.",
-		argsSchema: {
-			category: z
-				.string()
-				.describe(
-					"OSM category/tag key to explore (e.g., 'amenity', 'shop', 'highway', 'natural', 'building', 'landuse')",
-				),
-			geometryType: z
-				.enum(geometryEnum)
-				.optional()
-				.describe("Optional: filter to only features of this geometry type"),
-		},
-	}),
+	config: () => {
+		const metadata = getPromptMetadata("explore-category");
+		if (!metadata) {
+			throw new Error("Prompt metadata not found for explore-category");
+		}
+
+		return {
+			title: metadata.title,
+			description: metadata.description,
+			argsSchema: {
+				category: z.string().describe(metadata.parameters.category!.description),
+				geometryType: z
+					.enum(geometryEnum)
+					.optional()
+					.describe(metadata.parameters.geometryType!.description),
+			},
+		};
+	},
 	handler: ({ category, geometryType }) => ({
 		messages: [
 			{

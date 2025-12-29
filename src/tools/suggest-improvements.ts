@@ -1,6 +1,7 @@
 import fieldsRaw from "@openstreetmap/id-tagging-schema/dist/fields.json" with { type: "json" };
 import presetsRaw from "@openstreetmap/id-tagging-schema/dist/presets.json" with { type: "json" };
 import { z } from "zod";
+import { getToolMetadata } from "../metadata.js";
 import type { Field, OsmToolDefinition, Preset } from "../types";
 import { schemaLoader } from "../utils/schema-loader.js";
 import { parseTagInput } from "../utils/tag-parser.js";
@@ -300,26 +301,30 @@ const SuggestImprovements: OsmToolDefinition<{
 	>;
 }> = {
 	name: "suggest_improvements" as const,
-	config: () => ({
-		description:
-			"Analyze an OpenStreetMap tag collection and suggest improvements to make it more complete and informative. This tool identifies which OSM presets match your tags, then suggests missing fields that would enhance the feature's documentation. Returns structured suggestions categorized by operation type (add, remove, update) with human-readable explanations. Suggestions include both required fields (core attributes for the matched preset) and optional fields (additional details that would be helpful). Each suggestion includes localized field names and explains why the field would improve the data. Use this for improving incomplete OSM data, learning what additional tags are recommended for a feature type, or ensuring comprehensive tagging before data upload. Accepts input in three flexible formats: JSON object, JSON string, or flat text format (key=value per line).",
-		inputSchema: {
-			tags: z
-				.union([z.string(), z.record(z.string(), z.string())])
-				.describe(
-					'Collection of existing OpenStreetMap tags to analyze in one of three formats: 1) JSON object (e.g., {"amenity": "restaurant", "name": "Test Cafe"}), 2) JSON string (e.g., \'{"amenity":"parking"}\'), or 3) flat text format with one tag per line (e.g., "amenity=restaurant\\nname=Test"). The tool will identify matching presets and suggest additional fields that would make this feature more complete. Minimum one tag required.',
-				),
-			options: z
-				.object({
-					summary: summaryOption,
-					limit: limitOption,
-				})
-				.optional()
-				.describe(
-					"Options to control suggestion output: 'summary' adds a human-readable summary, 'limit' restricts the number of suggestions returned.",
-				),
-		},
-	}),
+	config: () => {
+		const metadata = getToolMetadata("suggest_improvements");
+		if (!metadata) {
+			throw new Error("Tool metadata not found for suggest_improvements");
+		}
+
+		return {
+			description: metadata.description,
+			inputSchema: {
+				tags: z
+					.union([z.string(), z.record(z.string(), z.string())])
+					.describe(metadata.parameters.tags!.description),
+				options: z
+					.object({
+						summary: summaryOption,
+						limit: limitOption,
+					})
+					.optional()
+					.describe(
+						"Options to control suggestion output: 'summary' adds a human-readable summary, 'limit' restricts the number of suggestions returned.",
+					),
+			},
+		};
+	},
 	handler: async ({ tags, options }, _extra) => {
 		// Parse tags using the shared parser (handles string, JSON, and object formats)
 		const parsedTags = typeof tags === "string" ? parseTagInput(tags) : parseTagInput(tags);

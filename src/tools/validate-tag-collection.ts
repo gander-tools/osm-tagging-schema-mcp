@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { getToolMetadata } from "../metadata.js";
 import type { OsmToolDefinition } from "../types/index.js";
 import { parseTagInput } from "../utils/tag-parser.js";
 import { validationOptionsSchema } from "./common-options.js";
@@ -138,18 +139,22 @@ const ValidateTagCollection: OsmToolDefinition<{
 	>;
 }> = {
 	name: "validate_tag_collection" as const,
-	config: () => ({
-		description:
-			"Validate a complete collection of OpenStreetMap tags together, performing comprehensive validation on each tag and providing aggregated statistics. This tool validates each tag individually (using the same validation logic as validate_tag) and then aggregates the results to give you an overall picture of the collection's quality. Returns detailed validation results for each tag (including deprecation warnings, schema validation, and option checking) plus summary statistics (total valid count, deprecated count, error count). Use this for bulk validation of OSM data exports, quality assurance of tag collections before upload, or analyzing the completeness of feature tagging. Accepts input in three flexible formats: JSON object, JSON string, or flat text format (key=value per line).",
-		inputSchema: {
-			tags: z
-				.union([z.string(), z.record(z.string(), z.string())])
-				.describe(
-					'Collection of OpenStreetMap tags in one of three formats: 1) JSON object (e.g., {"amenity": "restaurant", "name": "Test Cafe", "cuisine": "italian"}), 2) JSON string (e.g., \'{"amenity":"parking"}\'), or 3) flat text format with one tag per line (e.g., "amenity=restaurant\\nname=Test\\ncuisine=italian"). The flat text format supports comments (lines starting with #) and empty lines. All formats are automatically parsed and validated.',
-				),
-			options: validationOptionsSchema,
-		},
-	}),
+	config: () => {
+		const metadata = getToolMetadata("validate_tag_collection");
+		if (!metadata) {
+			throw new Error("Tool metadata not found for validate_tag_collection");
+		}
+
+		return {
+			description: metadata.description,
+			inputSchema: {
+				tags: z
+					.union([z.string(), z.record(z.string(), z.string())])
+					.describe(metadata.parameters.tags!.description),
+				options: validationOptionsSchema,
+			},
+		};
+	},
 	handler: async ({ tags, options }, _extra) => {
 		// Parse tags using the shared parser (handles string, JSON, and object formats)
 		const parsedTags = typeof tags === "string" ? parseTagInput(tags) : parseTagInput(tags);

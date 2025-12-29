@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { getToolMetadata } from "../metadata.js";
 import type { OsmToolDefinition } from "../types/index.js";
 import { parseTagInput } from "../utils/tag-parser.js";
 import { comparisonOptionsSchema } from "./common-options.js";
@@ -250,23 +251,25 @@ function getChangeSymbol(type: ChangeType): string {
 
 const CompareTags: OsmToolDefinition = {
 	name: "compare_tags" as const,
-	config: () => ({
-		description:
-			"Compare two versions of OpenStreetMap tag collections and identify what changed between them. This tool performs a detailed diff analysis, showing which tags were added, removed, or modified. Returns structured change information including the type of change for each tag (added/removed/modified/unchanged), old and new values, and aggregate statistics. Optionally generates formatted diff output in multiple styles: unified format (like git diff with +/- symbols), split format (side-by-side old/new comparison), or summary format (statistics only). Use this for reviewing changes before committing to OSM, understanding what was modified in a feature update, quality control of bulk edits, or generating change logs. Accepts tag collections in three formats: JSON object, JSON string, or flat text format (key=value per line).",
-		inputSchema: {
-			oldTags: z
-				.union([z.string(), z.record(z.string(), z.string())])
-				.describe(
-					'Original (old) tag collection in one of three formats: 1) JSON object (e.g., {"amenity": "cafe", "name": "Old Cafe"}), 2) JSON string (e.g., \'{"amenity":"cafe"}\'), or 3) flat text format with one tag per line (e.g., "amenity=cafe\\nname=Old Cafe"). This represents the baseline version to compare against.',
-				),
-			newTags: z
-				.union([z.string(), z.record(z.string(), z.string())])
-				.describe(
-					'Updated (new) tag collection in one of three formats: 1) JSON object (e.g., {"amenity": "restaurant", "name": "New Restaurant", "cuisine": "italian"}), 2) JSON string, or 3) flat text format. This represents the modified version that will be compared to oldTags to identify changes.',
-				),
-			options: comparisonOptionsSchema,
-		},
-	}),
+	config: () => {
+		const metadata = getToolMetadata("compare_tags");
+		if (!metadata) {
+			throw new Error("Tool metadata not found for compare_tags");
+		}
+
+		return {
+			description: metadata.description,
+			inputSchema: {
+				oldTags: z
+					.union([z.string(), z.record(z.string(), z.string())])
+					.describe(metadata.parameters.oldTags!.description),
+				newTags: z
+					.union([z.string(), z.record(z.string(), z.string())])
+					.describe(metadata.parameters.newTags!.description),
+				options: comparisonOptionsSchema.describe(metadata.parameters.options!.description),
+			},
+		};
+	},
 	handler: async ({ oldTags, newTags, options }, _extra) => {
 		// Parse both tag collections
 		const parsedOldTags =

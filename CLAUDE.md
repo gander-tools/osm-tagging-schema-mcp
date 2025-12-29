@@ -210,6 +210,7 @@ Every feature implementation MUST follow this workflow:
 ```
 src/
 ├── index.ts                         # MCP server entry point
+├── metadata.ts                      # ✅ Centralized metadata for tools/prompts/resources
 ├── tools/                           # Tool implementations (one file per tool)
 │   ├── index.ts                     # Tool registry exports
 │   ├── types.ts                     # Shared type definitions
@@ -221,6 +222,8 @@ src/
 │   ├── suggest-improvements.ts      # ✅ Validation tool
 │   ├── validate-tag.ts              # ✅ Validation tool
 │   └── validate-tag-collection.ts   # ✅ Validation tool
+├── prompts/                         # Prompt implementations
+│   └── index.ts                     # All prompts defined here
 ├── utils/                           # Helper functions
 │   ├── schema-loader.ts             # Schema loader with caching
 │   ├── logger.ts                    # Configurable logging
@@ -231,18 +234,64 @@ src/
 tests/
 ├── tools/                           # Unit tests (one file per tool)
 ├── integration/                     # Integration tests (one file per tool)
+├── prompts/                         # Prompt tests
 ├── utils/                           # Utility tests
 ├── e2e/                             # End-to-end tests
 └── fuzz/                            # Fuzz tests
 ```
 
+### Centralized Metadata System
+
+**Status**: ✅ IMPLEMENTED - All tool and prompt descriptions centralized
+
+All user-facing text (descriptions, parameter labels, instructions) is centralized in `src/metadata.ts`:
+
+**Benefits**:
+- **Easier Maintenance**: Update descriptions in one place
+- **Consistency**: Ensures all tools use the same terminology
+- **Translation Ready**: Metadata file is separate from code logic
+- **MCP SDK 1.25 Ready**: Includes structure for resources, elicitation, sampling, and roots
+
+**Metadata Structure**:
+```typescript
+// Tools metadata - descriptions and parameter info for all 10 tools
+export const toolsMetadata: Record<string, ToolMetadata> = { ... }
+
+// Prompts metadata - descriptions and parameter info for all 5 prompts
+export const promptsMetadata: Record<string, PromptMetadata> = { ... }
+
+// Resources metadata - empty structure ready for implementation
+export const resourcesMetadata: Record<string, ResourceMetadata> = { ... }
+
+// MCP SDK 1.25 capabilities - empty structures for future features
+export const samplingMetadata: Record<string, SamplingMetadata> = { ... }
+export const elicitationMetadata: Record<string, ElicitationMetadata> = { ... }
+export const rootsMetadata: Record<string, RootsMetadata> = { ... }
+```
+
+**Usage Pattern**:
+```typescript
+// Tools and prompts use metadata instead of hardcoded descriptions
+config: () => {
+    const metadata = getToolMetadata("tool_name");
+    return {
+        description: metadata.description,
+        inputSchema: {
+            param: z.string().describe(metadata.parameters.param.description)
+        }
+    };
+}
+```
+
 ### Architectural Layers
 
 The server follows a modular architecture with distinct layers:
-1. **Schema Layer**: Loads and indexes the tagging schema
-2. **Tool Layer**: Implements MCP tools that query the schema (one file per tool)
-3. **Validation Layer**: Provides tag validation logic
-4. **Server Layer**: MCP server setup and tool registration
+1. **Metadata Layer**: Centralized descriptions and labels (`src/metadata.ts`)
+2. **Schema Layer**: Loads and indexes the tagging schema
+3. **Tool Layer**: Implements MCP tools that query the schema (one file per tool)
+4. **Prompt Layer**: Implements MCP prompts for guided workflows
+5. **Validation Layer**: Provides tag validation logic
+6. **Server Layer**: MCP server setup and tool/prompt registration
 
 ### Naming Conventions
 
@@ -289,11 +338,12 @@ for (const tool of tools) {
 
 ### Adding New Tools
 
-1. **Create tool file**: `src/tools/tool-name.ts`
-2. **Implement OsmToolDefinition interface**
-3. **Export tool**: Add to `src/tools/index.ts`
-4. **Write tests**: Unit and integration tests
-5. **Document**: Add API documentation in `docs/api/`
+1. **Add metadata**: Add tool metadata to `src/metadata.ts` in `toolsMetadata` object
+2. **Create tool file**: `src/tools/tool-name.ts`
+3. **Implement OsmToolDefinition interface** using `getToolMetadata()` in config()
+4. **Export tool**: Add to `src/tools/index.ts`
+5. **Write tests**: Unit and integration tests
+6. **Document**: Add API documentation in `docs/api/`
 
 ## Data Sources and Usage
 
