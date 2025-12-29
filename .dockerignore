@@ -17,7 +17,7 @@
 node_modules/
 
 # Build output (Note: dist/ is NOT excluded - it's provided by workflow)
-# dist/ must be available for Dockerfile.release (pre-built by workflow)
+# dist/ must be available for release builds (--target release, pre-built by workflow)
 !dist/
 build/
 *.tsbuildinfo

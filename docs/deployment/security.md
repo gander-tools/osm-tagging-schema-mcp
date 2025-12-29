@@ -225,8 +225,9 @@ Docker image (uses dist.tar.gz from release)
    ```
 
 **Implementation Details:**
-- Release builds use `Dockerfile.release` (simplified, artifact-based)
-- Development builds use `Dockerfile` (multi-stage with TypeScript compilation)
+- Unified multi-stage `Dockerfile` with two build targets
+- Release builds use `--target release` (artifact-based)
+- Development builds use default target (multi-stage with TypeScript compilation)
 - Artifact attached to every GitHub Release as `dist.tar.gz`
 
 ### Vulnerability Scanning
