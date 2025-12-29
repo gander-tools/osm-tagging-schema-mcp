@@ -274,42 +274,12 @@ describe("Tool Descriptions Quality", () => {
 			}
 		});
 
-		it("every tool should have annotations.title field in config()", () => {
+		it("every tool should have consistent title in config and metadata", () => {
 			for (const tool of tools) {
 				const config = tool.config();
 				const metadata = toolsMetadata[tool.name];
 
 				assert.ok(metadata, `Tool '${tool.name}' should have metadata defined`);
-				assert.ok(metadata.title, `Tool '${tool.name}' should have title in metadata`);
-				assert.ok(
-					config.annotations,
-					`Tool '${tool.name}' config() should return an annotations object`,
-				);
-				assert.ok(
-					config.annotations.title,
-					`Tool '${tool.name}' config().annotations should have a title field`,
-				);
-				assert.strictEqual(
-					config.annotations.title,
-					metadata.title,
-					`Tool '${tool.name}' config().annotations.title should match metadata.title`,
-				);
-			}
-		});
-
-		it("every tool should have consistent title across all metadata sources", () => {
-			for (const tool of tools) {
-				const config = tool.config();
-				const metadata = toolsMetadata[tool.name];
-
-				assert.ok(metadata, `Tool '${tool.name}' should have metadata defined`);
-
-				// All three should be identical: metadata.title, config.title, config.annotations.title
-				assert.strictEqual(
-					config.title,
-					config.annotations?.title,
-					`Tool '${tool.name}': config.title should equal config.annotations.title`,
-				);
 				assert.strictEqual(
 					config.title,
 					metadata.title,

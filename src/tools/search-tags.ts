@@ -207,9 +207,6 @@ const SearchTags: OsmToolDefinition<{
 			name: metadata.name,
 			title: metadata.title,
 			description: metadata.description,
-			annotations: {
-				title: metadata.title,
-			},
 			inputSchema: {
 				keyword: z.string().describe(metadata.parameters.keyword!.description),
 				limit: z

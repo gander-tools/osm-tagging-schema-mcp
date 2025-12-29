@@ -308,9 +308,6 @@ const SuggestImprovements: OsmToolDefinition<{
 			name: metadata.name,
 			title: metadata.title,
 			description: metadata.description,
-			annotations: {
-				title: metadata.title,
-			},
 			inputSchema: {
 				tags: z
 					.union([z.string(), z.record(z.string(), z.string())])
