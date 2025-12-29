@@ -417,4 +417,10 @@ jobs:
           \`\`\`bash
           docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:$VERSION_TAG
           \`\`\`
+
+          ### Inspect Command
+
+          \`\`\`bash
+          npx @modelcontextprotocol/inspector docker run --rm -i ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:$VERSION_TAG
+          \`\`\`
           EOF
