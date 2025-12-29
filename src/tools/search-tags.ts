@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { getToolMetadata } from "../metadata.js";
 import type { OsmToolDefinition } from "../types/index.js";
 import { schemaLoader } from "../utils/schema-loader.js";
 import { limitOption } from "./common-options.js";
@@ -199,31 +200,31 @@ const SearchTags: OsmToolDefinition<{
 }> = {
 	name: "search_tags" as const,
 
-	config: () => ({
-		description:
-			"Search for OpenStreetMap tags by keyword in both tag keys and tag values. Returns two categories of results: keyMatches (when the keyword matches a tag key, returns that key with all possible values) and valueMatches (when the keyword matches a specific tag value, returns the key-value pair). Searches are case-insensitive and match partial strings. Use this to explore available tags or find tags related to a concept.",
-		inputSchema: {
-			keyword: z
-				.string()
-				.describe(
-					"Single keyword to search for in tag keys and values (case-insensitive). Should be a standalone word or partial word, not a tag pair. Examples: 'restaurant' (finds amenity=restaurant), 'wheel' (finds wheelchair, wheelchair:description), 'park' (finds leisure=park, amenity=parking, park_ride, etc.). For searching by complete tag pairs, use search_presets instead.",
-				),
-			limit: z
-				.number()
-				.optional()
-				.describe(
-					"(Deprecated: use options.limit instead) Maximum total number of results to return across both keyMatches and valueMatches combined (default: 100). Use lower values for faster responses when you only need a few results.",
-				),
-			options: z
-				.object({
-					limit: limitOption,
-				})
-				.optional()
-				.describe(
-					"Options to control search behavior: 'limit' sets maximum number of results (default: 100).",
-				),
-		},
-	}),
+	config: () => {
+		const metadata = getToolMetadata("search_tags");
+		if (!metadata) {
+			throw new Error("Tool metadata not found for search_tags");
+		}
+
+		return {
+			description: metadata.description,
+			inputSchema: {
+				keyword: z.string().describe(metadata.parameters.keyword!.description),
+				limit: z
+					.number()
+					.optional()
+					.describe(
+						"(Deprecated: use options.limit instead) Maximum total number of results to return across both keyMatches and valueMatches combined (default: 100). Use lower values for faster responses when you only need a few results.",
+					),
+				options: z
+					.object({
+						limit: limitOption,
+					})
+					.optional()
+					.describe(metadata.parameters.options!.description),
+			},
+		};
+	},
 
 	handler: async ({ keyword, limit, options }, _extra) => {
 		// Support both old 'limit' parameter and new 'options.limit' for backward compatibility

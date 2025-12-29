@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { getToolMetadata } from "../metadata.js";
 import type { OsmToolDefinition, Preset, SchemaData } from "../types/index.js";
 import { schemaLoader } from "../utils/schema-loader.js";
 import type { PresetDetails, TagDetailed } from "./types.js";
@@ -310,17 +311,21 @@ const GetPresetDetails: OsmToolDefinition<{
 	presetId: z.ZodUnion<readonly [z.ZodString, z.ZodRecord<z.ZodString, z.ZodString>]>;
 }> = {
 	name: "get_preset_details" as const,
-	config: () => ({
-		description:
-			"Retrieve comprehensive details for a specific OpenStreetMap preset, including all tags, geometry constraints, and field definitions. A preset represents a complete feature template with its standard tags, allowed geometry types, required fields, and optional fields. Returns the preset's localized name, complete tag set with human-readable names, geometry types (point/line/area/etc.), and expanded field lists. Field lists are automatically expanded from template references (like {@templates/contact} becomes email, phone, website, fax) and preset inheritance (like {building} expands to include all building fields). Use this to understand the complete structure of a feature type, learn what tags and fields are expected for a feature, or build forms/UIs for OSM data entry. Accepts three flexible input formats for maximum convenience.",
-		inputSchema: {
-			presetId: z
-				.union([z.string(), z.record(z.string(), z.string())])
-				.describe(
-					"Identifier for the preset to retrieve, in one of three formats: 1) Preset ID using slash notation (e.g., 'amenity/restaurant', 'highway/residential', 'natural/tree') - this is the direct preset identifier. 2) Tag notation using equals sign (e.g., 'amenity=restaurant', 'building=house') - the tool will find the matching preset. 3) Tags object with key-value pairs (e.g., {\"amenity\": \"restaurant\", \"cuisine\": \"italian\"}) - finds the best matching preset based on all provided tags. The tool will find exact matches when possible or return the most specific preset that matches the given tags.",
-				),
-		},
-	}),
+	config: () => {
+		const metadata = getToolMetadata("get_preset_details");
+		if (!metadata) {
+			throw new Error("Tool metadata not found for get_preset_details");
+		}
+
+		return {
+			description: metadata.description,
+			inputSchema: {
+				presetId: z
+					.union([z.string(), z.record(z.string(), z.string())])
+					.describe(metadata.parameters.presetId!.description),
+			},
+		};
+	},
 	handler: async ({ presetId }, _extra) => {
 		const input = typeof presetId === "string" ? presetId.trim() : presetId;
 		const details = await getPresetDetails(input);

@@ -3,6 +3,7 @@ import deprecatedRaw from "@openstreetmap/id-tagging-schema/dist/deprecated.json
 };
 import fieldsRaw from "@openstreetmap/id-tagging-schema/dist/fields.json" with { type: "json" };
 import { z } from "zod";
+import { getToolMetadata } from "../metadata.js";
 import type { DeprecatedTag, Field, OsmToolDefinition } from "../types";
 import { schemaLoader } from "../utils/schema-loader.js";
 
@@ -247,22 +248,20 @@ const ValidateTag: OsmToolDefinition<{
 	value: z.ZodString;
 }> = {
 	name: "validate_tag" as const,
-	config: () => ({
-		description:
-			"Validate a single OpenStreetMap tag key-value pair against the OSM tagging schema. Performs comprehensive validation including: deprecation checking (identifies deprecated tags and suggests modern replacements), schema existence validation (verifies the tag key exists in the schema), option validation (checks if the value is in predefined options for that key), and field type checking (distinguishes between strict fields and combo fields that allow custom values). Returns detailed validation results with localized names and actionable messages. Use this for educational purposes, data quality checks, or validating individual tags before bulk operations.",
-		inputSchema: {
-			key: z
-				.string()
-				.describe(
-					"The OpenStreetMap tag key to validate (e.g., 'amenity', 'building', 'highway', 'natural'). Tag keys should use the standard OSM format with colons for namespaces (e.g., 'addr:street', 'name:en'). Case-sensitive.",
-				),
-			value: z
-				.string()
-				.describe(
-					"The OpenStreetMap tag value to validate against the specified key (e.g., 'restaurant', 'yes', 'residential', 'park'). Values are checked against predefined options if the field has them. Case-sensitive in most cases, though some fields may accept case-insensitive values.",
-				),
-		},
-	}),
+	config: () => {
+		const metadata = getToolMetadata("validate_tag");
+		if (!metadata) {
+			throw new Error("Tool metadata not found for validate_tag");
+		}
+
+		return {
+			description: metadata.description,
+			inputSchema: {
+				key: z.string().describe(metadata.parameters.key!.description),
+				value: z.string().describe(metadata.parameters.value!.description),
+			},
+		};
+	},
 	handler: async ({ key, value }, _extra) => {
 		const result = await validateTag(key.trim(), value.trim());
 		return {
