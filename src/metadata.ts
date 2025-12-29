@@ -65,10 +65,10 @@ export const toolsMetadata: Record<string, ToolMetadata> = {
 		parameters: {
 			tags: {
 				description:
-					'A collection of OpenStreetMap tags to validate. Accepts either JSON object format ({"amenity": "restaurant", "name": "Example"}) or flat text format (amenity=restaurant\\nname=Example). All tags in the collection will be validated individually and as a set to identify conflicts or missing required tags.',
+					'A collection of OpenStreetMap tags to validate. Accepts three formats: 1) JSON object ({"amenity": "restaurant", "name": "Example"}), 2) JSON string (\'{"amenity":"parking"}\'), or 3) flat text format (amenity=restaurant\\nname=Example). All tags in the collection will be validated individually and as a set to identify conflicts or missing required tags.',
 				label: "Tags",
 				instructions:
-					'Supports two formats:\n1. JSON: {"amenity": "restaurant", "name": "Test Cafe", "cuisine": "italian"}\n2. Flat text: amenity=restaurant\\nname=Test Cafe\\ncuisine=italian',
+					'Supports three formats:\n1. JSON object: {"amenity": "restaurant", "name": "Test Cafe", "cuisine": "italian"}\n2. JSON string: \'{"amenity":"parking"}\'\n3. Flat text: amenity=restaurant\\nname=Test Cafe\\ncuisine=italian',
 			},
 		},
 	},
@@ -80,10 +80,10 @@ export const toolsMetadata: Record<string, ToolMetadata> = {
 		parameters: {
 			tags: {
 				description:
-					'Current tags for the OSM feature to analyze. Accepts either JSON object format ({"amenity": "restaurant", "name": "Example"}) or flat text format (amenity=restaurant\\nname=Example). The tool will analyze these tags to identify the feature type and suggest appropriate additional tags.',
+					'Current tags for the OSM feature to analyze. Accepts three formats: 1) JSON object ({"amenity": "restaurant", "name": "Example"}), 2) JSON string (\'{"amenity":"parking"}\'), or 3) flat text format (amenity=restaurant\\nname=Example). The tool will analyze these tags to identify the feature type and suggest appropriate additional tags.',
 				label: "Current Tags",
 				instructions:
-					'Supports two formats:\n1. JSON: {"amenity": "restaurant", "name": "Test"}\n2. Flat text: amenity=restaurant\\nname=Test',
+					'Supports three formats:\n1. JSON object: {"amenity": "restaurant", "name": "Test"}\n2. JSON string: \'{"amenity":"parking"}\'\n3. Flat text: amenity=restaurant\\nname=Test',
 			},
 		},
 	},
@@ -109,11 +109,11 @@ export const toolsMetadata: Record<string, ToolMetadata> = {
 	search_tags: {
 		name: "search_tags",
 		description:
-			"Search for OpenStreetMap tags by keyword or pattern. Searches across tag keys, tag values, and localized names to find matching tags. Supports fuzzy matching to find tags even with slight typos or variations. Returns matching tags with their keys, values, and human-readable names. Use this to discover tags related to a topic, find the correct tag when you know part of the name, or explore available tags in a category. Essential for learning OSM tagging vocabulary and discovering lesser-known tags.",
+			"Search for OpenStreetMap tags by single keyword or pattern. Searches across tag keys, tag values, and localized names to find matching tags. Supports fuzzy matching to find tags even with slight typos or variations. Returns matching tags with their keys, values, and human-readable names. Use this to discover tags related to a topic, find the correct tag when you know part of the name, or explore available tags in a category. For tag pair filtering (e.g., amenity=restaurant), use search_presets instead. Essential for learning OSM tagging vocabulary and discovering lesser-known tags.",
 		parameters: {
 			keyword: {
 				description:
-					"Keyword or pattern to search for in tag keys, values, and names (e.g., 'restaurant', 'bicycle', 'wheelchair'). The search is case-insensitive and supports partial matching. Will search across tag keys (e.g., 'amenity'), tag values (e.g., 'restaurant'), and localized display names.",
+					"Single standalone keyword or pattern to search for in tag keys, values, and names (e.g., 'restaurant', 'bicycle', 'wheelchair'). The search is case-insensitive and supports partial matching. Will search across tag keys (e.g., 'amenity'), tag values (e.g., 'restaurant'), and localized display names. For tag pair filtering (e.g., amenity=restaurant), use search_presets instead.",
 				label: "Search Keyword",
 			},
 			options: {
@@ -170,7 +170,7 @@ export const toolsMetadata: Record<string, ToolMetadata> = {
 	compare_tags: {
 		name: "compare_tags",
 		description:
-			"Compare two sets of OpenStreetMap tags to identify differences, additions, deletions, and modifications. Performs detailed tag-level comparison showing which tags were added, removed, or changed between two versions. Provides human-readable names for all tags and values using the OSM tagging schema. Useful for reviewing tag changes, understanding feature modifications, analyzing tag history, or validating tag transformations. Returns structured diff with localized names for better readability.",
+			"Compare two sets of OpenStreetMap tags to identify differences, additions, deletions, and modifications. Performs detailed tag-level comparison showing which tags were added, removed, or changed between two versions. Provides human-readable names for all tags and values using the OSM tagging schema. Use this for reviewing tag changes, understanding feature modifications, analyzing tag history, or validating tag transformations. Returns structured diff with localized names for better readability.",
 		parameters: {
 			oldTags: {
 				description:
@@ -197,7 +197,7 @@ export const toolsMetadata: Record<string, ToolMetadata> = {
 	flat_to_json: {
 		name: "flat_to_json",
 		description:
-			"Convert OpenStreetMap tags from flat text format (key=value per line) to JSON object format. This is an INPUT CONVERTER for AI workflows - use it when you receive tags in flat text format and need to work with them as a JSON object. Handles various text formats including key=value pairs (one per line), whitespace variations, empty lines, and comments (lines starting with #). Returns a clean JSON object with all parsed tags. Essential for processing OSM data from text exports, iD editor output, or JOSM exports.",
+			"Convert OpenStreetMap tags from flat text format (key=value per line) to JSON object format. This is an INPUT CONVERTER for AI workflows - use it FIRST when you receive tags in flat text format and need to work with them as a JSON object. Handles various text formats including key=value pairs (one per line), whitespace variations, empty lines, and comments (lines starting with #). Returns a clean JSON object with all parsed tags. Essential for processing OSM data from text exports, iD editor output, or JOSM exports.",
 		parameters: {
 			flatText: {
 				description:
@@ -212,7 +212,7 @@ export const toolsMetadata: Record<string, ToolMetadata> = {
 	json_to_flat: {
 		name: "json_to_flat",
 		description:
-			"Convert OpenStreetMap tags from JSON object format to flat text format (key=value per line). This is an OUTPUT CONVERTER for AI workflows - use it when you need to present tags in a human-readable text format or export them for use in other tools. Produces clean, consistent key=value format with one tag per line, sorted alphabetically by key. The output format is compatible with JOSM, iD editor imports, and other OSM tools that accept flat text tag format.",
+			"Convert OpenStreetMap tags from JSON object format to flat text format (key=value per line). This is an OUTPUT CONVERTER for AI workflows - use it LAST when you need to present tags in a human-readable text format or export them for use in other tools. Produces clean, consistent key=value format with one tag per line, sorted alphabetically by key. Use this for generating human-readable tag lists, exporting to OSM editors, or sharing tag collections. The output format is compatible with JOSM, iD editor imports, and other OSM tools that accept flat text tag format.",
 		parameters: {
 			jsonTags: {
 				description:
