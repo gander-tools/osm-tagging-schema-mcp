@@ -825,8 +825,9 @@ Docker images are automatically built and published to GitHub Container Registry
 
 #### Automated Build Triggers
 
-**GitHub Release Published:**
-- Triggered automatically when a release is published via Release Please workflow
+**Release Please Workflow (workflow_call):**
+- Triggered automatically by Release Please workflow after successful release merge
+- Called as a reusable workflow from `release-please.yml`
 - Builds multi-architecture images (amd64, arm64)
 - Tags: semantic version (e.g., `3.6.0`) and `latest`
 

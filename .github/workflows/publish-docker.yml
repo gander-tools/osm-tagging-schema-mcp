@@ -1,11 +1,14 @@
 name: Docker Build and Publish
 
 on:
-  # Automatic trigger when a GitHub release is published
+  # Triggered by Release Please workflow after successful release merge
   # This ensures Docker builds only happen for actual releases, not every push to master
-  release:
-    types:
-      - published
+  workflow_call:
+    inputs:
+      version:
+        description: 'Release version (e.g., v3.6.0)'
+        required: true
+        type: string
 
   # Manual trigger with build type selection
   workflow_dispatch:
@@ -63,13 +66,13 @@ jobs:
           IS_RELEASE="false"
           CHECKOUT_REF=""
 
-          # release - triggered when a GitHub release is published
-          if [ "${{ github.event_name }}" = "release" ]; then
-            # Get tag from release event
-            GIT_TAG="${{ github.event.release.tag_name }}"
+          # workflow_call - triggered by Release Please workflow after successful release merge
+          if [ "${{ github.event_name }}" = "workflow_call" ]; then
+            # Get version from workflow_call input
+            GIT_TAG="${{ inputs.version }}"
 
             if [ -z "$GIT_TAG" ]; then
-              echo "::error::No tag found in release event"
+              echo "::error::No version provided in workflow_call input"
               echo "should-build=false" >> "$GITHUB_OUTPUT"
               exit 1
             fi
@@ -79,7 +82,7 @@ jobs:
             IS_RELEASE="true"
             SHOULD_BUILD="true"
             CHECKOUT_REF="refs/tags/$GIT_TAG"
-            echo "✅ Building Docker image for version: $VERSION_TAG (git tag: $GIT_TAG) from release event"
+            echo "✅ Building Docker image for version: $VERSION_TAG (git tag: $GIT_TAG) from Release Please workflow"
 
           # workflow_dispatch - manual trigger with build type selection
           elif [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
