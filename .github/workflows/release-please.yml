@@ -18,8 +18,7 @@ jobs:
     permissions:
       contents: write       # Required for creating releases and updating files
       pull-requests: write  # Required for creating/updating release PRs
-      issues: write         # Required for release-please issue tracking
-      id-token: write       # Required for npm provenance
+      id-token: write      # Required for npm provenance
 
     outputs:
       release_created: ${{ steps.release.outputs.release_created }}
@@ -32,9 +31,6 @@ jobs:
         with:
           disable-sudo: 'true'
           egress-policy: 'audit'
-
-      - name: Checkout Repository
-        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
 
       - name: Run Release Please
         uses: googleapis/release-please-action@16a9c90856f42705d54a6fda1823352bdc62cf38 # v4.4.0
