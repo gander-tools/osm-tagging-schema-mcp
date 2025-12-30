@@ -15,6 +15,12 @@ jobs:
     name: Create or Update Release PR
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+      id-token: write
+
     outputs:
       release_created: ${{ steps.release.outputs.release_created }}
       tag_name: ${{ steps.release.outputs.tag_name }}
