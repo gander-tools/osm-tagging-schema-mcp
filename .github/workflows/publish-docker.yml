@@ -1,30 +1,20 @@
 name: Docker Build and Publish
 
 on:
-  # Automatic trigger when a new release is published
-  release:
+  # Automatic trigger after successful Release Please workflow
+  workflow_run:
+    workflows: ["Release Please"]
     types:
-      - published
+      - completed
+    branches:
+      - master
 
-  # Manual trigger with build type selection
+  # Manual trigger with version input
   workflow_dispatch:
     inputs:
-      build_type:
-        description: 'Type of build to create'
-        required: true
-        type: choice
-        options:
-          - release
-          - edge
-          - pr
-        default: edge
       version:
-        description: 'NPM package version to build (required for release builds, e.g., v1.2.3)'
-        required: false
-        type: string
-      pr_number:
-        description: 'Pull request number (required for PR builds, e.g., 123)'
-        required: false
+        description: 'NPM package version to build (e.g., v1.2.3)'
+        required: true
         type: string
 
 env:
@@ -39,7 +29,6 @@ jobs:
       version-tag: ${{ steps.version.outputs.version-tag }}
       should-build: ${{ steps.version.outputs.should-build }}
       is-release: ${{ steps.version.outputs.is-release }}
-      checkout-ref: ${{ steps.version.outputs.checkout-ref }}
 
     permissions:
       contents: read
@@ -58,80 +47,64 @@ jobs:
           VERSION_TAG=""
           SHOULD_BUILD="false"
           IS_RELEASE="false"
-          CHECKOUT_REF=""
 
-          # release - triggered when a new release is published
-          if [ "${{ github.event_name }}" = "release" ]; then
-            VERSION_TAG="${{ github.event.release.tag_name }}"
+          # workflow_run - triggered after Release Please workflow
+          if [ "${{ github.event_name }}" = "workflow_run" ]; then
+            # Check if workflow_run was successful
+            if [ "${{ github.event.workflow_run.conclusion }}" != "success" ]; then
+              echo "::warning::Release Please workflow failed, skipping Docker build"
+              echo "should-build=false" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+
+            # Get the latest release (created by release-please.yml)
+            VERSION_TAG=$(gh release list --limit 1 --json tagName,isDraft --jq '.[] | select(.isDraft == false) | .tagName')
 
             if [ -z "$VERSION_TAG" ]; then
-              echo "::error::Failed to get tag from release event"
+              echo "::error::Failed to find release from Release Please workflow"
               echo "should-build=false" >> "$GITHUB_OUTPUT"
               exit 1
             fi
 
             IS_RELEASE="true"
             SHOULD_BUILD="true"
-            CHECKOUT_REF="refs/tags/$VERSION_TAG"
-            echo "✅ Building Docker image for version: $VERSION_TAG (from release event)"
+            echo "✅ Building Docker image for version: $VERSION_TAG (from Release Please workflow)"
 
-          # workflow_dispatch - manual trigger with build type selection
+          # workflow_dispatch - manual trigger with version
           elif [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            BUILD_TYPE="${{ inputs.build_type }}"
+            VERSION_TAG="${{ inputs.version }}"
 
-            case "$BUILD_TYPE" in
-              release)
-                VERSION_TAG="${{ inputs.version }}"
+            # Validate version format
+            if ! [[ "$VERSION_TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+              echo "::error::Invalid version format: '$VERSION_TAG'. Expected semantic version (e.g., v1.2.3)"
+              echo "should-build=false" >> "$GITHUB_OUTPUT"
+              exit 1
+            fi
 
-                # Validate version format
-                if ! [[ "$VERSION_TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-                  echo "::error::Invalid version format: '$VERSION_TAG'. Expected semantic version (e.g., v1.2.3)"
-                  echo "should-build=false" >> "$GITHUB_OUTPUT"
-                  exit 1
-                fi
+            # Check if release exists
+            if ! gh release view "$VERSION_TAG" --repo "${{ github.repository }}" > /dev/null 2>&1; then
+              echo "::error::Release $VERSION_TAG does not exist. Create release first via publish-npm.yml workflow."
+              echo "should-build=false" >> "$GITHUB_OUTPUT"
+              exit 1
+            fi
 
-                # Check if release exists
-                if ! gh release view "$VERSION_TAG" --repo "${{ github.repository }}" > /dev/null 2>&1; then
-                  echo "::error::Release $VERSION_TAG does not exist. Create release first via release-please workflow."
-                  echo "should-build=false" >> "$GITHUB_OUTPUT"
-                  exit 1
-                fi
+            IS_RELEASE="true"
+            SHOULD_BUILD="true"
+            echo "✅ Manual Docker build for version: $VERSION_TAG"
 
-                IS_RELEASE="true"
-                SHOULD_BUILD="true"
-                CHECKOUT_REF="refs/tags/$VERSION_TAG"
-                echo "✅ Manual Docker build for version: $VERSION_TAG"
-                ;;
+          # push master - edge build
+          elif [ "${{ github.ref }}" = "refs/heads/master" ]; then
+            VERSION_TAG="edge"
+            IS_RELEASE="false"
+            SHOULD_BUILD="true"
+            echo "✅ Edge build from master branch"
 
-              edge)
-                VERSION_TAG="edge"
-                IS_RELEASE="false"
-                SHOULD_BUILD="true"
-                CHECKOUT_REF="refs/heads/${{ github.event.repository.default_branch }}"
-                echo "✅ Edge build from ${{ github.event.repository.default_branch }} branch"
-                ;;
-
-              pr)
-                PR_NUMBER="${{ inputs.pr_number }}"
-
-                if [ -z "$PR_NUMBER" ]; then
-                  echo "::error::PR number is required for PR builds"
-                  echo "should-build=false" >> "$GITHUB_OUTPUT"
-                  exit 1
-                fi
-
-                VERSION_TAG="pr-$PR_NUMBER"
-                IS_RELEASE="false"
-                SHOULD_BUILD="true"
-                CHECKOUT_REF="refs/pull/$PR_NUMBER/head"
-                echo "✅ PR build for PR #$PR_NUMBER (from refs/pull/$PR_NUMBER/head)"
-                ;;
-
-              *)
-                echo "::error::Unknown build type: $BUILD_TYPE"
-                SHOULD_BUILD="false"
-                ;;
-            esac
+          # pull_request - PR build
+          elif [ "${{ github.event_name }}" = "pull_request" ]; then
+            VERSION_TAG="pr-${{ github.event.pull_request.number }}"
+            IS_RELEASE="false"
+            SHOULD_BUILD="true"
+            echo "✅ PR build: $VERSION_TAG"
 
           else
             echo "::warning::Unknown trigger, skipping build"
@@ -142,7 +115,6 @@ jobs:
             echo "version-tag=$VERSION_TAG"
             echo "is-release=$IS_RELEASE"
             echo "should-build=$SHOULD_BUILD"
-            echo "checkout-ref=$CHECKOUT_REF"
           } >> "$GITHUB_OUTPUT"
 
   build-and-push:
@@ -160,33 +132,12 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
-        with:
-          ref: ${{ needs.extract-version.outputs.checkout-ref }}
-
-      - name: Get build info
-        id: build-info
-        run: |
-          COMMIT_SHA=$(git rev-parse HEAD)
-          COMMIT_SHORT=$(git rev-parse --short HEAD)
-          COMMIT_MSG=$(git log -1 --format=%s)
-          COMMIT_DATE=$(git log -1 --format=%ci)
-
-          # Get package version from package.json
-          PACKAGE_VERSION=$(node -p "require('./package.json').version")
-
-          {
-            echo "commit-sha=$COMMIT_SHA"
-            echo "commit-short=$COMMIT_SHORT"
-            echo "commit-msg=$COMMIT_MSG"
-            echo "commit-date=$COMMIT_DATE"
-            echo "package-version=$PACKAGE_VERSION"
-          } >> "$GITHUB_OUTPUT"
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f
+        uses: docker/setup-buildx-action@65d18f8f8a05aab1b2d761032bec9cd5578caadb
 
       - name: Log in to GitHub Container Registry
-        uses: docker/login-action@6862ffc5ab2cdb4405cf318a62a6f4c066e2298b
+        uses: docker/login-action@28fdb31ff34708d19615a74d67103ddc2ea9725c
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
@@ -201,7 +152,7 @@ jobs:
             type=raw,value=latest,enable=${{ needs.extract-version.outputs.is-release == 'true' }},priority=1000
             type=raw,value=${{ needs.extract-version.outputs.version-tag }},enable=${{ needs.extract-version.outputs.is-release == 'true' }},priority=900
             type=edge,enable=${{ needs.extract-version.outputs.version-tag == 'edge' }},priority=800
-            type=raw,value=${{ needs.extract-version.outputs.version-tag }},enable=${{ startsWith(needs.extract-version.outputs.version-tag, 'pr-') }},priority=700
+            type=ref,event=pr,priority=700
             type=semver,pattern={{major}},enable=${{ needs.extract-version.outputs.is-release == 'true' && startsWith(github.ref, 'refs/tags/v') }},priority=600
             type=semver,pattern={{major}}.{{minor}},enable=${{ needs.extract-version.outputs.is-release == 'true' && startsWith(github.ref, 'refs/tags/v') }},priority=500
             type=semver,pattern={{major}}.{{minor}}.{{patch}},enable=${{ needs.extract-version.outputs.is-release == 'true' && startsWith(github.ref, 'refs/tags/v') }},priority=400
@@ -248,8 +199,7 @@ jobs:
         uses: docker/build-push-action@9e436ba9f2d7bcd1d038c8e55d039d37896ddc5d
         with:
           context: .
-          file: Dockerfile
-          target: release
+          file: Dockerfile.release
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
@@ -293,14 +243,14 @@ jobs:
           severity: 'CRITICAL,HIGH'
 
       - name: Upload Trivy results to GitHub Security
-        uses: github/codeql-action/upload-sarif@f67ec12472e1b361f5e1e2085f5e6f85a57e3cd6
+        uses: github/codeql-action/upload-sarif@6dba00881c9b84392aa9a1ea5ad1bf3615699196
         if: always()
         with:
           sarif_file: 'trivy-results.sarif'
 
       # Image Signing with Cosign
       - name: Install Cosign
-        uses: sigstore/cosign-installer@4d14d7f17e7112af04ea6108fbb4bfc714c00390
+        uses: sigstore/cosign-installer@29bcfa8619aeb12eaac78d31157172c86183b05c
 
       - name: Sign container image with Cosign
         env:
@@ -350,77 +300,3 @@ jobs:
           else
             echo "::error::✗ Webhook failed with HTTP $HTTP_CODE"
           fi
-
-      # Generate Job Summary
-      - name: Generate build summary
-        if: always()
-        run: |
-          VERSION_TAG="${{ needs.extract-version.outputs.version-tag }}"
-          IS_RELEASE="${{ needs.extract-version.outputs.is-release }}"
-          CHECKOUT_REF="${{ needs.extract-version.outputs.checkout-ref }}"
-          COMMIT_SHA="${{ steps.build-info.outputs.commit-sha }}"
-          COMMIT_SHORT="${{ steps.build-info.outputs.commit-short }}"
-          COMMIT_MSG="${{ steps.build-info.outputs.commit-msg }}"
-          COMMIT_DATE="${{ steps.build-info.outputs.commit-date }}"
-          PACKAGE_VERSION="${{ steps.build-info.outputs.package-version }}"
-          DIGEST="${{ steps.digest.outputs.digest }}"
-
-          # Determine build type label
-          if [ "$IS_RELEASE" = "true" ]; then
-            BUILD_TYPE="🚀 Release"
-          elif [ "$VERSION_TAG" = "edge" ]; then
-            BUILD_TYPE="🔧 Edge (Development)"
-          elif [[ "$VERSION_TAG" == pr-* ]]; then
-            BUILD_TYPE="🔍 Pull Request"
-          else
-            BUILD_TYPE="❓ Unknown"
-          fi
-
-          cat >> "$GITHUB_STEP_SUMMARY" << EOF
-          ## 🐳 Docker Build Summary
-
-          ### Build Information
-
-          | Property | Value |
-          |----------|-------|
-          | **Build Type** | $BUILD_TYPE |
-          | **Version Tag** | \`$VERSION_TAG\` |
-          | **Package Version** | \`$PACKAGE_VERSION\` |
-
-          ### Source
-
-          | Property | Value |
-          |----------|-------|
-          | **Checkout Ref** | \`$CHECKOUT_REF\` |
-          | **Commit SHA** | \`$COMMIT_SHA\` |
-          | **Commit (short)** | \`$COMMIT_SHORT\` |
-          | **Commit Date** | $COMMIT_DATE |
-          | **Commit Message** | $COMMIT_MSG |
-
-          ### Docker Image
-
-          | Property | Value |
-          |----------|-------|
-          | **Registry** | \`${{ env.REGISTRY }}\` |
-          | **Image** | \`${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}\` |
-          | **Digest** | \`$DIGEST\` |
-          | **Platforms** | \`linux/amd64\`, \`linux/arm64\` |
-
-          ### Image Tags
-
-          \`\`\`
-          ${{ steps.meta.outputs.tags }}
-          \`\`\`
-
-          ### Pull Command
-
-          \`\`\`bash
-          docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:$VERSION_TAG
-          \`\`\`
-
-          ### Inspect Command
-
-          \`\`\`bash
-          npx @modelcontextprotocol/inspector docker run --rm -i ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:$VERSION_TAG
-          \`\`\`
-          EOF
