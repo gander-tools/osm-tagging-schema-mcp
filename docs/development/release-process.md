@@ -106,6 +106,52 @@ git commit -m "docs: document get_preset_details API"
 
 ## Release Workflow
 
+### Manual Release Please Triggering
+
+To manually trigger Release Please to create a release with a specific version:
+
+#### Method 1: Force Version via Manifest
+
+```bash
+# Set desired version in Release Please manifest
+DESIRED_VERSION="4.0.0"
+echo "{ \".\": \"$DESIRED_VERSION\" }" > .release-please-manifest.json
+
+# Commit and push
+git add .release-please-manifest.json
+git commit -m "chore: trigger release please for version $DESIRED_VERSION"
+git push origin master
+```
+
+#### Method 2: Add Manual Workflow Trigger
+
+Add `workflow_dispatch` to `.github/workflows/release-please.yml`:
+
+```yaml
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:  # Enable manual triggering
+```
+
+Then trigger manually:
+```bash
+# Via GitHub CLI
+gh workflow run release-please.yml --ref master
+
+# Via GitHub Web Interface
+# Go to Actions → Release Please → Run workflow
+```
+
+#### Method 3: Empty Commit Trigger
+
+```bash
+# Force immediate Release Please run
+git commit --allow-empty -m "chore: trigger release please"
+git push origin master
+```
+
 ### Step 1: Write Conventional Commits
 
 All you need to do is write commits following the Conventional Commits format and merge them to master:
