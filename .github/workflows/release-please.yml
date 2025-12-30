@@ -248,6 +248,16 @@ jobs:
     name: Trigger Docker Build
     needs: [create-release, publish-npm]
     if: ${{ needs.create-release.outputs.release_created }}
+
+    # Required permissions for called workflow (publish-docker.yml)
+    # GitHub Actions requires permissions to be declared at caller level when using workflow_call
+    permissions:
+      contents: read        # Required for checkout
+      packages: write       # Required for pushing to GHCR
+      id-token: write       # Required for Cosign keyless signing
+      attestations: write   # Required for build attestations
+      security-events: write  # Required for uploading Trivy SARIF results
+
     uses: ./.github/workflows/publish-docker.yml
     with:
       version: ${{ needs.create-release.outputs.tag_name }}
