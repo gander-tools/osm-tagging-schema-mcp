@@ -18,6 +18,11 @@ The release process is **fully automated** using [Release Please](https://github
 - ✅ Automatic tagging and publishing
 - ✅ Consistent release quality
 
+**Manual override options:**
+- ⚙️ Manual workflow triggering for testing and troubleshooting
+- 🔄 Failed workflow re-execution capabilities
+- 🛠️ Empty commit triggers for edge cases
+
 ## Prerequisites
 
 - Git configured with your credentials
@@ -105,6 +110,131 @@ git commit -m "docs: document get_preset_details API"
 ```
 
 ## Release Workflow
+
+### Manual Triggering of Release Please
+
+While Release Please runs automatically on every push to master, there are situations where you might need to manually trigger the release workflow:
+
+#### Option 1: Add workflow_dispatch to Release Please Workflow
+
+To enable manual triggering, you can modify the `.github/workflows/release-please.yml` workflow:
+
+```yaml
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:  # Add this to enable manual triggering
+```
+
+**When to use:**
+- Force Release Please to run immediately (instead of waiting for next push)
+- Re-run failed release workflows
+- Test release process without making new commits
+
+**How to trigger manually:**
+
+1. **Via GitHub Web Interface:**
+   - Go to repository **Actions** tab
+   - Select **"Release Please"** workflow
+   - Click **"Run workflow"** button
+   - Select **master** branch
+   - Click **"Run workflow"**
+
+2. **Via GitHub CLI:**
+   ```bash
+   gh workflow run release-please.yml --ref master
+   ```
+
+3. **Via GitHub API:**
+   ```bash
+   curl -X POST \
+     -H "Authorization: token $GITHUB_TOKEN" \
+     -H "Accept: application/vnd.github.v3+json" \
+     https://api.github.com/repos/gander-tools/osm-tagging-schema-mcp/actions/workflows/release-please.yml/dispatches \
+     -d '{"ref":"master"}'
+   ```
+
+#### Option 2: Force Release Please Detection
+
+If you need Release Please to detect changes but don't want to modify the workflow:
+
+1. **Make an empty commit:**
+   ```bash
+   git commit --allow-empty -m "chore: trigger release please"
+   git push origin master
+   ```
+
+2. **Use skip CI to avoid running tests:**
+   ```bash
+   git commit --allow-empty -m "chore: trigger release please [skip ci]"
+   git push origin master
+   ```
+
+#### Option 3: Re-run Failed Workflows
+
+If a release workflow failed:
+
+1. **Via GitHub Web Interface:**
+   - Go to **Actions** tab
+   - Find the failed workflow run
+   - Click **"Re-run jobs"**
+
+2. **Via GitHub CLI:**
+   ```bash
+   # List recent runs
+   gh run list --workflow=release-please.yml
+
+   # Re-run specific run
+   gh run rerun <run-id>
+   ```
+
+#### Common Manual Trigger Scenarios
+
+**Scenario 1: Release Please PR exists but workflow didn't complete**
+```bash
+# Re-run the workflow via GitHub Actions UI or CLI
+gh workflow run release-please.yml --ref master
+```
+
+**Scenario 2: No Release Please PR created despite having conventional commits**
+```bash
+# Force trigger with empty commit
+git commit --allow-empty -m "chore: trigger release please detection"
+git push origin master
+```
+
+**Scenario 3: Testing release process in fork/development**
+```bash
+# Trigger manually to test without affecting main repository
+gh workflow run release-please.yml --ref master
+```
+
+**Scenario 4: Release workflow failed due to transient issues**
+```bash
+# Re-run the failed workflow
+gh run rerun $(gh run list --workflow=release-please.yml --limit 1 --json databaseId --jq '.[0].databaseId')
+```
+
+#### Important Notes
+
+**⚠️ Manual triggering limitations:**
+- Manual triggers **don't change** Release Please behavior
+- Still requires conventional commits since last release
+- Won't create releases if no releasable changes exist
+- Respects all existing Release Please configuration
+
+**🔍 Debugging manual triggers:**
+- Check workflow run logs in Actions tab
+- Verify conventional commits exist since last release
+- Confirm release-please-config.json is valid
+- Review .release-please-manifest.json for current version
+
+**💡 Best practices:**
+- Use manual triggers sparingly - automation is preferred
+- Test manual triggers in forks before using in main repository
+- Always verify the release PR content before merging
+- Document why manual trigger was necessary for team awareness
 
 ### Step 1: Write Conventional Commits
 
@@ -233,7 +363,20 @@ Release Please automatically determines version bumps following **strict semanti
 
 **Cause:** No releasable commits since last release (only `chore:`, `ci:`, `test:`, etc.)
 
-**Solution:** Merge at least one `feat:`, `fix:`, or `docs:` commit to trigger release.
+**Solution:**
+1. Merge at least one `feat:`, `fix:`, or `docs:` commit to trigger release
+2. **Manual trigger option:** If you believe there should be a release PR:
+   ```bash
+   # Verify conventional commits exist
+   git log --oneline --since="$(git describe --tags --abbrev=0)"
+
+   # Manual trigger via empty commit
+   git commit --allow-empty -m "chore: trigger release please detection"
+   git push origin master
+
+   # Or trigger workflow directly (if workflow_dispatch enabled)
+   gh workflow run release-please.yml --ref master
+   ```
 
 ### Wrong version bump
 
@@ -273,7 +416,18 @@ Release Please automatically determines version bumps following **strict semanti
 **Fix:**
 1. Fix the issue in a new PR
 2. Merge to master
-3. Re-run the failed workflow or merge will trigger new run
+3. **Manual re-trigger options:**
+   ```bash
+   # Option A: Re-run failed workflow
+   gh run rerun <failed-run-id>
+
+   # Option B: Trigger new workflow run
+   gh workflow run release-please.yml --ref master
+
+   # Option C: Force trigger with empty commit
+   git commit --allow-empty -m "chore: retry failed release"
+   git push origin master
+   ```
 
 ### Need to undo a release
 
