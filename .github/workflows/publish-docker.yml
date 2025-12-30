@@ -1,14 +1,11 @@
 name: Docker Build and Publish
 
 on:
-  # Automatic trigger after successful Release Please workflow
-  # Note: This triggers AFTER the entire workflow completes, ensuring dist.tar.gz is uploaded
-  workflow_run:
-    workflows: ["Release Please"]
+  # Automatic trigger when a GitHub release is published
+  # This ensures Docker builds only happen for actual releases, not every push to master
+  release:
     types:
-      - completed
-    branches:
-      - master
+      - published
 
   # Manual trigger with build type selection
   workflow_dispatch:
@@ -66,22 +63,15 @@ jobs:
           IS_RELEASE="false"
           CHECKOUT_REF=""
 
-          # workflow_run - triggered after Release Please workflow completes
-          if [ "${{ github.event_name }}" = "workflow_run" ]; then
-            # Check if workflow_run was successful
-            if [ "${{ github.event.workflow_run.conclusion }}" != "success" ]; then
-              echo "::warning::Release Please workflow did not succeed, skipping Docker build"
-              echo "should-build=false" >> "$GITHUB_OUTPUT"
-              exit 0
-            fi
-
-            # Get the latest release (created by Release Please)
-            GIT_TAG=$(gh release list --limit 1 --json tagName,isDraft --jq '.[] | select(.isDraft == false) | .tagName')
+          # release - triggered when a GitHub release is published
+          if [ "${{ github.event_name }}" = "release" ]; then
+            # Get tag from release event
+            GIT_TAG="${{ github.event.release.tag_name }}"
 
             if [ -z "$GIT_TAG" ]; then
-              echo "::warning::No release found from Release Please workflow (might be just a push without release)"
+              echo "::error::No tag found in release event"
               echo "should-build=false" >> "$GITHUB_OUTPUT"
-              exit 0
+              exit 1
             fi
 
             # Strip 'v' prefix for Docker tags (v3.6.0 -> 3.6.0)
@@ -89,7 +79,7 @@ jobs:
             IS_RELEASE="true"
             SHOULD_BUILD="true"
             CHECKOUT_REF="refs/tags/$GIT_TAG"
-            echo "✅ Building Docker image for version: $VERSION_TAG (git tag: $GIT_TAG) from Release Please workflow"
+            echo "✅ Building Docker image for version: $VERSION_TAG (git tag: $GIT_TAG) from release event"
 
           # workflow_dispatch - manual trigger with build type selection
           elif [ "${{ github.event_name }}" = "workflow_dispatch" ]; then

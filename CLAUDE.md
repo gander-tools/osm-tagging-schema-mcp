@@ -162,9 +162,9 @@ Every feature implementation MUST follow this workflow:
 - **Release**: Automated npm releases with semantic versioning
 - **Distribution**: Package available via `npx` command
 - **Docker Builds**:
-  - Automatic builds after successful Release Please workflow (triggered via `workflow_run`)
-  - Manual rebuilds via workflow_dispatch for specific versions
-  - Edge builds on master push for development testing
+  - Automatic builds when GitHub releases are published (triggered via `release` event)
+  - Manual rebuilds via workflow_dispatch for specific versions (release/edge/pr builds)
+  - No automatic edge builds on master push (use manual trigger instead)
 
 #### GitHub Actions Workflow Requirements
 
