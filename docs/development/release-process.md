@@ -112,254 +112,200 @@ git commit -m "docs: document get_preset_details API"
 
 ## Release Workflow
 
-### Manual Release Creation
+### Manually Triggering Release Please for Specific Version
 
-While the project uses Release Please for automated releases, there are scenarios where you might need to create releases manually:
+Sometimes you need Release Please to create a release for a specific version number rather than its automatically calculated version. Here's how to force Release Please to create the release you want:
 
-#### When to Create Manual Releases
+#### When to Force Specific Versions
 
-**Emergency releases:**
-- Critical security patches that can't wait for Release Please workflow
-- Hotfixes that need immediate deployment
-- Production outages requiring urgent releases
+**Version alignment:**
+- Synchronize with external dependencies
+- Match semantic versioning requirements
+- Align with marketing/business release schedules
 
-**Development/testing scenarios:**
-- Pre-release versions (alpha, beta, rc)
-- Fork/development testing
-- Custom release configurations not supported by Release Please
+**Version corrections:**
+- Fix incorrectly calculated version bumps
+- Skip version numbers for consistency
+- Force major version bumps when Release Please calculates minor
 
-**Release Please bypass:**
-- Workflow failures that can't be resolved quickly
-- Major version releases requiring manual control
-- Custom release notes or assets
+**Emergency scenarios:**
+- Hotfix releases requiring specific version numbers
+- Security patches requiring immediate specific versions
 
-#### Option 1: Manual Release via GitHub CLI
+#### Option 1: Modify Release Please Manifest
 
-**Prerequisites:**
-```bash
-# Install and authenticate GitHub CLI
-gh auth login
+**Force specific version by updating manifest:**
 
-# Ensure you're on the correct commit/tag
-git checkout master
-git pull origin master
-```
-
-**Create manual release:**
-
-1. **Determine next version:**
+1. **Check current Release Please state:**
    ```bash
-   # Get current version from package.json
-   CURRENT_VERSION=$(node -p "require('./package.json').version")
-   echo "Current version: $CURRENT_VERSION"
+   # View current version in manifest
+   cat .release-please-manifest.json
+   # Output: { ".": "3.7.0" }
 
-   # Choose next version (manual decision)
-   # For patch: 1.0.0 → 1.0.1
-   # For minor: 1.0.0 → 1.1.0
-   # For major: 1.0.0 → 2.0.0
-   NEW_VERSION="1.0.1"  # Replace with desired version
+   # Check what Release Please would calculate
+   git log --oneline --since="$(git describe --tags --abbrev=0)"
    ```
 
-2. **Update version and build:**
+2. **Manually set desired version:**
    ```bash
+   # Force specific version in manifest
+   DESIRED_VERSION="4.0.0"  # Your target version
+
+   # Update manifest file
+   echo "{ \".\": \"$DESIRED_VERSION\" }" > .release-please-manifest.json
+
+   # Commit the manifest change
+   git add .release-please-manifest.json
+   git commit -m "chore: force release please to version $DESIRED_VERSION"
+   git push origin master
+   ```
+
+3. **Trigger Release Please workflow:**
+   ```bash
+   # Option A: Add workflow_dispatch to release-please.yml first
+   # Then trigger manually:
+   gh workflow run release-please.yml --ref master
+
+   # Option B: Force trigger with empty commit
+   git commit --allow-empty -m "chore: trigger release please for v$DESIRED_VERSION"
+   git push origin master
+   ```
+
+#### Option 2: Coordinate with Package.json Version
+
+**Sync Release Please with package.json version:**
+
+1. **Update package.json to target version:**
+   ```bash
+   DESIRED_VERSION="4.0.0"
+
    # Update package.json version
-   npm version $NEW_VERSION --no-git-tag-version
+   npm version $DESIRED_VERSION --no-git-tag-version
 
-   # Generate version.json
-   BUILD_TIMESTAMP=$(date -u +%Y-%m-%dT%H:%M:%SZ)
-   cat > src/version.json <<EOF
-   {
-     "version": "$NEW_VERSION",
-     "buildTimestamp": "$BUILD_TIMESTAMP"
-   }
-   EOF
-
-   # Build the package
-   npm run build
-   cp src/version.json dist/version.json
-
-   # Run tests to ensure everything works
-   npm test
+   # Update Release Please manifest to match
+   echo "{ \".\": \"$DESIRED_VERSION\" }" > .release-please-manifest.json
    ```
 
-3. **Create Git tag and release:**
+2. **Commit both files together:**
    ```bash
-   # Commit version changes
-   git add package.json src/version.json
-   git commit -m "chore: release $NEW_VERSION"
-
-   # Create and push tag
-   git tag "v$NEW_VERSION"
-   git push origin master
-   git push origin "v$NEW_VERSION"
-
-   # Create GitHub release
-   gh release create "v$NEW_VERSION" \
-     --title "Release $NEW_VERSION" \
-     --notes "Manual release $NEW_VERSION
-
-   ## Changes
-   - [Add your release notes here]
-
-   ## 📦 Installation
-   \`\`\`bash
-   npx @gander-tools/osm-tagging-schema-mcp@$NEW_VERSION
-   \`\`\`
-
-   🤖 Generated with [Claude Code](https://claude.com/claude-code)" \
-     --latest
-   ```
-
-4. **Publish to npm (optional):**
-   ```bash
-   # Create package tarball
-   npm pack
-
-   # Publish to npm (requires authentication)
-   npm publish --access public
-   ```
-
-#### Option 2: Manual Release via GitHub Web Interface
-
-1. **Prepare release locally:**
-   ```bash
-   # Update version and build (same as CLI method)
-   NEW_VERSION="1.0.1"
-   npm version $NEW_VERSION --no-git-tag-version
-
-   # Generate version.json and build
-   BUILD_TIMESTAMP=$(date -u +%Y-%m-%dT%H:%M:%SZ)
-   cat > src/version.json <<EOF
-   {
-     "version": "$NEW_VERSION",
-     "buildTimestamp": "$BUILD_TIMESTAMP"
-   }
-   EOF
-
-   npm run build
-   cp src/version.json dist/version.json
-   npm test
-
-   # Commit and push
-   git add package.json src/version.json
-   git commit -m "chore: release $NEW_VERSION"
+   git add package.json .release-please-manifest.json
+   git commit -m "chore: align version to $DESIRED_VERSION for release"
    git push origin master
    ```
 
-2. **Create release via GitHub UI:**
-   - Go to repository on GitHub.com
-   - Click **"Releases"** tab
-   - Click **"Create a new release"**
-   - **Tag:** Enter `v1.0.1` (or your version)
-   - **Title:** `Release 1.0.1`
-   - **Description:** Add release notes
-   - **Assets:** Optionally upload additional files
-   - Click **"Publish release"**
+3. **Release Please will detect and create release PR:**
+   - Release Please sees package.json and manifest are aligned
+   - Creates release PR with your specified version
+   - No additional version bump occurs
 
-#### Option 3: Emergency Hotfix Release
+#### Option 3: Add workflow_dispatch to Release Please
 
-For urgent production fixes:
+**Enable manual triggering in workflow:**
 
-1. **Create hotfix branch:**
-   ```bash
-   # From latest release tag
-   git checkout v3.7.0  # Latest stable tag
-   git checkout -b hotfix/critical-security-patch
+1. **Modify `.github/workflows/release-please.yml`:**
+   ```yaml
+   name: Release Please
 
-   # Make minimal fix
-   # ... edit files ...
-
-   # Test the fix
-   npm test
+   on:
+     push:
+       branches:
+         - master
+     workflow_dispatch:  # Add this line
+       inputs:
+         version:
+           description: 'Force specific version (optional)'
+           required: false
+           type: string
    ```
 
-2. **Create patch release:**
+2. **Use manual trigger:**
    ```bash
-   # Bump patch version
-   npm version patch --no-git-tag-version
-   NEW_VERSION=$(node -p "require('./package.json').version")
+   # Via GitHub CLI
+   gh workflow run release-please.yml --ref master
 
-   # Build and commit
-   npm run build
-   git add .
-   git commit -m "fix: critical security patch
-
-   SECURITY-FIX: Address CVE-XXXX-XXXX vulnerability
-
-   This is a critical security patch that should be deployed immediately."
-
-   # Tag and push
-   git tag "v$NEW_VERSION"
-   git push origin hotfix/critical-security-patch
-   git push origin "v$NEW_VERSION"
-
-   # Create emergency release
-   gh release create "v$NEW_VERSION" \
-     --title "Security Patch $NEW_VERSION" \
-     --notes "🚨 **CRITICAL SECURITY PATCH** 🚨
-
-   This release addresses a critical security vulnerability.
-   **Immediate update recommended.**
-
-   ## Security Fix
-   - Address CVE-XXXX-XXXX vulnerability
-
-   ## Installation
-   \`\`\`bash
-   npx @gander-tools/osm-tagging-schema-mcp@$NEW_VERSION
-   \`\`\`" \
-     --latest
-
-   # Publish to npm immediately
-   npm publish --access public
+   # Via GitHub Web Interface:
+   # Go to Actions → Release Please → Run workflow → Run workflow
    ```
 
-#### Pre-release Versions
+#### Option 4: Force Major Version Bump
 
-For testing versions before stable release:
+**When Release Please calculates minor but you need major:**
 
+1. **Add breaking change marker to recent commits:**
+   ```bash
+   # Amend recent commit to add breaking change
+   git commit --amend -m "feat: new feature
+
+   BREAKING CHANGE: this change breaks backward compatibility
+
+   Previous commit message content here..."
+
+   git push --force-with-lease origin master
+   ```
+
+2. **Or create new breaking change commit:**
+   ```bash
+   git commit --allow-empty -m "feat!: force major version bump
+
+   BREAKING CHANGE: force major version increment for version alignment"
+   git push origin master
+   ```
+
+#### Common Scenarios and Solutions
+
+**Scenario 1: Release Please calculated 3.8.0, but you need 4.0.0**
 ```bash
-# Create pre-release version
-NEW_VERSION="1.1.0-beta.1"
-npm version $NEW_VERSION --no-git-tag-version
-
-# Build and tag
-npm run build
-git add package.json src/version.json
-git commit -m "chore: pre-release $NEW_VERSION"
-git tag "v$NEW_VERSION"
+# Force version in manifest
+echo '{ ".": "4.0.0" }' > .release-please-manifest.json
+git add .release-please-manifest.json
+git commit -m "chore: force major version bump to 4.0.0"
 git push origin master
-git push origin "v$NEW_VERSION"
-
-# Create pre-release on GitHub
-gh release create "v$NEW_VERSION" \
-  --title "Pre-release $NEW_VERSION" \
-  --notes "Beta release for testing" \
-  --prerelease
-
-# Publish as pre-release to npm
-npm publish --access public --tag beta
 ```
 
-#### Important Considerations
+**Scenario 2: Need to skip version 3.8.0 and go directly to 3.9.0**
+```bash
+# Set manifest to desired version
+echo '{ ".": "3.9.0" }' > .release-please-manifest.json
+npm version 3.9.0 --no-git-tag-version
+git add package.json .release-please-manifest.json
+git commit -m "chore: skip to version 3.9.0"
+git push origin master
+```
 
-**⚠️ Manual release limitations:**
-- **Bypasses Release Please:** Manual releases won't update `.release-please-manifest.json`
-- **CHANGELOG:** Must manually update `CHANGELOG.md`
-- **Version conflicts:** May conflict with future Release Please versions
-- **CI/CD:** Manual releases may skip automated tests/checks
+**Scenario 3: Emergency hotfix requiring specific version**
+```bash
+# From current master with urgent fix committed
+HOTFIX_VERSION="3.7.1"
+echo "{ \".\": \"$HOTFIX_VERSION\" }" > .release-please-manifest.json
+npm version $HOTFIX_VERSION --no-git-tag-version
+git add package.json .release-please-manifest.json
+git commit -m "chore: emergency hotfix version $HOTFIX_VERSION"
+git push origin master
 
-**🔧 Post-manual release cleanup:**
-- Update `.release-please-manifest.json` with manual version
-- Update `CHANGELOG.md` with release notes
-- Ensure Release Please configuration accounts for manual releases
+# Force trigger Release Please immediately
+git commit --allow-empty -m "chore: trigger immediate release for hotfix"
+git push origin master
+```
+
+#### Important Notes
+
+**⚠️ Version forcing considerations:**
+- **Future releases:** Release Please will continue from your forced version
+- **CHANGELOG:** Version jumps may create gaps in changelog
+- **Semantic versioning:** Ensure forced versions follow semver rules
+- **Team communication:** Document why specific version was forced
+
+**🔧 Verification steps:**
+1. Check Release Please creates PR with your exact version
+2. Verify package.json version matches in release PR
+3. Confirm CHANGELOG entries are correct
+4. Test that future releases continue correctly from forced version
 
 **💡 Best practices:**
-- Use manual releases sparingly - only for emergencies or special cases
-- Always run full test suite before manual release
-- Document why manual release was necessary
-- Follow semantic versioning strictly
-- Update all relevant documentation and changelogs
+- Force versions sparingly - only when necessary
+- Document version forcing decisions in commit messages
+- Verify Release Please behavior after forcing versions
+- Update team about version alignment changes
 
 ### Step 1: Write Conventional Commits
 
@@ -490,28 +436,52 @@ Release Please automatically determines version bumps following **strict semanti
 
 **Solution:**
 1. Merge at least one `feat:`, `fix:`, or `docs:` commit to trigger release
-2. **Manual release option:** If you need immediate release regardless:
+2. **Force Release Please to specific version:** If you need immediate release:
    ```bash
-   # Verify current version
-   CURRENT_VERSION=$(node -p "require('./package.json').version")
-   echo "Current version: $CURRENT_VERSION"
+   # Force Release Please to create release for desired version
+   DESIRED_VERSION="3.7.1"  # Your target version
 
-   # Create manual release (see Manual Release Creation section above)
-   NEW_VERSION="1.0.1"  # Choose appropriate version
-   npm version $NEW_VERSION --no-git-tag-version
+   # Update manifest to force version
+   echo "{ \".\": \"$DESIRED_VERSION\" }" > .release-please-manifest.json
+   git add .release-please-manifest.json
+   git commit -m "chore: force release please to create release $DESIRED_VERSION"
+   git push origin master
 
-   # Follow manual release process
-   # See "Manual Release Creation" section for complete steps
+   # Verify Release Please creates PR for your version
    ```
 
 ### Wrong version bump
 
-**Cause:** Commits don't follow Conventional Commits format
+**Cause:** Release Please calculated incorrect version bump
 
-**Solution:**
-1. Ensure commits use correct prefixes (`feat:`, `fix:`, etc.)
-2. For breaking changes, include `BREAKING CHANGE:` in footer or use `!`
-3. Release Please only sees commits merged to master
+**Solutions:**
+
+**Option 1: Fix commit format and retrigger**
+```bash
+# If commits don't follow Conventional Commits format
+# Amend recent commits to fix format
+git commit --amend -m "feat: correct commit type for proper version bump"
+git push --force-with-lease origin master
+```
+
+**Option 2: Force correct version in manifest**
+```bash
+# If Release Please calculated 3.8.0 but you need 4.0.0
+CORRECT_VERSION="4.0.0"
+echo "{ \".\": \"$CORRECT_VERSION\" }" > .release-please-manifest.json
+git add .release-please-manifest.json
+git commit -m "chore: correct version bump to $CORRECT_VERSION"
+git push origin master
+```
+
+**Option 3: Add breaking change marker for major bump**
+```bash
+# If you need major but Release Please calculated minor/patch
+git commit --allow-empty -m "feat!: force major version bump
+
+BREAKING CHANGE: align version numbering requires major bump"
+git push origin master
+```
 
 ### CHANGELOG missing entries
 
@@ -530,8 +500,6 @@ Release Please automatically determines version bumps following **strict semanti
 
 ### Publishing failed
 
-**For automated Release Please failures:**
-
 **Check GitHub Actions logs:**
 1. Go to **Actions** tab
 2. Find the failed "Release Please" workflow
@@ -541,36 +509,35 @@ Release Please automatically determines version bumps following **strict semanti
    - Build errors
    - npm authentication issues
 
-**Fix:**
-1. Fix the issue in a new PR and merge to master
-2. Release Please will automatically retry on next push
+**Retry options:**
 
-**For manual release failures:**
-
-**Common manual release issues:**
-- npm authentication failures
-- Git tag conflicts
-- Build/test failures
-- Network issues during upload
-
-**Manual release recovery:**
+**Option 1: Re-run failed workflow**
 ```bash
-# If tag creation failed
-git tag -d v1.0.1  # Delete local tag
-git push origin :refs/tags/v1.0.1  # Delete remote tag
-# Then retry manual release process
+# Via GitHub CLI
+gh run list --workflow=release-please.yml --limit 5
+gh run rerun <failed-run-id>
 
-# If npm publish failed
-npm unpublish @gander-tools/osm-tagging-schema-mcp@1.0.1  # If just published
-# Fix issues, then retry: npm publish --access public
+# Via GitHub Web Interface:
+# Go to Actions → find failed run → Re-run jobs
+```
 
-# If GitHub release creation failed
-gh release delete v1.0.1  # Delete failed release
-# Then retry: gh release create v1.0.1 --title "..." --notes "..."
+**Option 2: Fix issue and trigger new release**
+```bash
+# Fix the underlying issue in new commit
+git add .
+git commit -m "fix: resolve build/test issues for release"
+git push origin master
+# Release Please will automatically retry
+```
 
-# Complete recovery and retry
-git reset --hard HEAD~1  # Undo version commit
-# Fix issues, then follow manual release process again
+**Option 3: Force Release Please to retry specific version**
+```bash
+# If you need to retry exact same version after fixing issues
+RETRY_VERSION="3.7.0"  # Same version that failed
+echo "{ \".\": \"$RETRY_VERSION\" }" > .release-please-manifest.json
+git add .release-please-manifest.json
+git commit -m "chore: retry release please for version $RETRY_VERSION after fixes"
+git push origin master
 ```
 
 ### Need to undo a release
