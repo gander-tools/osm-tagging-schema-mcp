@@ -18,8 +18,7 @@ jobs:
     permissions:
       contents: write       # Required for creating releases and updating files
       pull-requests: write  # Required for creating/updating release PRs
-      issues: write         # Required for release-please issue tracking
-      id-token: write       # Required for npm provenance
+      id-token: write      # Required for npm provenance
 
     outputs:
       release_created: ${{ steps.release.outputs.release_created }}
@@ -36,8 +35,6 @@ jobs:
       - name: Run Release Please
         uses: googleapis/release-please-action@16a9c90856f42705d54a6fda1823352bdc62cf38 # v4.4.0
         id: release
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
 
   # This job executes ONLY after merging a Release PR
   publish-npm:
@@ -245,23 +242,3 @@ jobs:
           echo "✅ Successfully published version ${{ needs.create-release.outputs.version }}"
           echo "📦 Package: @gander-tools/osm-tagging-schema-mcp@${{ needs.create-release.outputs.version }}"
           echo "🏷️  Tag: ${{ needs.create-release.outputs.tag_name }}"
-
-  # This job triggers Docker build workflow ONLY after successful release merge
-  trigger-docker-build:
-    name: Trigger Docker Build
-    needs: [create-release, publish-npm]
-    if: ${{ needs.create-release.outputs.release_created }}
-
-    # Required permissions for called workflow (publish-docker.yml)
-    # GitHub Actions requires permissions to be declared at caller level when using workflow_call
-    permissions:
-      contents: read        # Required for checkout
-      packages: write       # Required for pushing to GHCR
-      id-token: write       # Required for Cosign keyless signing
-      attestations: write   # Required for build attestations
-      security-events: write  # Required for uploading Trivy SARIF results
-
-    uses: ./.github/workflows/publish-docker.yml
-    with:
-      version: ${{ needs.create-release.outputs.tag_name }}
-    secrets: inherit
