@@ -35,6 +35,8 @@ jobs:
       - name: Run Release Please
         uses: googleapis/release-please-action@16a9c90856f42705d54a6fda1823352bdc62cf38 # v4.4.0
         id: release
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
   # This job executes ONLY after merging a Release PR
   publish-npm:
