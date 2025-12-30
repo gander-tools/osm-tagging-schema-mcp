@@ -13,10 +13,10 @@ The `publish-docker.yml` workflow handles both version tag releases and on-deman
 - Shared runtime configuration ensures consistency across all builds
 
 **Build Triggers:**
-- ✅ **Version tags** (v*.*.*): Automatic release builds
-- ✅ **On-demand PR builds**: Manual trigger, label (`docker:build`), or comment (`/docker-build`)
-- ❌ **NOT on push to master**: No automatic builds on master branch
-- ❌ **NOT on regular PR events**: Only on-demand triggers work for PRs
+- ✅ **Release Please workflow (workflow_call)**: Automatic release builds after successful release merge
+- ✅ **Manual workflow dispatch**: On-demand builds for releases, edge, or PR testing
+- ❌ **NOT on push to master**: No automatic builds on master branch pushes
+- ❌ **NOT on regular PR events**: Only manual triggers work for PRs
 
 ## Security & Permissions
 
@@ -300,11 +300,13 @@ cosign verify \
 
 The `publish-docker.yml` workflow handles automatic builds for:
 
-- ✅ **Version tags** (v*.*.*) → `latest`, semantic version tags
+- ✅ **Release Please workflow (workflow_call)** → `latest`, semantic version tags (e.g., `3.6.0`)
+  - Triggered automatically after successful release merge
+  - Called from `release-please.yml` workflow as a reusable workflow
 
 **Removed:**
 - ❌ **Push to master** → No longer builds automatically on master
-- ❌ **Pull Request** → Use on-demand triggers instead (label, comment, manual)
+- ❌ **Pull Request** → Use manual workflow_dispatch trigger instead
 
 ## Workflow Permissions
 

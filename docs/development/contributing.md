@@ -825,13 +825,15 @@ Docker images are automatically built and published to GitHub Container Registry
 
 #### Automated Build Triggers
 
-**Master Branch Push:**
+**Release Please Workflow (workflow_call):**
+- Triggered automatically by Release Please workflow after successful release merge
+- Called as a reusable workflow from `release-please.yml`
 - Builds multi-architecture images (amd64, arm64)
-- Tags: `edge` (bleeding edge development builds)
+- Tags: semantic version (e.g., `3.6.0`) and `latest`
 
-**Version Tag Push:**
-- Triggered when pushing tags like `v1.0.0`
-- Tags: `1.0.0`, `1.0`, `1`, `latest`
+**Manual Trigger (workflow_dispatch):**
+- Allows on-demand builds for releases, edge builds, or PR testing
+- Build types: `release` (specific version), `edge` (latest master), `pr` (pull request)
 
 #### Image Tags
 

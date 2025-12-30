@@ -165,7 +165,7 @@ When you're ready to release, simply **merge the release PR**. This triggers aut
 7. ✅ Updates GitHub release with artifacts
 8. ✅ Uploads `dist.tar.gz` for Docker builds
 
-**publish-docker.yml** (triggered by workflow_run after successful release):
+**publish-docker.yml** (triggered by Release Please workflow after successful release merge):
 1. ✅ Builds multi-arch Docker images (amd64, arm64)
 2. ✅ Publishes to GitHub Container Registry (ghcr.io)
 3. ✅ Tags with version and `latest`
@@ -328,8 +328,8 @@ Release Please determines versions automatically. For manual control:
 - **Conventional Commits**: Commit message standard
   - Documentation: https://www.conventionalcommits.org/
 - **GitHub Actions**: CI/CD automation
-  - `release-please.yml`: Automatic release PR and publishing
-  - `publish-docker.yml`: Docker image publishing (triggered by workflow_run)
+  - `release-please.yml`: Automatic release PR, publishing, and Docker build trigger
+  - `publish-docker.yml`: Docker image publishing (triggered by release-please.yml after successful release merge)
 - **npm Trusted Publishers**: Secure publishing with OIDC authentication
 - **SLSA Attestations**: Supply chain security
 

@@ -242,3 +242,13 @@ jobs:
           echo "✅ Successfully published version ${{ needs.create-release.outputs.version }}"
           echo "📦 Package: @gander-tools/osm-tagging-schema-mcp@${{ needs.create-release.outputs.version }}"
           echo "🏷️  Tag: ${{ needs.create-release.outputs.tag_name }}"
+
+  # This job triggers Docker build workflow ONLY after successful release merge
+  trigger-docker-build:
+    name: Trigger Docker Build
+    needs: [create-release, publish-npm]
+    if: ${{ needs.create-release.outputs.release_created }}
+    uses: ./.github/workflows/publish-docker.yml
+    with:
+      version: ${{ needs.create-release.outputs.tag_name }}
+    secrets: inherit

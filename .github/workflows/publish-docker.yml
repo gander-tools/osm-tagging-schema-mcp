@@ -1,14 +1,14 @@
 name: Docker Build and Publish
 
 on:
-  # Automatic trigger after successful Release Please workflow
-  # Note: This triggers AFTER the entire workflow completes, ensuring dist.tar.gz is uploaded
-  workflow_run:
-    workflows: ["Release Please"]
-    types:
-      - completed
-    branches:
-      - master
+  # Triggered by Release Please workflow after successful release merge
+  # This ensures Docker builds only happen for actual releases, not every push to master
+  workflow_call:
+    inputs:
+      version:
+        description: 'Release version (e.g., v3.6.0)'
+        required: true
+        type: string
 
   # Manual trigger with build type selection
   workflow_dispatch:
@@ -66,22 +66,15 @@ jobs:
           IS_RELEASE="false"
           CHECKOUT_REF=""
 
-          # workflow_run - triggered after Release Please workflow completes
-          if [ "${{ github.event_name }}" = "workflow_run" ]; then
-            # Check if workflow_run was successful
-            if [ "${{ github.event.workflow_run.conclusion }}" != "success" ]; then
-              echo "::warning::Release Please workflow did not succeed, skipping Docker build"
-              echo "should-build=false" >> "$GITHUB_OUTPUT"
-              exit 0
-            fi
-
-            # Get the latest release (created by Release Please)
-            GIT_TAG=$(gh release list --limit 1 --json tagName,isDraft --jq '.[] | select(.isDraft == false) | .tagName')
+          # workflow_call - triggered by Release Please workflow after successful release merge
+          if [ "${{ github.event_name }}" = "workflow_call" ]; then
+            # Get version from workflow_call input
+            GIT_TAG="${{ inputs.version }}"
 
             if [ -z "$GIT_TAG" ]; then
-              echo "::warning::No release found from Release Please workflow (might be just a push without release)"
+              echo "::error::No version provided in workflow_call input"
               echo "should-build=false" >> "$GITHUB_OUTPUT"
-              exit 0
+              exit 1
             fi
 
             # Strip 'v' prefix for Docker tags (v3.6.0 -> 3.6.0)
