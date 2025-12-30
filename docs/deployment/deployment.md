@@ -211,6 +211,7 @@ docker run -d \
 | `/mcp/:sessionId` | DELETE | Close a specific session |
 | `/health` | GET | Liveness probe (server status) |
 | `/ready` | GET | Readiness probe (schema loaded status) |
+| `/version` | GET | Application version information |
 
 **Example Usage:**
 
@@ -220,6 +221,9 @@ curl http://localhost:3000/health
 
 # Readiness check
 curl http://localhost:3000/ready
+
+# Version info
+curl http://localhost:3000/version
 
 # MCP protocol communication (requires MCP client library)
 # See MCP documentation: https://modelcontextprotocol.io
@@ -358,7 +362,7 @@ docker run -d \
 
 ## Health Checks
 
-The server provides two health check endpoints:
+The server provides three health check and monitoring endpoints:
 
 ### Liveness Probe - `/health`
 
@@ -420,6 +424,30 @@ curl http://localhost:3000/ready
 - Kubernetes readiness probes
 - Load balancer backend health
 - Deployment verification
+
+### Version Endpoint - `/version`
+
+**Purpose**: Get application version and build information
+
+**Usage:**
+```bash
+curl http://localhost:3000/version
+```
+
+**Response (200 OK):**
+```json
+{
+  "version": "3.6.0",
+  "buildTimestamp": "2025-12-30T12:00:00.000Z",
+  "service": "osm-tagging-schema-mcp"
+}
+```
+
+**Use cases:**
+- Version verification after deployment
+- Monitoring and audit logging
+- Troubleshooting (checking deployed version)
+- CI/CD pipeline verification
 
 ### Docker Health Check
 

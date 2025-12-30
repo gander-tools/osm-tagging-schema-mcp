@@ -419,7 +419,7 @@ for (const tool of tools) {
 - ✅ **Security Scanning**: Trivy vulnerability scanning, security reports
 - ✅ **Transport Protocols**: stdio (default), HTTP for web clients
 - ✅ **Docker Deployment**: Container-based deployment with health checks
-- ✅ **Health Checks**: `/health` (liveness) and `/ready` (readiness) endpoints
+- ✅ **Health Checks**: `/health` (liveness), `/ready` (readiness), and `/version` (version info) endpoints
 - ✅ **Release Management**: Automated release management with Release Please (Conventional Commits)
 
 **Phase 8: Schema Builder API Refactor ✅ COMPLETE**
@@ -482,6 +482,7 @@ for (const tool of tools) {
 **Health Check Endpoints**:
 - **Liveness probe**: `/health` endpoint returns server status
 - **Readiness probe**: `/ready` endpoint validates schema loaded
+- **Version info**: `/version` endpoint returns application version and build timestamp
 
 **Docker Deployment Options**:
 - **Production**: Latest stable image, resource limits, security hardening

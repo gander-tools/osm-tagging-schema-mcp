@@ -268,6 +268,20 @@ async function startHttpServer(server: McpServer, config: TransportConfig): Prom
 					return;
 				}
 
+				if (req.url === "/version" && req.method === "GET") {
+					// Version endpoint - returns application version information
+					const versionInfo = getVersionInfo();
+					res.writeHead(200, { "Content-Type": "application/json" });
+					res.end(
+						JSON.stringify({
+							version: versionInfo.version,
+							buildTimestamp: versionInfo.buildTimestamp,
+							service: "osm-tagging-schema-mcp",
+						}),
+					);
+					return;
+				}
+
 				// Wrap response with keep-alive functionality for SSE streams
 				const wrappedRes = wrapResponseWithKeepAlive(res, req);
 

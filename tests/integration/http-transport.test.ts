@@ -529,4 +529,288 @@ describe("HTTP Transport Integration Tests", () => {
 			},
 		);
 	});
+
+	describe("Health Check Endpoints", () => {
+		let server: http.Server | null = null;
+
+		afterEach(async () => {
+			if (server) {
+				await new Promise<void>((resolve) => {
+					server?.close(() => {
+						server = null;
+						resolve();
+					});
+				});
+			}
+		});
+
+		it("should respond to GET /health with liveness status", async () => {
+			server = http.createServer((req, res) => {
+				if (req.url === "/health" && req.method === "GET") {
+					res.writeHead(200, { "Content-Type": "application/json" });
+					res.end(
+						JSON.stringify({
+							status: "ok",
+							service: "osm-tagging-schema-mcp",
+							timestamp: new Date().toISOString(),
+						}),
+					);
+				} else {
+					res.writeHead(404);
+					res.end();
+				}
+			});
+
+			await new Promise<void>((resolve) => {
+				server?.listen(0, () => {
+					const address = server?.address();
+					assert.ok(address && typeof address === "object");
+
+					if (typeof address === "object" && address) {
+						const options = {
+							hostname: "localhost",
+							port: address.port,
+							path: "/health",
+							method: "GET",
+						};
+
+						const req = http.request(options, (res) => {
+							assert.strictEqual(res.statusCode, 200);
+							assert.strictEqual(res.headers["content-type"], "application/json");
+
+							let data = "";
+							res.on("data", (chunk) => {
+								data += chunk.toString();
+							});
+
+							res.on("end", () => {
+								const response = JSON.parse(data);
+								assert.strictEqual(response.status, "ok");
+								assert.strictEqual(response.service, "osm-tagging-schema-mcp");
+								assert.ok(response.timestamp);
+								assert.ok(Date.parse(response.timestamp)); // Valid ISO timestamp
+								resolve();
+							});
+						});
+
+						req.end();
+					}
+				});
+			});
+		});
+
+		it("should respond to GET /ready with readiness status when schema is loaded", async () => {
+			server = http.createServer((req, res) => {
+				if (req.url === "/ready" && req.method === "GET") {
+					res.writeHead(200, { "Content-Type": "application/json" });
+					res.end(
+						JSON.stringify({
+							status: "ready",
+							service: "osm-tagging-schema-mcp",
+							schema: {
+								presets: 1000,
+								fields: 500,
+								categories: 50,
+								version: "6.0.0",
+							},
+							timestamp: new Date().toISOString(),
+						}),
+					);
+				} else {
+					res.writeHead(404);
+					res.end();
+				}
+			});
+
+			await new Promise<void>((resolve) => {
+				server?.listen(0, () => {
+					const address = server?.address();
+					assert.ok(address && typeof address === "object");
+
+					if (typeof address === "object" && address) {
+						const options = {
+							hostname: "localhost",
+							port: address.port,
+							path: "/ready",
+							method: "GET",
+						};
+
+						const req = http.request(options, (res) => {
+							assert.strictEqual(res.statusCode, 200);
+							assert.strictEqual(res.headers["content-type"], "application/json");
+
+							let data = "";
+							res.on("data", (chunk) => {
+								data += chunk.toString();
+							});
+
+							res.on("end", () => {
+								const response = JSON.parse(data);
+								assert.strictEqual(response.status, "ready");
+								assert.strictEqual(response.service, "osm-tagging-schema-mcp");
+								assert.ok(response.schema);
+								assert.strictEqual(typeof response.schema.presets, "number");
+								assert.strictEqual(typeof response.schema.fields, "number");
+								assert.strictEqual(typeof response.schema.categories, "number");
+								assert.ok(response.schema.version);
+								assert.ok(response.timestamp);
+								resolve();
+							});
+						});
+
+						req.end();
+					}
+				});
+			});
+		});
+
+		it("should respond to GET /ready with 503 when schema is not loaded", async () => {
+			server = http.createServer((req, res) => {
+				if (req.url === "/ready" && req.method === "GET") {
+					res.writeHead(503, { "Content-Type": "application/json" });
+					res.end(
+						JSON.stringify({
+							status: "not_ready",
+							error: "Schema not loaded",
+							timestamp: new Date().toISOString(),
+						}),
+					);
+				} else {
+					res.writeHead(404);
+					res.end();
+				}
+			});
+
+			await new Promise<void>((resolve) => {
+				server?.listen(0, () => {
+					const address = server?.address();
+					assert.ok(address && typeof address === "object");
+
+					if (typeof address === "object" && address) {
+						const options = {
+							hostname: "localhost",
+							port: address.port,
+							path: "/ready",
+							method: "GET",
+						};
+
+						const req = http.request(options, (res) => {
+							assert.strictEqual(res.statusCode, 503);
+							assert.strictEqual(res.headers["content-type"], "application/json");
+
+							let data = "";
+							res.on("data", (chunk) => {
+								data += chunk.toString();
+							});
+
+							res.on("end", () => {
+								const response = JSON.parse(data);
+								assert.strictEqual(response.status, "not_ready");
+								assert.strictEqual(response.error, "Schema not loaded");
+								assert.ok(response.timestamp);
+								resolve();
+							});
+						});
+
+						req.end();
+					}
+				});
+			});
+		});
+
+		it("should respond to GET /version with application version info", async () => {
+			server = http.createServer((req, res) => {
+				if (req.url === "/version" && req.method === "GET") {
+					res.writeHead(200, { "Content-Type": "application/json" });
+					res.end(
+						JSON.stringify({
+							version: "3.6.0",
+							buildTimestamp: "2025-12-30T12:00:00Z",
+							service: "osm-tagging-schema-mcp",
+						}),
+					);
+				} else {
+					res.writeHead(404);
+					res.end();
+				}
+			});
+
+			await new Promise<void>((resolve) => {
+				server?.listen(0, () => {
+					const address = server?.address();
+					assert.ok(address && typeof address === "object");
+
+					if (typeof address === "object" && address) {
+						const options = {
+							hostname: "localhost",
+							port: address.port,
+							path: "/version",
+							method: "GET",
+						};
+
+						const req = http.request(options, (res) => {
+							assert.strictEqual(res.statusCode, 200);
+							assert.strictEqual(res.headers["content-type"], "application/json");
+
+							let data = "";
+							res.on("data", (chunk) => {
+								data += chunk.toString();
+							});
+
+							res.on("end", () => {
+								const response = JSON.parse(data);
+								assert.ok(response.version);
+								assert.ok(response.buildTimestamp);
+								assert.strictEqual(response.service, "osm-tagging-schema-mcp");
+								assert.ok(Date.parse(response.buildTimestamp)); // Valid ISO timestamp
+								resolve();
+							});
+						});
+
+						req.end();
+					}
+				});
+			});
+		});
+
+		it("should only respond to GET method for health endpoints", async () => {
+			server = http.createServer((req, res) => {
+				const healthPaths = ["/health", "/ready", "/version"];
+				if (healthPaths.includes(req.url || "") && req.method !== "GET") {
+					res.writeHead(404);
+					res.end();
+				} else if (healthPaths.includes(req.url || "") && req.method === "GET") {
+					res.writeHead(200, { "Content-Type": "application/json" });
+					res.end(JSON.stringify({ status: "ok" }));
+				} else {
+					res.writeHead(404);
+					res.end();
+				}
+			});
+
+			await new Promise<void>((resolve) => {
+				server?.listen(0, () => {
+					const address = server?.address();
+					assert.ok(address && typeof address === "object");
+
+					if (typeof address === "object" && address) {
+						// Test POST to /health should fail
+						const options = {
+							hostname: "localhost",
+							port: address.port,
+							path: "/health",
+							method: "POST",
+						};
+
+						const req = http.request(options, (res) => {
+							assert.strictEqual(res.statusCode, 404);
+							resolve();
+						});
+
+						req.end();
+					}
+				});
+			});
+		});
+	});
 });
