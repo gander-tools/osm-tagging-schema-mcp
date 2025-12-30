@@ -15,12 +15,6 @@ jobs:
     name: Create or Update Release PR
     runs-on: ubuntu-latest
 
-    # Required permissions for release-please to create/update PRs and releases
-    permissions:
-      contents: write       # Required for creating releases and updating files
-      pull-requests: write  # Required for creating/updating release PRs
-      id-token: write      # Required for npm provenance
-
     outputs:
       release_created: ${{ steps.release.outputs.release_created }}
       tag_name: ${{ steps.release.outputs.tag_name }}
