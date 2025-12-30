@@ -18,7 +18,8 @@ jobs:
     permissions:
       contents: write       # Required for creating releases and updating files
       pull-requests: write  # Required for creating/updating release PRs
-      id-token: write      # Required for npm provenance
+      issues: write         # Required for release-please issue tracking
+      id-token: write       # Required for npm provenance
 
     outputs:
       release_created: ${{ steps.release.outputs.release_created }}
