@@ -1,5 +1,5 @@
 name: 'Run Unit and Integration Tests'
-description: 'Run type checking, linting, formatting, unit tests, build, and integration tests'
+description: 'Run type checking, linting, unit tests, build, and integration tests'
 
 inputs:
   run-typecheck:
@@ -8,10 +8,6 @@ inputs:
     default: 'true'
   run-lint:
     description: 'Run linting'
-    required: false
-    default: 'true'
-  run-format:
-    description: 'Run format checking'
     required: false
     default: 'true'
   run-unit-tests:
@@ -39,11 +35,6 @@ runs:
       if: inputs.run-lint == 'true'
       shell: bash
       run: npm run lint
-
-    - name: Run format check
-      if: inputs.run-format == 'true'
-      shell: bash
-      run: npm run format
 
     - name: Run unit tests
       if: inputs.run-unit-tests == 'true'
