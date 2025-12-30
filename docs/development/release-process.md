@@ -152,6 +152,53 @@ git commit --allow-empty -m "chore: trigger release please"
 git push origin master
 ```
 
+#### Method 4: Special Commit Message Annotations
+
+Release Please recognizes special annotations in commit messages:
+
+**Force specific version:**
+```bash
+git commit --allow-empty -m "chore: force release to version 4.0.0
+
+Release-As: 4.0.0"
+git push origin master
+```
+
+**Force release creation (even without conventional commits):**
+```bash
+git commit --allow-empty -m "chore: force release please to create release
+
+Release-Please: force"
+git push origin master
+```
+
+**Force major version bump:**
+```bash
+git commit -m "feat: new feature requiring major version
+
+This change requires major version bump.
+
+Release-As: major"
+git push origin master
+```
+
+**Skip release creation:**
+```bash
+# If you want to prevent release creation for this commit cycle
+git commit -m "feat: new feature but skip release
+
+This feature should not trigger release yet.
+
+Release-Please: skip"
+git push origin master
+```
+
+**Common Release-As patterns:**
+- `Release-As: 1.2.3` - Force specific version number
+- `Release-As: major` - Force major version bump
+- `Release-As: minor` - Force minor version bump
+- `Release-As: patch` - Force patch version bump
+
 ### Step 1: Write Conventional Commits
 
 All you need to do is write commits following the Conventional Commits format and merge them to master:
