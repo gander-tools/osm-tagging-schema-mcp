@@ -18,10 +18,11 @@ The release process is **fully automated** using [Release Please](https://github
 - ✅ Automatic tagging and publishing
 - ✅ Consistent release quality
 
-**Manual override options:**
-- ⚙️ Manual workflow triggering for testing and troubleshooting
-- 🔄 Failed workflow re-execution capabilities
-- 🛠️ Empty commit triggers for edge cases
+**Manual release options:**
+- 🚀 Complete manual release creation via GitHub CLI
+- 🌐 Manual release via GitHub Web Interface
+- 🚨 Emergency hotfix release procedures
+- 🧪 Pre-release version management
 
 ## Prerequisites
 
@@ -111,130 +112,254 @@ git commit -m "docs: document get_preset_details API"
 
 ## Release Workflow
 
-### Manual Triggering of Release Please
+### Manual Release Creation
 
-While Release Please runs automatically on every push to master, there are situations where you might need to manually trigger the release workflow:
+While the project uses Release Please for automated releases, there are scenarios where you might need to create releases manually:
 
-#### Option 1: Add workflow_dispatch to Release Please Workflow
+#### When to Create Manual Releases
 
-To enable manual triggering, you can modify the `.github/workflows/release-please.yml` workflow:
+**Emergency releases:**
+- Critical security patches that can't wait for Release Please workflow
+- Hotfixes that need immediate deployment
+- Production outages requiring urgent releases
 
-```yaml
-on:
-  push:
-    branches:
-      - master
-  workflow_dispatch:  # Add this to enable manual triggering
+**Development/testing scenarios:**
+- Pre-release versions (alpha, beta, rc)
+- Fork/development testing
+- Custom release configurations not supported by Release Please
+
+**Release Please bypass:**
+- Workflow failures that can't be resolved quickly
+- Major version releases requiring manual control
+- Custom release notes or assets
+
+#### Option 1: Manual Release via GitHub CLI
+
+**Prerequisites:**
+```bash
+# Install and authenticate GitHub CLI
+gh auth login
+
+# Ensure you're on the correct commit/tag
+git checkout master
+git pull origin master
 ```
 
-**When to use:**
-- Force Release Please to run immediately (instead of waiting for next push)
-- Re-run failed release workflows
-- Test release process without making new commits
+**Create manual release:**
 
-**How to trigger manually:**
-
-1. **Via GitHub Web Interface:**
-   - Go to repository **Actions** tab
-   - Select **"Release Please"** workflow
-   - Click **"Run workflow"** button
-   - Select **master** branch
-   - Click **"Run workflow"**
-
-2. **Via GitHub CLI:**
+1. **Determine next version:**
    ```bash
-   gh workflow run release-please.yml --ref master
+   # Get current version from package.json
+   CURRENT_VERSION=$(node -p "require('./package.json').version")
+   echo "Current version: $CURRENT_VERSION"
+
+   # Choose next version (manual decision)
+   # For patch: 1.0.0 → 1.0.1
+   # For minor: 1.0.0 → 1.1.0
+   # For major: 1.0.0 → 2.0.0
+   NEW_VERSION="1.0.1"  # Replace with desired version
    ```
 
-3. **Via GitHub API:**
+2. **Update version and build:**
    ```bash
-   curl -X POST \
-     -H "Authorization: token $GITHUB_TOKEN" \
-     -H "Accept: application/vnd.github.v3+json" \
-     https://api.github.com/repos/gander-tools/osm-tagging-schema-mcp/actions/workflows/release-please.yml/dispatches \
-     -d '{"ref":"master"}'
+   # Update package.json version
+   npm version $NEW_VERSION --no-git-tag-version
+
+   # Generate version.json
+   BUILD_TIMESTAMP=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+   cat > src/version.json <<EOF
+   {
+     "version": "$NEW_VERSION",
+     "buildTimestamp": "$BUILD_TIMESTAMP"
+   }
+   EOF
+
+   # Build the package
+   npm run build
+   cp src/version.json dist/version.json
+
+   # Run tests to ensure everything works
+   npm test
    ```
 
-#### Option 2: Force Release Please Detection
-
-If you need Release Please to detect changes but don't want to modify the workflow:
-
-1. **Make an empty commit:**
+3. **Create Git tag and release:**
    ```bash
-   git commit --allow-empty -m "chore: trigger release please"
+   # Commit version changes
+   git add package.json src/version.json
+   git commit -m "chore: release $NEW_VERSION"
+
+   # Create and push tag
+   git tag "v$NEW_VERSION"
+   git push origin master
+   git push origin "v$NEW_VERSION"
+
+   # Create GitHub release
+   gh release create "v$NEW_VERSION" \
+     --title "Release $NEW_VERSION" \
+     --notes "Manual release $NEW_VERSION
+
+   ## Changes
+   - [Add your release notes here]
+
+   ## 📦 Installation
+   \`\`\`bash
+   npx @gander-tools/osm-tagging-schema-mcp@$NEW_VERSION
+   \`\`\`
+
+   🤖 Generated with [Claude Code](https://claude.com/claude-code)" \
+     --latest
+   ```
+
+4. **Publish to npm (optional):**
+   ```bash
+   # Create package tarball
+   npm pack
+
+   # Publish to npm (requires authentication)
+   npm publish --access public
+   ```
+
+#### Option 2: Manual Release via GitHub Web Interface
+
+1. **Prepare release locally:**
+   ```bash
+   # Update version and build (same as CLI method)
+   NEW_VERSION="1.0.1"
+   npm version $NEW_VERSION --no-git-tag-version
+
+   # Generate version.json and build
+   BUILD_TIMESTAMP=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+   cat > src/version.json <<EOF
+   {
+     "version": "$NEW_VERSION",
+     "buildTimestamp": "$BUILD_TIMESTAMP"
+   }
+   EOF
+
+   npm run build
+   cp src/version.json dist/version.json
+   npm test
+
+   # Commit and push
+   git add package.json src/version.json
+   git commit -m "chore: release $NEW_VERSION"
    git push origin master
    ```
 
-2. **Use skip CI to avoid running tests:**
+2. **Create release via GitHub UI:**
+   - Go to repository on GitHub.com
+   - Click **"Releases"** tab
+   - Click **"Create a new release"**
+   - **Tag:** Enter `v1.0.1` (or your version)
+   - **Title:** `Release 1.0.1`
+   - **Description:** Add release notes
+   - **Assets:** Optionally upload additional files
+   - Click **"Publish release"**
+
+#### Option 3: Emergency Hotfix Release
+
+For urgent production fixes:
+
+1. **Create hotfix branch:**
    ```bash
-   git commit --allow-empty -m "chore: trigger release please [skip ci]"
-   git push origin master
+   # From latest release tag
+   git checkout v3.7.0  # Latest stable tag
+   git checkout -b hotfix/critical-security-patch
+
+   # Make minimal fix
+   # ... edit files ...
+
+   # Test the fix
+   npm test
    ```
 
-#### Option 3: Re-run Failed Workflows
-
-If a release workflow failed:
-
-1. **Via GitHub Web Interface:**
-   - Go to **Actions** tab
-   - Find the failed workflow run
-   - Click **"Re-run jobs"**
-
-2. **Via GitHub CLI:**
+2. **Create patch release:**
    ```bash
-   # List recent runs
-   gh run list --workflow=release-please.yml
+   # Bump patch version
+   npm version patch --no-git-tag-version
+   NEW_VERSION=$(node -p "require('./package.json').version")
 
-   # Re-run specific run
-   gh run rerun <run-id>
+   # Build and commit
+   npm run build
+   git add .
+   git commit -m "fix: critical security patch
+
+   SECURITY-FIX: Address CVE-XXXX-XXXX vulnerability
+
+   This is a critical security patch that should be deployed immediately."
+
+   # Tag and push
+   git tag "v$NEW_VERSION"
+   git push origin hotfix/critical-security-patch
+   git push origin "v$NEW_VERSION"
+
+   # Create emergency release
+   gh release create "v$NEW_VERSION" \
+     --title "Security Patch $NEW_VERSION" \
+     --notes "🚨 **CRITICAL SECURITY PATCH** 🚨
+
+   This release addresses a critical security vulnerability.
+   **Immediate update recommended.**
+
+   ## Security Fix
+   - Address CVE-XXXX-XXXX vulnerability
+
+   ## Installation
+   \`\`\`bash
+   npx @gander-tools/osm-tagging-schema-mcp@$NEW_VERSION
+   \`\`\`" \
+     --latest
+
+   # Publish to npm immediately
+   npm publish --access public
    ```
 
-#### Common Manual Trigger Scenarios
+#### Pre-release Versions
 
-**Scenario 1: Release Please PR exists but workflow didn't complete**
-```bash
-# Re-run the workflow via GitHub Actions UI or CLI
-gh workflow run release-please.yml --ref master
-```
+For testing versions before stable release:
 
-**Scenario 2: No Release Please PR created despite having conventional commits**
 ```bash
-# Force trigger with empty commit
-git commit --allow-empty -m "chore: trigger release please detection"
+# Create pre-release version
+NEW_VERSION="1.1.0-beta.1"
+npm version $NEW_VERSION --no-git-tag-version
+
+# Build and tag
+npm run build
+git add package.json src/version.json
+git commit -m "chore: pre-release $NEW_VERSION"
+git tag "v$NEW_VERSION"
 git push origin master
+git push origin "v$NEW_VERSION"
+
+# Create pre-release on GitHub
+gh release create "v$NEW_VERSION" \
+  --title "Pre-release $NEW_VERSION" \
+  --notes "Beta release for testing" \
+  --prerelease
+
+# Publish as pre-release to npm
+npm publish --access public --tag beta
 ```
 
-**Scenario 3: Testing release process in fork/development**
-```bash
-# Trigger manually to test without affecting main repository
-gh workflow run release-please.yml --ref master
-```
+#### Important Considerations
 
-**Scenario 4: Release workflow failed due to transient issues**
-```bash
-# Re-run the failed workflow
-gh run rerun $(gh run list --workflow=release-please.yml --limit 1 --json databaseId --jq '.[0].databaseId')
-```
+**⚠️ Manual release limitations:**
+- **Bypasses Release Please:** Manual releases won't update `.release-please-manifest.json`
+- **CHANGELOG:** Must manually update `CHANGELOG.md`
+- **Version conflicts:** May conflict with future Release Please versions
+- **CI/CD:** Manual releases may skip automated tests/checks
 
-#### Important Notes
-
-**⚠️ Manual triggering limitations:**
-- Manual triggers **don't change** Release Please behavior
-- Still requires conventional commits since last release
-- Won't create releases if no releasable changes exist
-- Respects all existing Release Please configuration
-
-**🔍 Debugging manual triggers:**
-- Check workflow run logs in Actions tab
-- Verify conventional commits exist since last release
-- Confirm release-please-config.json is valid
-- Review .release-please-manifest.json for current version
+**🔧 Post-manual release cleanup:**
+- Update `.release-please-manifest.json` with manual version
+- Update `CHANGELOG.md` with release notes
+- Ensure Release Please configuration accounts for manual releases
 
 **💡 Best practices:**
-- Use manual triggers sparingly - automation is preferred
-- Test manual triggers in forks before using in main repository
-- Always verify the release PR content before merging
-- Document why manual trigger was necessary for team awareness
+- Use manual releases sparingly - only for emergencies or special cases
+- Always run full test suite before manual release
+- Document why manual release was necessary
+- Follow semantic versioning strictly
+- Update all relevant documentation and changelogs
 
 ### Step 1: Write Conventional Commits
 
@@ -365,17 +490,18 @@ Release Please automatically determines version bumps following **strict semanti
 
 **Solution:**
 1. Merge at least one `feat:`, `fix:`, or `docs:` commit to trigger release
-2. **Manual trigger option:** If you believe there should be a release PR:
+2. **Manual release option:** If you need immediate release regardless:
    ```bash
-   # Verify conventional commits exist
-   git log --oneline --since="$(git describe --tags --abbrev=0)"
+   # Verify current version
+   CURRENT_VERSION=$(node -p "require('./package.json').version")
+   echo "Current version: $CURRENT_VERSION"
 
-   # Manual trigger via empty commit
-   git commit --allow-empty -m "chore: trigger release please detection"
-   git push origin master
+   # Create manual release (see Manual Release Creation section above)
+   NEW_VERSION="1.0.1"  # Choose appropriate version
+   npm version $NEW_VERSION --no-git-tag-version
 
-   # Or trigger workflow directly (if workflow_dispatch enabled)
-   gh workflow run release-please.yml --ref master
+   # Follow manual release process
+   # See "Manual Release Creation" section for complete steps
    ```
 
 ### Wrong version bump
@@ -404,6 +530,8 @@ Release Please automatically determines version bumps following **strict semanti
 
 ### Publishing failed
 
+**For automated Release Please failures:**
+
 **Check GitHub Actions logs:**
 1. Go to **Actions** tab
 2. Find the failed "Release Please" workflow
@@ -414,20 +542,36 @@ Release Please automatically determines version bumps following **strict semanti
    - npm authentication issues
 
 **Fix:**
-1. Fix the issue in a new PR
-2. Merge to master
-3. **Manual re-trigger options:**
-   ```bash
-   # Option A: Re-run failed workflow
-   gh run rerun <failed-run-id>
+1. Fix the issue in a new PR and merge to master
+2. Release Please will automatically retry on next push
 
-   # Option B: Trigger new workflow run
-   gh workflow run release-please.yml --ref master
+**For manual release failures:**
 
-   # Option C: Force trigger with empty commit
-   git commit --allow-empty -m "chore: retry failed release"
-   git push origin master
-   ```
+**Common manual release issues:**
+- npm authentication failures
+- Git tag conflicts
+- Build/test failures
+- Network issues during upload
+
+**Manual release recovery:**
+```bash
+# If tag creation failed
+git tag -d v1.0.1  # Delete local tag
+git push origin :refs/tags/v1.0.1  # Delete remote tag
+# Then retry manual release process
+
+# If npm publish failed
+npm unpublish @gander-tools/osm-tagging-schema-mcp@1.0.1  # If just published
+# Fix issues, then retry: npm publish --access public
+
+# If GitHub release creation failed
+gh release delete v1.0.1  # Delete failed release
+# Then retry: gh release create v1.0.1 --title "..." --notes "..."
+
+# Complete recovery and retry
+git reset --hard HEAD~1  # Undo version commit
+# Fix issues, then follow manual release process again
+```
 
 ### Need to undo a release
 
