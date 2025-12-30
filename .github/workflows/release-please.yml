@@ -246,7 +246,7 @@ jobs:
   # This job triggers Docker build workflow ONLY after successful release merge
   trigger-docker-build:
     name: Trigger Docker Build
-    needs: publish-npm
+    needs: [create-release, publish-npm]
     if: ${{ needs.create-release.outputs.release_created }}
     uses: ./.github/workflows/publish-docker.yml
     with:
