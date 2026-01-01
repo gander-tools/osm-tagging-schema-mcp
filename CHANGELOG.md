@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.7.0](https://github.com/gander-tools/osm-tagging-schema-mcp/compare/v3.6.0...v3.7.0) (2026-01-01)
+
+
+### Features
+
+* add /version endpoint for application version information ([bc19397](https://github.com/gander-tools/osm-tagging-schema-mcp/commit/bc19397a10b44515c499b457c8fc8b78b766f18a))
+
+
+### Bug Fixes
+
+* **ci:** restore workflow_run trigger and strip 'v' prefix from Docker tags ([707ee0b](https://github.com/gander-tools/osm-tagging-schema-mcp/commit/707ee0b0d1075c564bb8f7d904745a82b455886b))
+
 ## [3.6.0](https://github.com/gander-tools/osm-tagging-schema-mcp/compare/v3.5.0...v3.6.0) (2025-12-29)
 
 
