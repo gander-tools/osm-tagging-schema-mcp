@@ -252,6 +252,96 @@ brew install trivy
 trivy image ghcr.io/gander-tools/osm-tagging-schema-mcp:latest
 ```
 
+## Known Vulnerabilities & Mitigation
+
+### MCP TypeScript SDK - UriTemplate ReDoS (Issue #965)
+
+> **⚠️ TEMPORARY NOTE**: This section documents a known vulnerability in the MCP TypeScript SDK that **DOES NOT AFFECT** this project in its current state.
+>
+> **DELETE THIS SECTION** when:
+> - CVE is patched in MCP TypeScript SDK
+> - Project upgrades to patched version of `@modelcontextprotocol/sdk`
+> - Security advisory is published and resolved
+
+**Status**: ✅ **NOT VULNERABLE** - Project is safe
+
+**Issue Reference**: https://github.com/modelcontextprotocol/typescript-sdk/issues/965
+
+**Vulnerability Type**: Regular Expression Denial of Service (ReDoS)
+
+**Description**: The `UriTemplate` class in MCP TypeScript SDK contains a ReDoS vulnerability affecting RFC 6570 URI Template exploded array patterns (e.g., `{/id*}`, `{?tags*}`). Malicious URI patterns can cause catastrophic backtracking, leading to 100% CPU usage and server crashes.
+
+**Affected Component**: `@modelcontextprotocol/sdk/shared/uriTemplate.ts` - `UriTemplate.match()` method
+
+**Affected Patterns**:
+- Simple exploded: `{/id*}`, `{?tags*}`
+- Complex forms: `{/path*}{?filter*}`
+- Nested: `/api{/version*}/users{/id*}`
+
+**Impact**: Service unavailability, DoS attacks against MCP servers using resource handlers
+
+#### Why This Project Is NOT Vulnerable
+
+✅ **No Resource Handlers**: Project does not register any MCP resources
+   - Verified: `src/index.ts` contains no `registerResource`, `setResourceHandler`, or resource-related calls
+   - Project only uses Tools and Prompts capabilities
+
+✅ **No URI Templates**: Project does not use exploded array patterns
+   - No patterns like `{/id*}` or `{?tags*}` exist in codebase
+
+✅ **Resources Not Implemented**: `src/metadata.ts` shows empty resource metadata:
+   ```typescript
+   export const resourcesMetadata: Record<string, ResourceMetadata> = {
+       // Empty for now - will be populated when resources are implemented
+   };
+   ```
+
+✅ **Current SDK Version**: Using `@modelcontextprotocol/sdk": "~1.25.0"`
+   - While all SDK versions are affected, vulnerable code path is never executed
+
+#### Future Implementation Guidance
+
+If you plan to implement MCP resources in this project, follow these guidelines to avoid the vulnerability:
+
+**⚠️ DO NOT USE** exploded array patterns until CVE is patched:
+```typescript
+// VULNERABLE - DO NOT USE
+server.registerResource("users/{/id*}", ...);
+server.registerResource("api{/path*}{?query*}", ...);
+```
+
+**✅ SAFE ALTERNATIVES** (use these instead):
+```typescript
+// Safe - simple variable patterns
+server.registerResource("users/{id}", ...);
+server.registerResource("api/{path}", ...);
+
+// Safe - regular query parameters
+server.registerResource("search?q={query}", ...);
+
+// Safe - multiple separate parameters
+server.registerResource("users/{userId}/posts/{postId}", ...);
+```
+
+**Pattern Guidelines**:
+- ✅ Simple variables: `{id}`, `{path}`, `{name}`
+- ✅ Regular paths: `/users/{id}`, `/api/{version}`
+- ✅ Query params: `?q={query}`, `?filter={type}`
+- ❌ Exploded arrays: `{/path*}`, `{?tags*}`, `{&fields*}`
+
+#### Monitoring & Updates
+
+**Track these resources for patches**:
+- MCP SDK Issue: https://github.com/modelcontextprotocol/typescript-sdk/issues/965
+- MCP SDK Releases: https://github.com/modelcontextprotocol/typescript-sdk/releases
+- Security Advisories: https://github.com/modelcontextprotocol/typescript-sdk/security/advisories
+
+**When CVE is patched**:
+1. Monitor MCP SDK changelog for security fixes
+2. Update `@modelcontextprotocol/sdk` to patched version
+3. Run full test suite to verify compatibility
+4. **DELETE THIS ENTIRE SECTION** from documentation
+
 ## Security Best Practices
 
 ### For Users
