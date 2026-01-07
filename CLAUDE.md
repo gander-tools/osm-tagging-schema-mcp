@@ -191,6 +191,30 @@ Every feature implementation MUST follow this workflow:
 - **Push to Master**: Extended fuzzing with increased iterations
 - **Weekly**: Scheduled extended fuzzing (Monday 2 AM UTC)
 
+### Known Vulnerabilities
+
+> **⚠️ TEMPORARY SECTION**: Delete when MCP SDK is patched and project upgrades to safe version.
+
+**MCP TypeScript SDK - UriTemplate ReDoS (Issue #965)**
+
+**Status**: ✅ **NOT VULNERABLE** - Project is safe
+
+**Summary**:
+- **Vulnerability**: ReDoS in `@modelcontextprotocol/sdk` affecting resource handlers with exploded URI templates (`{/path*}`, `{?query*}`)
+- **This project**: Does NOT use resource handlers (only Tools and Prompts)
+- **Affected code path**: Never executed in this codebase
+- **Documentation**: See `SECURITY.md` and `docs/deployment/security.md`
+
+**Developer Guidelines**:
+- **Current work**: No action needed - continue development normally
+- **Future resources**: If implementing MCP resources, avoid exploded array patterns until SDK is patched
+- **Monitoring**: Track https://github.com/modelcontextprotocol/typescript-sdk/issues/965
+
+**Safe patterns** (when implementing resources in future):
+- ✅ Simple variables: `{id}`, `{path}`
+- ✅ Regular paths: `/users/{id}`
+- ❌ Exploded arrays: `{/path*}`, `{?tags*}` (vulnerable)
+
 ### E2E Package Testing
 
 **Status**: ✅ IMPLEMENTED - End-to-end package build and runtime tests
