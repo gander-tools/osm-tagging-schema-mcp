@@ -26,6 +26,8 @@
 [![GitHub Issues](https://img.shields.io/github/issues/gander-tools/osm-tagging-schema-mcp?logo=github)](https://github.com/gander-tools/osm-tagging-schema-mcp/issues)
 [![GitHub PRs](https://img.shields.io/github/issues-pr/gander-tools/osm-tagging-schema-mcp?logo=github)](https://github.com/gander-tools/osm-tagging-schema-mcp/pulls)
 
+[![MCP Badge](https://lobehub.com/badge/mcp/gander-tools-osm-tagging-schema-mcp?style=plastic)](https://lobehub.com/mcp/gander-tools-osm-tagging-schema-mcp)
+
 ## What is this?
 
 This is a **Model Context Protocol (MCP) server** designed specifically for AI agents and LLM applications. It acts as a bridge between artificial intelligence systems and the comprehensive OpenStreetMap tagging knowledge base provided by the official `@openstreetmap/id-tagging-schema` library.
@@ -194,7 +196,3 @@ Contributions welcome! This project follows **Test-Driven Development (TDD)**.
 ## License
 
 GNU General Public License v3.0 - See [LICENSE](./LICENSE) file for details.
-
----
-
-[![MCP Badge](https://lobehub.com/badge/mcp/gander-tools-osm-tagging-schema-mcp?style=plastic)](https://lobehub.com/mcp/gander-tools-osm-tagging-schema-mcp)
