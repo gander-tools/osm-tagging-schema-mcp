@@ -365,7 +365,7 @@ This project uses **tilde (`~`) version ranges for all dependencies** to ensure 
     "@openstreetmap/id-tagging-schema": "~6.13.4"
   },
   "devDependencies": {
-    "@biomejs/biome": "~2.3.8",
+    "@biomejs/biome": "2.3.11",
     "typescript": "~5.9.3"
   }
 }
