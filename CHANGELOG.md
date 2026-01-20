@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.7.2](https://github.com/gander-tools/osm-tagging-schema-mcp/compare/v3.7.1...v3.7.2) (2026-01-20)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @openstreetmap/id-tagging-schema to ~6.14.0 ([946c747](https://github.com/gander-tools/osm-tagging-schema-mcp/commit/946c747b19ca2495bc03772c7fb67dd879a5d773))
+* replace non-null assertions with optional chaining to satisfy linting ([4bc689d](https://github.com/gander-tools/osm-tagging-schema-mcp/commit/4bc689df58fa15323ccb6f838fb06d3cc304cb1f))
+* **test:** use elastic testing pattern for amenity=school preset lookup ([5958f82](https://github.com/gander-tools/osm-tagging-schema-mcp/commit/5958f8289e9a8e9639b8a9d5f39a27b8967624db))
+
 ## [3.7.1](https://github.com/gander-tools/osm-tagging-schema-mcp/compare/v3.7.0...v3.7.1) (2026-01-08)
 
 
