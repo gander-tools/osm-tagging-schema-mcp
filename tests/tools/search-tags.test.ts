@@ -233,7 +233,8 @@ describe("search_tags", () => {
 		/**
 		 * Provider pattern: Generates search keywords DYNAMICALLY from JSON data
 		 * CRITICAL: NO hardcoded keywords - all keywords extracted from actual JSON
-		 * Collects a representative sample of keywords from different sources:
+		 * CRITICAL: Tests ALL keywords, not just a sample (100% coverage)
+		 * Collects keywords from different sources:
 		 * - Preset names (amenity, building, etc.)
 		 * - Field keys (wheelchair, access, etc.)
 		 * - Common tag values (yes, no, etc.)
@@ -269,16 +270,11 @@ describe("search_tags", () => {
 			for (const key of fieldKeys) keywords.add(key);
 			for (const key of tagKeys) keywords.add(key);
 
-			// Convert to array and sample systematically (every 10th keyword for performance)
+			// CRITICAL: Test ALL keywords, not just a sample (100% coverage)
 			const allKeywords = Array.from(keywords);
-			const sampledKeywords: string[] = [];
-			const step = Math.max(1, Math.floor(allKeywords.length / 20)); // Sample ~20 keywords
-			for (let i = 0; i < allKeywords.length; i += step) {
-				sampledKeywords.push(allKeywords[i]);
-			}
 
-			// Test each sampled keyword
-			for (const keyword of sampledKeywords) {
+			// Yield each keyword for testing
+			for (const keyword of allKeywords) {
 				yield { keyword };
 			}
 		}

@@ -1,6 +1,9 @@
 import assert from "node:assert";
 import { describe, it } from "node:test";
 import presets from "@openstreetmap/id-tagging-schema/dist/presets.json" with { type: "json" };
+import translations from "@openstreetmap/id-tagging-schema/dist/translations/en.json" with {
+	type: "json",
+};
 import { searchPresets } from "../../src/tools/search-presets.ts";
 
 describe("search_presets", () => {
@@ -112,11 +115,13 @@ describe("search_presets", () => {
 				"keyName should be 'Amenity', not field label 'Type'",
 			);
 
-			// valueName should use preset name "Parking Lot", NOT "Parking"
+			// valueName should use preset name from translations, NOT "Parking"
+			const expectedParkingName = translations.en.presets.presets["amenity/parking"]?.name;
+			assert.ok(expectedParkingName, "Translation should exist for amenity/parking");
 			assert.strictEqual(
 				amenityTag.valueName,
-				"Parking Lot",
-				"valueName should be 'Parking Lot' from preset amenity/parking",
+				expectedParkingName,
+				`valueName should be '${expectedParkingName}' from preset amenity/parking`,
 			);
 		});
 
@@ -130,10 +135,14 @@ describe("search_presets", () => {
 			assert.ok(amenityTag, "Should have amenity tag in tagsDetailed");
 
 			assert.strictEqual(amenityTag.keyName, "Amenity", "keyName should be 'Amenity'");
+
+			// Get expected name from translations
+			const expectedRestaurantName = translations.en.presets.presets["amenity/restaurant"]?.name;
+			assert.ok(expectedRestaurantName, "Translation should exist for amenity/restaurant");
 			assert.strictEqual(
 				amenityTag.valueName,
-				"Restaurant",
-				"valueName should be 'Restaurant' from preset",
+				expectedRestaurantName,
+				`valueName should be '${expectedRestaurantName}' from preset`,
 			);
 		});
 	});
