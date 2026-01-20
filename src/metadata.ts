@@ -466,7 +466,7 @@ export interface ElicitationMetadata {
 	/** Elicitation type */
 	type: "form" | "url";
 	/** Form schema (for form type) */
-	schema?: z.ZodObject<any>;
+	schema?: z.ZodObject<z.ZodRawShape>;
 	/** URL (for URL type) */
 	url?: string;
 	/** Title shown to user */

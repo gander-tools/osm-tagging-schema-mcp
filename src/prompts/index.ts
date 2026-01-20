@@ -29,8 +29,8 @@ export const validateOsmFeature: OsmPromptDefinition = {
 			title: metadata.title,
 			description: metadata.description,
 			argsSchema: {
-				featureType: z.string().describe(metadata.parameters.featureType!.description),
-				tags: z.string().describe(metadata.parameters.tags!.description),
+				featureType: z.string().describe(metadata.parameters.featureType?.description ?? ""),
+				tags: z.string().describe(metadata.parameters.tags?.description ?? ""),
 			},
 		};
 	},
@@ -63,7 +63,7 @@ export const findPreset: OsmPromptDefinition = {
 			argsSchema: {
 				featureDescription: z
 					.string()
-					.describe(metadata.parameters.featureDescription!.description),
+					.describe(metadata.parameters.featureDescription?.description ?? ""),
 			},
 		};
 	},
@@ -94,7 +94,7 @@ export const learnTag: OsmPromptDefinition = {
 			title: metadata.title,
 			description: metadata.description,
 			argsSchema: {
-				tagKey: z.string().describe(metadata.parameters.tagKey!.description),
+				tagKey: z.string().describe(metadata.parameters.tagKey?.description ?? ""),
 			},
 		};
 	},
@@ -125,7 +125,7 @@ export const improveTags: OsmPromptDefinition = {
 			title: metadata.title,
 			description: metadata.description,
 			argsSchema: {
-				currentTags: z.string().describe(metadata.parameters.currentTags!.description),
+				currentTags: z.string().describe(metadata.parameters.currentTags?.description ?? ""),
 			},
 		};
 	},
@@ -163,11 +163,11 @@ export const exploreCategory: OsmPromptDefinition = {
 			title: metadata.title,
 			description: metadata.description,
 			argsSchema: {
-				category: z.string().describe(metadata.parameters.category!.description),
+				category: z.string().describe(metadata.parameters.category?.description ?? ""),
 				geometryType: z
 					.enum(geometryEnum)
 					.optional()
-					.describe(metadata.parameters.geometryType!.description),
+					.describe(metadata.parameters.geometryType?.description ?? ""),
 			},
 		};
 	},

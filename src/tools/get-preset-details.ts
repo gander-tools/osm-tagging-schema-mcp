@@ -321,7 +321,7 @@ const GetPresetDetails: OsmToolDefinition<{
 			inputSchema: {
 				presetId: z
 					.union([z.string(), z.record(z.string(), z.string())])
-					.describe(metadata.parameters.presetId!.description),
+					.describe(metadata.parameters.presetId?.description ?? ""),
 			},
 		};
 	},

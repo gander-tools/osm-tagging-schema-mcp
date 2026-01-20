@@ -208,7 +208,7 @@ const SearchTags: OsmToolDefinition<{
 			title: metadata.title,
 			description: metadata.description,
 			inputSchema: {
-				keyword: z.string().describe(metadata.parameters.keyword!.description),
+				keyword: z.string().describe(metadata.parameters.keyword?.description ?? ""),
 				limit: z
 					.number()
 					.optional()
@@ -220,7 +220,7 @@ const SearchTags: OsmToolDefinition<{
 						limit: limitOption,
 					})
 					.optional()
-					.describe(metadata.parameters.options!.description),
+					.describe(metadata.parameters.options?.description ?? ""),
 			},
 		};
 	},

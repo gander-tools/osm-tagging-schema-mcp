@@ -43,7 +43,7 @@ const FlatToJson: OsmToolDefinition<{
 			title: metadata.title,
 			description: metadata.description,
 			inputSchema: {
-				tags: z.string().describe(metadata.parameters.flatText!.description),
+				tags: z.string().describe(metadata.parameters.flatText?.description ?? ""),
 			},
 		};
 	},

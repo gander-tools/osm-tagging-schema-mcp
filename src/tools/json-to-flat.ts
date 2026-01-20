@@ -83,7 +83,7 @@ const JsonToFlat: OsmToolDefinition<{
 			inputSchema: {
 				tags: z
 					.union([z.string(), z.record(z.string(), z.string())])
-					.describe(metadata.parameters.jsonTags!.description),
+					.describe(metadata.parameters.jsonTags?.description ?? ""),
 			},
 		};
 	},

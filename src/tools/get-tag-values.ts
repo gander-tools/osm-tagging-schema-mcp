@@ -123,13 +123,13 @@ const GetTagValues: OsmToolDefinition<{
 			title: metadata.title,
 			description: metadata.description,
 			inputSchema: {
-				tagKey: z.string().describe(metadata.parameters.tagKey!.description),
+				tagKey: z.string().describe(metadata.parameters.tagKey?.description ?? ""),
 				options: z
 					.object({
 						limit: limitOption,
 					})
 					.optional()
-					.describe(metadata.parameters.options!.description),
+					.describe(metadata.parameters.options?.description ?? ""),
 			},
 		};
 	},

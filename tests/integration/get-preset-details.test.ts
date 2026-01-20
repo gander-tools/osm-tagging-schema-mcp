@@ -362,7 +362,7 @@ describe("get_preset_details integration", () => {
 			});
 
 			// CRITICAL: Test ALL presets with templates, not just a sample
-			for (const [presetId, preset] of presetsWithTemplates) {
+			for (const [presetId, _preset] of presetsWithTemplates) {
 				const response = await client.callTool({
 					name: "get_preset_details",
 					arguments: { presetId },

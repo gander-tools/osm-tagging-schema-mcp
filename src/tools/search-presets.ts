@@ -160,7 +160,7 @@ const SearchPresets: OsmToolDefinition<{
 			title: metadata.title,
 			description: metadata.description,
 			inputSchema: {
-				keyword: z.string().describe(metadata.parameters.searchName!.description),
+				keyword: z.string().describe(metadata.parameters.searchName?.description ?? ""),
 				limit: z
 					.number()
 					.optional()
@@ -179,10 +179,10 @@ const SearchPresets: OsmToolDefinition<{
 						geometry: z
 							.enum(geometryEnum)
 							.optional()
-							.describe(metadata.parameters.geometry!.description),
+							.describe(metadata.parameters.geometry?.description ?? ""),
 					})
 					.optional()
-					.describe(metadata.parameters.options!.description),
+					.describe(metadata.parameters.options?.description ?? ""),
 			},
 		};
 	},
