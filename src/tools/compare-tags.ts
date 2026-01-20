@@ -261,11 +261,11 @@ const CompareTags: OsmToolDefinition = {
 			inputSchema: {
 				oldTags: z
 					.union([z.string(), z.record(z.string(), z.string())])
-					.describe(metadata.parameters.oldTags!.description),
+					.describe(metadata.parameters.oldTags?.description ?? ""),
 				newTags: z
 					.union([z.string(), z.record(z.string(), z.string())])
-					.describe(metadata.parameters.newTags!.description),
-				options: comparisonOptionsSchema.describe(metadata.parameters.options!.description),
+					.describe(metadata.parameters.newTags?.description ?? ""),
+				options: comparisonOptionsSchema.describe(metadata.parameters.options?.description ?? ""),
 			},
 		};
 	},

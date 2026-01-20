@@ -256,8 +256,8 @@ const ValidateTag: OsmToolDefinition<{
 			title: metadata.title,
 			description: metadata.description,
 			inputSchema: {
-				key: z.string().describe(metadata.parameters.key!.description),
-				value: z.string().describe(metadata.parameters.value!.description),
+				key: z.string().describe(metadata.parameters.key?.description ?? ""),
+				value: z.string().describe(metadata.parameters.value?.description ?? ""),
 			},
 		};
 	},

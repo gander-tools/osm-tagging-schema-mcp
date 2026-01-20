@@ -311,7 +311,7 @@ const SuggestImprovements: OsmToolDefinition<{
 			inputSchema: {
 				tags: z
 					.union([z.string(), z.record(z.string(), z.string())])
-					.describe(metadata.parameters.tags!.description),
+					.describe(metadata.parameters.tags?.description ?? ""),
 				options: z
 					.object({
 						summary: summaryOption,

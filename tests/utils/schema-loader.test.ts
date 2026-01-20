@@ -1,6 +1,5 @@
 import assert from "node:assert";
 import { beforeEach, describe, it } from "node:test";
-import presets from "@openstreetmap/id-tagging-schema/dist/presets.json" with { type: "json" };
 import translations from "@openstreetmap/id-tagging-schema/dist/translations/en.json" with {
 	type: "json",
 };
