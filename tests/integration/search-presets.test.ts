@@ -248,21 +248,13 @@ describe("search_presets integration", () => {
 			}
 		});
 
-		it("should validate searchability for representative sample of presets via MCP (sample-based for performance)", async () => {
-			// Note: Testing ALL 1707 presets via MCP would be too slow
-			// We test a representative sample (every 10th preset)
+		it("should validate searchability for ALL presets via MCP (100% coverage)", async () => {
+			// CRITICAL: Test ALL presets, not just a sample
 			const allPresetIds = Object.keys(presets);
-			const sampleSize = Math.floor(allPresetIds.length / 10);
-			const sampleIds = allPresetIds.filter((_, idx) => idx % 10 === 0);
-
-			assert.ok(
-				sampleIds.length >= sampleSize,
-				`Should have representative sample (${sampleIds.length} presets)`,
-			);
 
 			let foundCount = 0;
 
-			for (const presetId of sampleIds) {
+			for (const presetId of allPresetIds) {
 				const searchTerm = presetId.split("/").pop() || presetId;
 
 				const response = await client.callTool({
@@ -281,10 +273,10 @@ describe("search_presets integration", () => {
 				}
 			}
 
-			// Most sampled presets should be findable
+			// Most presets should be findable (some may not be searchable by last part of ID)
 			assert.ok(
-				foundCount > sampleIds.length * 0.5,
-				`Should find most sampled presets via MCP (found ${foundCount}/${sampleIds.length})`,
+				foundCount > allPresetIds.length * 0.5,
+				`Should find most presets via MCP (found ${foundCount}/${allPresetIds.length})`,
 			);
 		});
 	});

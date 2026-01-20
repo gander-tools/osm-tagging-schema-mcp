@@ -1,6 +1,9 @@
 import assert from "node:assert";
 import { describe, it } from "node:test";
 import presets from "@openstreetmap/id-tagging-schema/dist/presets.json" with { type: "json" };
+import translations from "@openstreetmap/id-tagging-schema/dist/translations/en.json" with {
+	type: "json",
+};
 import { getPresetDetails } from "../../src/tools/get-preset-details.ts";
 
 describe("get_preset_details", () => {
@@ -10,7 +13,11 @@ describe("get_preset_details", () => {
 
 			assert.ok(result, "Should return a result");
 			assert.strictEqual(result.id, "amenity/restaurant");
-			assert.strictEqual(result.name, "Restaurant"); // Localized name (required)
+
+			// Get expected name from translations
+			const expectedName = translations.en.presets.presets["amenity/restaurant"]?.name;
+			assert.ok(expectedName, "Translation should exist for amenity/restaurant");
+			assert.strictEqual(result.name, expectedName); // Localized name (required)
 			assert.ok(result.tags, "Should have tags property");
 			assert.ok(result.tagsDetailed, "Should have tagsDetailed property");
 			assert.ok(result.geometry, "Should have geometry property");
@@ -80,10 +87,13 @@ describe("get_preset_details", () => {
 			);
 
 			// valueName should use preset name "Parking Lot", NOT "Parking"
+			// Get expected name from translations
+			const expectedParkingName = translations.en.presets.presets["amenity/parking"]?.name;
+			assert.ok(expectedParkingName, "Translation should exist for amenity/parking");
 			assert.strictEqual(
 				amenityTag.valueName,
-				"Parking Lot",
-				"valueName should be 'Parking Lot' from preset amenity/parking",
+				expectedParkingName,
+				`valueName should be '${expectedParkingName}' from preset amenity/parking`,
 			);
 		});
 
@@ -94,10 +104,14 @@ describe("get_preset_details", () => {
 			assert.ok(amenityTag, "Should have amenity tag in tagsDetailed");
 
 			assert.strictEqual(amenityTag.keyName, "Amenity", "keyName should be 'Amenity'");
+
+			// Get expected name from translations
+			const expectedRestaurantName = translations.en.presets.presets["amenity/restaurant"]?.name;
+			assert.ok(expectedRestaurantName, "Translation should exist for amenity/restaurant");
 			assert.strictEqual(
 				amenityTag.valueName,
-				"Restaurant",
-				"valueName should be 'Restaurant' from preset",
+				expectedRestaurantName,
+				`valueName should be '${expectedRestaurantName}' from preset`,
 			);
 		});
 
@@ -373,15 +387,10 @@ describe("get_preset_details", () => {
 		});
 
 		it("should validate tagsDetailed structure for ALL presets", async () => {
-			// Sample a few presets to validate tagsDetailed structure
-			const samplePresetIds = [
-				"amenity/restaurant",
-				"highway/residential",
-				"building",
-				"shop/supermarket",
-			];
+			// CRITICAL: Test ALL presets, not just a sample
+			const allPresetIds = Object.keys(presets);
 
-			for (const presetId of samplePresetIds) {
+			for (const presetId of allPresetIds) {
 				const result = await getPresetDetails(presetId);
 
 				// Validate each tag in tagsDetailed
@@ -559,9 +568,8 @@ describe("get_preset_details", () => {
 					"Should find presets using contact template",
 				);
 
-				// Test a sample of them
-				const samplesToTest = presetsWithContactTemplate.slice(0, 10);
-				for (const [presetId, _] of samplesToTest) {
+				// CRITICAL: Test ALL presets with contact template, not just a sample
+				for (const [presetId, _] of presetsWithContactTemplate) {
 					const result = await getPresetDetails(presetId);
 					const allFields = [...(result.fields || []), ...(result.moreFields || [])];
 
@@ -593,9 +601,8 @@ describe("get_preset_details", () => {
 					"Should find presets using internet_access template",
 				);
 
-				// Test a sample
-				const samplesToTest = presetsWithInternetTemplate.slice(0, 10);
-				for (const [presetId, _] of samplesToTest) {
+				// CRITICAL: Test ALL presets with internet_access template, not just a sample
+				for (const [presetId, _] of presetsWithInternetTemplate) {
 					const result = await getPresetDetails(presetId);
 					const allFields = [...(result.fields || []), ...(result.moreFields || [])];
 

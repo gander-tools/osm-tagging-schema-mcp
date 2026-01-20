@@ -158,18 +158,11 @@ describe("get_preset_details integration", () => {
 			}
 		});
 
-		it("should validate preset details for representative sample via MCP (sample-based for performance)", async () => {
-			// Note: Testing ALL 1707 presets via MCP would be too slow
-			// We test a representative sample (every 20th preset)
+		it("should validate preset details for ALL presets via MCP (100% coverage)", async () => {
+			// CRITICAL: Test ALL presets, not just a sample
 			const allPresetIds = Object.keys(presets);
-			const sampleIds = allPresetIds.filter((_, idx) => idx % 20 === 0);
 
-			assert.ok(
-				sampleIds.length >= 80,
-				`Should have representative sample (${sampleIds.length} presets)`,
-			);
-
-			for (const presetId of sampleIds) {
+			for (const presetId of allPresetIds) {
 				const response = await client.callTool({
 					name: "get_preset_details",
 					arguments: { presetId },
@@ -368,10 +361,8 @@ describe("get_preset_details integration", () => {
 				return allFields.some((f) => f.startsWith("{@templates/"));
 			});
 
-			// Test a sample
-			const sampleIds = presetsWithTemplates.slice(0, 20).map(([id, _]) => id);
-
-			for (const presetId of sampleIds) {
+			// CRITICAL: Test ALL presets with templates, not just a sample
+			for (const [presetId, preset] of presetsWithTemplates) {
 				const response = await client.callTool({
 					name: "get_preset_details",
 					arguments: { presetId },

@@ -1,5 +1,9 @@
 import assert from "node:assert";
 import { beforeEach, describe, it } from "node:test";
+import presets from "@openstreetmap/id-tagging-schema/dist/presets.json" with { type: "json" };
+import translations from "@openstreetmap/id-tagging-schema/dist/translations/en.json" with {
+	type: "json",
+};
 import { SchemaLoader } from "../../src/utils/schema-loader.ts";
 
 describe("SchemaLoader", () => {
@@ -562,8 +566,16 @@ describe("SchemaLoader", () => {
 
 				const name = loader.getPresetName("amenity/restaurant");
 
+				// Get expected name from translations
+				const expectedName = translations.en.presets.presets["amenity/restaurant"]?.name;
+				assert.ok(expectedName, "Translation should exist for amenity/restaurant");
+
 				assert.ok(name, "Should return a name");
-				assert.strictEqual(name, "Restaurant", "Should return localized preset name");
+				assert.strictEqual(
+					name,
+					expectedName,
+					`Should return localized preset name (${expectedName})`,
+				);
 			});
 
 			it("should return formatted fallback for preset without translation", async () => {
@@ -834,8 +846,14 @@ describe("SchemaLoader", () => {
 
 				const name = loader.getTagValueName("amenity", "parking");
 
-				// Should find preset "amenity/parking" and return its name "Parking Lot"
-				assert.strictEqual(name, "Parking Lot", "Should return preset name for amenity=parking");
+				// Should find preset "amenity/parking" and return its name from translations
+				const expectedName = translations.en.presets.presets["amenity/parking"]?.name;
+				assert.ok(expectedName, "Translation should exist for amenity/parking");
+				assert.strictEqual(
+					name,
+					expectedName,
+					`Should return preset name for amenity=parking (${expectedName})`,
+				);
 			});
 
 			it("should return preset name for parking_space", async () => {
@@ -844,11 +862,13 @@ describe("SchemaLoader", () => {
 
 				const name = loader.getTagValueName("amenity", "parking_space");
 
-				// Should find preset "amenity/parking_space" and return its name
+				// Should find preset "amenity/parking_space" and return its name from translations
+				const expectedName = translations.en.presets.presets["amenity/parking_space"]?.name;
+				assert.ok(expectedName, "Translation should exist for amenity/parking_space");
 				assert.strictEqual(
 					name,
-					"Parking Space",
-					"Should return preset name for amenity=parking_space",
+					expectedName,
+					`Should return preset name for amenity=parking_space (${expectedName})`,
 				);
 			});
 
@@ -858,8 +878,14 @@ describe("SchemaLoader", () => {
 
 				const name = loader.getTagValueName("amenity", "restaurant");
 
-				// Should find preset "amenity/restaurant" and return its name
-				assert.strictEqual(name, "Restaurant", "Should return preset name for amenity=restaurant");
+				// Should find preset "amenity/restaurant" and return its name from translations
+				const expectedName = translations.en.presets.presets["amenity/restaurant"]?.name;
+				assert.ok(expectedName, "Translation should exist for amenity/restaurant");
+				assert.strictEqual(
+					name,
+					expectedName,
+					`Should return preset name for amenity=restaurant (${expectedName})`,
+				);
 			});
 
 			it("should fallback to field options when no preset exists", async () => {

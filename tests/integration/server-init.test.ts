@@ -125,15 +125,15 @@ describe("Translation Data Integrity", () => {
 
 	describe("Preset Name Translations", () => {
 		it("should return correct localized names for existing presets", () => {
-			// Test sample of well-known presets
-			const testCases = [
-				{ id: "amenity/restaurant", expectedName: "Restaurant" },
-				{ id: "amenity/cafe", expectedName: "Cafe" },
-				{ id: "shop/supermarket", expectedName: "Supermarket" },
-			];
+			// Test presets dynamically from translations
+			const testCases = ["amenity/restaurant", "amenity/cafe", "shop/supermarket"];
 
-			for (const { id, expectedName } of testCases) {
+			for (const id of testCases) {
 				const name = schemaLoader.getPresetName(id);
+
+				// Get expected name from translations
+				const expectedName = translations.en.presets.presets[id]?.name;
+				assert.ok(expectedName, `Translation should exist for ${id}`);
 				assert.strictEqual(name, expectedName, `Preset "${id}" should have name "${expectedName}"`);
 			}
 		});
@@ -150,8 +150,8 @@ describe("Translation Data Integrity", () => {
 		});
 
 		it("should validate all preset translations exist in JSON", () => {
-			// Get sample preset IDs from presets.json
-			const presetIds = Object.keys(presets).slice(0, 50); // Test first 50 for performance
+			// CRITICAL: Test ALL presets, not just a sample (100% coverage)
+			const presetIds = Object.keys(presets);
 
 			for (const presetId of presetIds) {
 				const name = schemaLoader.getPresetName(presetId);
@@ -166,14 +166,15 @@ describe("Translation Data Integrity", () => {
 
 	describe("Field Label Translations", () => {
 		it("should return correct localized labels for existing fields", () => {
-			// Test sample of well-known fields
-			const testCases = [
-				{ key: "parking", expectedLabel: "Type" },
-				{ key: "name", expectedLabel: "Name" },
-			];
+			// Test fields dynamically from translations
+			const testCases = ["parking", "name"];
 
-			for (const { key, expectedLabel } of testCases) {
+			for (const key of testCases) {
 				const label = schemaLoader.getFieldLabel(key);
+
+				// Get expected label from translations
+				const expectedLabel = translations.en.presets.fields[key]?.label;
+				assert.ok(expectedLabel, `Translation should exist for field ${key}`);
 				assert.strictEqual(
 					label,
 					expectedLabel,
@@ -194,8 +195,8 @@ describe("Translation Data Integrity", () => {
 		});
 
 		it("should validate all field translations exist in JSON", () => {
-			// Get sample field keys from fields.json
-			const fieldKeys = Object.keys(fields).slice(0, 50); // Test first 50 for performance
+			// CRITICAL: Test ALL fields, not just a sample (100% coverage)
+			const fieldKeys = Object.keys(fields);
 
 			for (const fieldKey of fieldKeys) {
 				const label = schemaLoader.getFieldLabel(fieldKey);

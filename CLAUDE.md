@@ -134,6 +134,67 @@ All features must have corresponding tests written BEFORE implementation.
 
 **Enforcement**: Any tool that does not validate EVERY individual value MUST be refactored to do so.
 
+#### Elastic Testing Pattern (Dynamic Value Validation)
+
+**ALL test assertions MUST use dynamic lookups from JSON files, NEVER hardcoded expected values.**
+
+**WRONG** (Hardcoded values - breaks when schema updates):
+```typescript
+const name = loader.getPresetName("amenity/parking");
+assert.strictEqual(name, "Parking Lot"); // ❌ Hardcoded expectation
+```
+
+**CORRECT** (Dynamic lookup - adapts to schema changes):
+```typescript
+import translations from "@openstreetmap/id-tagging-schema/dist/translations/en.json" with { type: "json" };
+
+const name = loader.getPresetName("amenity/parking");
+const expectedName = translations.en.presets.presets["amenity/parking"]?.name;
+assert.ok(expectedName, "Translation should exist");
+assert.strictEqual(name, expectedName, `Should match translation (${expectedName})`); // ✅ Dynamic
+```
+
+**Benefits**:
+- Tests adapt automatically to schema updates
+- No false test failures when upstream OSM data changes
+- Tests validate actual behavior, not outdated expectations
+
+#### Full Coverage Implementation Patterns
+
+**Provider Pattern** - Testing ALL values from JSON data:
+```typescript
+// CORRECT: Test ALL presets
+const allPresetIds = Object.keys(presets);
+for (const presetId of allPresetIds) {
+    const result = await getTool(presetId);
+    const expected = presets[presetId];
+    assert.deepStrictEqual(result, expected);
+}
+```
+
+**WRONG Patterns to Avoid**:
+```typescript
+// ❌ Sampling - only tests subset
+const sampleIds = allPresetIds.filter((_, idx) => idx % 10 === 0);
+const sampleIds = allPresetIds.slice(0, 50);
+
+// ❌ Hardcoded test cases - doesn't scale
+const testCases = ["amenity/parking", "amenity/restaurant"];
+```
+
+**Generator Pattern** - Memory-efficient full coverage:
+```typescript
+function* presetProvider() {
+    for (const [id, preset] of Object.entries(presets)) {
+        yield { id, preset };
+    }
+}
+
+for (const { id, preset } of presetProvider()) {
+    // Test each preset
+}
+```
+
 ### Feature Implementation Requirements
 Every feature implementation MUST follow this workflow:
 
