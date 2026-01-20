@@ -187,11 +187,20 @@ describe("get_preset_details", () => {
 		});
 
 		it("should accept JSON object with multiple tags", async () => {
-			// When no exact match exists, should find closest match or throw error
-			// amenity=school exists (education/school), but not with building=yes
+			// Find which preset actually has amenity=school tag
+			const expectedPresetId = Object.keys(presets).find((id) => {
+				const preset = presets[id as keyof typeof presets];
+				return preset.tags?.amenity === "school" && Object.keys(preset.tags).length === 1;
+			});
+			assert.ok(expectedPresetId, "Should find a preset with amenity=school tag");
+
 			const result = await getPresetDetails({ amenity: "school" });
 
-			assert.strictEqual(result.id, "education/school");
+			assert.strictEqual(
+				result.id,
+				expectedPresetId,
+				`Should return the preset with amenity=school tag (${expectedPresetId})`,
+			);
 			assert.strictEqual(result.tags.amenity, "school");
 		});
 
