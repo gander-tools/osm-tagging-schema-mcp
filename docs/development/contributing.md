@@ -357,19 +357,6 @@ node --import tsx --test tests/tools/my-tool.test.ts
 
 This project uses **tilde (`~`) version ranges for all dependencies** to ensure predictable updates:
 
-**All Dependencies** (tilde `~` range):
-```json
-{
-  "dependencies": {
-    "@modelcontextprotocol/sdk": "~1.25.0",
-    "@openstreetmap/id-tagging-schema": "~6.13.4"
-  },
-  "devDependencies": {
-    "@biomejs/biome": "2.3.11",
-    "typescript": "~5.9.3"
-  }
-}
-```
 - **Tilde (~)**: Restricts updates to patch-level only (e.g., `~1.25.0` allows `1.25.1` but not `1.26.0`)
 - **Rationale**: Automatic security patches without unexpected breaking changes from minor versions
 - **Behavior**: `1.25.0` → `1.25.1` ✅ | `1.25.0` → `1.26.0` ❌
