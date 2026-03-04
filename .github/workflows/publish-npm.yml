@@ -104,7 +104,11 @@ jobs:
 
       - name: Create tarball for attestation
         run: |
-          TARBALL_NAME=$(npm pack)
+          # Use --ignore-scripts to prevent the prepare lifecycle hook (lefthook install)
+          # from running during pack. The build is already done by the Run Tests step.
+          # Without this, npm pack stdout would include lifecycle script output, causing
+          # GITHUB_ENV to fail parsing multi-line content as KEY=VALUE pairs.
+          TARBALL_NAME=$(npm pack --ignore-scripts)
           echo "TARBALL=${TARBALL_NAME}" >> "$GITHUB_ENV"
           echo "✓ Package tarball created: ${TARBALL_NAME}"
 
