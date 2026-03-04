@@ -1,0 +1,223 @@
+name: Publish NPM
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'NPM package version to publish (e.g., v1.2.3)'
+        required: true
+        type: string
+
+# Minimal permissions at workflow level (principle of least privilege)
+permissions:
+  contents: read
+
+jobs:
+
+  publish-npm:
+    name: Build, Publish, Tag and Release
+    runs-on: ubuntu-latest
+
+    # Required permissions for complete release process
+    permissions:
+      id-token: write       # Required for npm provenance and SLSA attestations
+      attestations: write   # Required for build provenance attestations
+      contents: write      # Required for creating tags and GitHub releases
+      pull-requests: write # Required for PR comments
+
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@a90bcbc6539c36a85cdfeb73f7e2f433735f215b # v2.15.0
+        with:
+          disable-sudo: 'true'
+          egress-policy: 'audit'
+
+      - name: Checkout code
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Parse version inputs
+        id: version
+        run: |
+          VERSION_WITH_V="${{ inputs.version }}"
+          VERSION_WITHOUT_V="${VERSION_WITH_V#v}"
+          echo "version=$VERSION_WITHOUT_V" >> "$GITHUB_OUTPUT"
+          echo "tag=$VERSION_WITH_V" >> "$GITHUB_OUTPUT"
+
+      - name: Setup Node.js and Install Dependencies
+        uses: ./.github/actions/setup-node-and-install
+
+      - name: Generate version.json
+        env:
+          RELEASE_VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          BUILD_TIMESTAMP=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+          echo "Generating src/version.json with version $RELEASE_VERSION and build timestamp $BUILD_TIMESTAMP"
+          cat > src/version.json <<EOF
+          {
+            "version": "$RELEASE_VERSION",
+            "buildTimestamp": "$BUILD_TIMESTAMP"
+          }
+          EOF
+          echo "✓ Generated src/version.json:"
+          cat src/version.json
+
+      - name: Verify package.json version matches release version
+        env:
+          RELEASE_VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          PACKAGE_VERSION=$(node -p "require('./package.json').version")
+
+          if [ "$PACKAGE_VERSION" != "$RELEASE_VERSION" ]; then
+            echo "❌ Version mismatch detected:"
+            echo "  package.json version: $PACKAGE_VERSION"
+            echo "  Release Please version: $RELEASE_VERSION"
+            echo ""
+            echo "This should not happen with Release Please."
+            echo "Please check the release-please configuration."
+            exit 1
+          fi
+
+          echo "✅ Version validation passed: $PACKAGE_VERSION"
+
+      - name: Run Tests
+        uses: ./.github/actions/run-tests
+
+      - name: Copy version.json to dist/
+        run: |
+          cp src/version.json dist/version.json
+          echo "✓ Copied version.json to dist/"
+          ls -lh dist/version.json
+
+      - name: Verify build artifacts
+        run: |
+          if [ ! -f "dist/index.js" ]; then
+            echo "Error: Build artifact dist/index.js not found"
+            exit 1
+          fi
+          echo "✓ Build artifacts verified"
+
+      - name: Generate SBOM (Software Bill of Materials)
+        run: |
+          # Use npx to avoid npm install -g (Scorecard Pinned-Dependencies)
+          npx --yes @cyclonedx/cyclonedx-npm@4.1.0 --output-file sbom.json
+          echo "✓ SBOM generated: sbom.json"
+
+      - name: Create tarball for attestation
+        run: |
+          npm pack
+          echo "TARBALL=$(ls -- *.tgz)" >> "$GITHUB_ENV"
+          echo "✓ Package tarball created: $(ls -- *.tgz)"
+
+      - name: Generate SLSA build provenance attestation
+        uses: actions/attest-build-provenance@96278af6caaf10aea03fd8d33a09a777ca52d62f # v3.2.0
+        with:
+          subject-path: ${{ env.TARBALL }}
+
+      - name: Generate SLSA SBOM attestation
+        uses: actions/attest-sbom@07e74fc4e78d1aad915e867f9a094073a9f71527 # v4.0.0
+        with:
+          subject-path: ${{ env.TARBALL }}
+          sbom-path: sbom.json
+
+      - name: Verify npm >= 11.6.4 for Trusted Publishers
+        run: |
+          CURRENT_NPM=$(npm --version)
+          echo "Current npm version: $CURRENT_NPM"
+          if [ "$(printf '%s\n' "11.6.4" "$CURRENT_NPM" | sort -V | head -n1)" = "11.6.4" ]; then
+            echo "✓ npm version $CURRENT_NPM is sufficient (>= 11.6.4)"
+          else
+            echo "❌ Error: npm version $CURRENT_NPM is too old"
+            echo "npm >= 11.6.4 is required for Trusted Publishers"
+            echo "Update Node.js version in workflow or manually install newer npm"
+            exit 1
+          fi
+
+      - name: Publish to NPM with provenance (Trusted Publishers)
+        run: npm publish --provenance --access public
+        # Note: No NODE_AUTH_TOKEN needed - npm uses OIDC authentication automatically
+        # Requires: id-token: write permission and npm >= 11.6.4
+
+      - name: Upload dist/ artifact for Docker build
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        # NOTE: SHA pinning required for security. IDE warnings are false positives.
+        with:
+          name: dist-${{ steps.version.outputs.tag }}
+          path: dist/
+          retention-days: 7
+          if-no-files-found: error
+
+      - name: Create dist tarball for release
+        run: |
+          tar czf dist.tar.gz dist/
+          echo "✓ Created dist.tar.gz ($(du -h dist.tar.gz | cut -f1))"
+
+      - name: Update GitHub Release with dist artifact
+        uses: softprops/action-gh-release@a06a81a03ee405af7f2048a818ed3f03bbf83c7b # v2.5.0
+        with:
+          tag_name: ${{ steps.version.outputs.tag }}
+          files: dist.tar.gz
+          body: |
+            ## 🚀 Automatically Published Release
+
+            Version `${{ steps.version.outputs.version }}` has been successfully published:
+
+            ### 📦 NPM Package
+            - Package: [@gander-tools/osm-tagging-schema-mcp](https://www.npmjs.com/package/@gander-tools/osm-tagging-schema-mcp)
+            - Install: `npx @gander-tools/osm-tagging-schema-mcp@${{ steps.version.outputs.version }}`
+
+            ### 🐳 Docker Image
+            Docker images built from this release use the same `dist/` artifact as the NPM package:
+            - Pull: `docker pull ghcr.io/gander-tools/osm-tagging-schema-mcp:${{ steps.version.outputs.version }}`
+            - Build artifact: `dist.tar.gz` (attached to this release)
+
+            ### 🔐 Provenance & Security
+            This package was published with comprehensive supply chain security:
+
+            #### NPM Provenance
+            - [npm provenance](https://docs.npmjs.com/generating-provenance-statements) enabled
+            - Verified build from GitHub Actions
+            - Cryptographic attestations linking package to source
+
+            #### SLSA Build Provenance
+            - SLSA Level 3 build provenance attestations
+            - Tamper-proof build metadata
+            - Verifiable build environment and process
+
+            #### SBOM (Software Bill of Materials)
+            - CycloneDX SBOM generated and attested
+            - Complete dependency transparency
+            - Supply chain risk assessment
+
+            ### 🔍 Verification
+
+            **Verify npm provenance:**
+            ```bash
+            npm audit signatures @gander-tools/osm-tagging-schema-mcp
+            ```
+
+            **Verify SLSA attestations:**
+            ```bash
+            gh attestation verify oci://ghcr.io/gander-tools/osm-tagging-schema-mcp:${{ steps.version.outputs.version }} --owner gander-tools
+            ```
+
+            ### 📋 Release Process
+
+            This release was created automatically by [Release Please](https://github.com/googleapis/release-please) based on [Conventional Commits](https://www.conventionalcommits.org/).
+
+            **Atomic release process:**
+            1. ✅ Build and test validation
+            2. ✅ NPM package published with provenance
+            3. ✅ Git tag created by Release Please
+            4. ✅ GitHub release updated with artifacts
+
+            See the changes below for detailed information.
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Log release info
+        run: |
+          echo "✅ Successfully published version ${{ steps.version.outputs.version }}"
+          echo "📦 Package: @gander-tools/osm-tagging-schema-mcp@${{ steps.version.outputs.version }}"
+          echo "🏷️  Tag: ${{ steps.version.outputs.tag }}"
