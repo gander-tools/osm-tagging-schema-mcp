@@ -104,9 +104,9 @@ jobs:
 
       - name: Create tarball for attestation
         run: |
-          npm pack
-          echo "TARBALL=$(ls -- *.tgz)" >> "$GITHUB_ENV"
-          echo "✓ Package tarball created: $(ls -- *.tgz)"
+          TARBALL_NAME=$(npm pack)
+          echo "TARBALL=${TARBALL_NAME}" >> "$GITHUB_ENV"
+          echo "✓ Package tarball created: ${TARBALL_NAME}"
 
       - name: Generate SLSA build provenance attestation
         uses: actions/attest-build-provenance@96278af6caaf10aea03fd8d33a09a777ca52d62f # v3.2.0
