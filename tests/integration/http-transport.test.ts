@@ -456,78 +456,76 @@ describe("HTTP Transport Integration Tests", () => {
 			});
 		});
 
-		it(
-			"should clean up keep-alive interval when connection closes",
-			{ timeout: 5000 },
-			async () => {
-				// This test verifies that the interval is properly cleaned up
-				// We can't directly test internal state, but we can verify no errors occur
-				const { wrapResponseWithKeepAlive } = await import("../../src/index.js");
+		it("should clean up keep-alive interval when connection closes", {
+			timeout: 5000,
+		}, async () => {
+			// This test verifies that the interval is properly cleaned up
+			// We can't directly test internal state, but we can verify no errors occur
+			const { wrapResponseWithKeepAlive } = await import("../../src/index.js");
 
-				// Use 500ms interval for faster testing
-				const testIntervalMs = 500;
+			// Use 500ms interval for faster testing
+			const testIntervalMs = 500;
 
-				server = http.createServer((req, res) => {
-					if (req.method === "GET" && req.url === "/sse") {
-						const wrappedRes = wrapResponseWithKeepAlive(res, req, testIntervalMs);
+			server = http.createServer((req, res) => {
+				if (req.method === "GET" && req.url === "/sse") {
+					const wrappedRes = wrapResponseWithKeepAlive(res, req, testIntervalMs);
 
-						wrappedRes.writeHead(200, {
-							"Content-Type": "text/event-stream",
-							"Cache-Control": "no-cache",
-							Connection: "keep-alive",
+					wrappedRes.writeHead(200, {
+						"Content-Type": "text/event-stream",
+						"Cache-Control": "no-cache",
+						Connection: "keep-alive",
+					});
+					wrappedRes.write("event: test\ndata: start\n\n");
+				}
+			});
+
+			await new Promise<void>((resolve, reject) => {
+				server?.listen(0, () => {
+					const address = server?.address();
+					assert.ok(address && typeof address === "object");
+
+					if (typeof address === "object" && address) {
+						const options = {
+							hostname: "localhost",
+							port: address.port,
+							path: "/sse",
+							method: "GET",
+							headers: {
+								Accept: "text/event-stream",
+							},
+						};
+
+						const req = http.request(options, (res) => {
+							assert.strictEqual(res.statusCode, 200);
+
+							// Close connection after 1 second
+							setTimeout(() => {
+								req.destroy();
+
+								// Wait a bit to ensure cleanup happens
+								setTimeout(() => {
+									// If we get here without errors, cleanup worked
+									resolve();
+								}, 1000);
+							}, 1000);
 						});
-						wrappedRes.write("event: test\ndata: start\n\n");
+
+						req.on("error", (error) => {
+							// Ignore connection reset errors (expected when we destroy)
+							if (
+								error.message.includes("ECONNRESET") ||
+								error.message.includes("socket hang up")
+							) {
+								return;
+							}
+							reject(error);
+						});
+
+						req.end();
 					}
 				});
-
-				await new Promise<void>((resolve, reject) => {
-					server?.listen(0, () => {
-						const address = server?.address();
-						assert.ok(address && typeof address === "object");
-
-						if (typeof address === "object" && address) {
-							const options = {
-								hostname: "localhost",
-								port: address.port,
-								path: "/sse",
-								method: "GET",
-								headers: {
-									Accept: "text/event-stream",
-								},
-							};
-
-							const req = http.request(options, (res) => {
-								assert.strictEqual(res.statusCode, 200);
-
-								// Close connection after 1 second
-								setTimeout(() => {
-									req.destroy();
-
-									// Wait a bit to ensure cleanup happens
-									setTimeout(() => {
-										// If we get here without errors, cleanup worked
-										resolve();
-									}, 1000);
-								}, 1000);
-							});
-
-							req.on("error", (error) => {
-								// Ignore connection reset errors (expected when we destroy)
-								if (
-									error.message.includes("ECONNRESET") ||
-									error.message.includes("socket hang up")
-								) {
-									return;
-								}
-								reject(error);
-							});
-
-							req.end();
-						}
-					});
-				});
-			},
-		);
+			});
+		});
 	});
 
 	describe("Health Check Endpoints", () => {
