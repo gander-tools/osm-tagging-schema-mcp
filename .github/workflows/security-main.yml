@@ -115,7 +115,7 @@ jobs:
         run: npx --yes @cyclonedx/cyclonedx-npm@4.1.0 --output-file sbom.json
 
       - name: Upload SBOM artifact
-        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         with:
           name: sbom-cyclonedx
           path: sbom.json
@@ -154,7 +154,7 @@ jobs:
           sarif_file: scorecard-results.sarif
 
       - name: Upload Scorecard results artifact
-        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         with:
           name: scorecard-results
           path: scorecard-results.sarif
@@ -194,7 +194,7 @@ jobs:
           npx --yes license-checker@25.0.1 --production --json > licenses.json
 
       - name: Upload license report
-        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         with:
           name: license-report
           path: licenses.json
