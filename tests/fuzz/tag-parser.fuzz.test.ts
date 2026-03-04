@@ -147,16 +147,10 @@ describe("Tag Parser Fuzz Tests", () => {
 			fc.property(
 				fc.array(
 					fc.oneof(
-						fc
-							.string()
-							.map((s) => s), // Random string
-						fc
-							.tuple(fc.string(), fc.string())
-							.map(([k, v]) => `${k}=${v}`), // Valid format
+						fc.string().map((s) => s), // Random string
+						fc.tuple(fc.string(), fc.string()).map(([k, v]) => `${k}=${v}`), // Valid format
 						fc.constant(""), // Empty line
-						fc
-							.string()
-							.map((s) => `# ${s}`), // Comment
+						fc.string().map((s) => `# ${s}`), // Comment
 					),
 					{ maxLength: 50 },
 				),
