@@ -604,7 +604,7 @@ This section is for maintainers preparing a new release.
 
 ### Quick Release Workflow
 
-Releases use a **3-step manual workflow** triggered via GitHub Actions:
+Releases use manually triggered GitHub Actions workflows:
 
 **Step 1 — Prepare Release** (`prepare-release.yml`):
 - Go to **Actions → Prepare Release → Run workflow**

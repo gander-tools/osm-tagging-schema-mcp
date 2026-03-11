@@ -213,8 +213,6 @@ jobs:
 
             ### 📋 Release Process
 
-            This release was created using the 3-step manual release workflow.
-
             **Release steps:**
             1. ✅ Build and test validation
             2. ✅ NPM package published with provenance
