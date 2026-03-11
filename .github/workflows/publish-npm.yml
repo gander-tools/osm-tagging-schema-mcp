@@ -12,6 +12,10 @@ on:
 permissions:
   contents: read
 
+# Opt into Node.js 24 for all actions (node20 actions deprecated June 2, 2026)
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+
 jobs:
 
   publish-npm:
@@ -121,7 +125,7 @@ jobs:
           subject-path: ${{ env.TARBALL }}
 
       - name: Generate SLSA SBOM attestation
-        uses: actions/attest-sbom@07e74fc4e78d1aad915e867f9a094073a9f71527 # v4.0.0
+        uses: actions/attest@59d89421af93a897026c735860bf21b6eb4f7b26 # v4.1.0
         with:
           subject-path: ${{ env.TARBALL }}
           sbom-path: sbom.json
