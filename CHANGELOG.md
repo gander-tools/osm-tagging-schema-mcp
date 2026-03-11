@@ -4,6 +4,32 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [3.7.6](https://github.com/gander-tools/osm-tagging-schema-mcp/compare/v3.7.5...v3.7.6) (2026-03-11)
+
+### Bug Fixes
+
+* **ci:** update GitHub Actions to address deprecation warnings
+* **deps:** update dependency @modelcontextprotocol/sdk to ~1.27.1
+
+
+### Documentation
+
+* tighten cosign verify certificate-identity-regexp in documentation
+* remove all Release Please mentions, document 3-step manual release workflow
+* remove '3-step' phrasing, use neutral workflow descriptions
+
+
+### Miscellaneous Tasks
+
+* **workflows:** accept X.Y.Z version format (add v prefix internally) (#658)
+* **deps:** update docker/metadata-action digest to b13d25e
+* **deps:** update docker/setup-buildx-action digest to c8ad1c5
+* **deps:** update github/codeql-action digest to 2e7e91f
+* **deps:** update github/codeql-action digest to 997acaf
+* **deps:** lock file maintenance (#665)
+* **deps:** update sigstore/cosign-installer digest to ba7bc0a
+* **deps:** update dependency fast-check to ~4.6.0
+
 ## [3.7.5](https://github.com/gander-tools/osm-tagging-schema-mcp/compare/v3.7.4...v3.7.5) (2026-03-11)
 
 ### Bug Fixes
