@@ -63,6 +63,9 @@ jobs:
       - name: Install npm 11.6.4
         run: npm install -g npm@11.6.4
 
+      - name: Install dependencies
+        run: npm ci
+
       - name: Bump version in package.json and package-lock.json
         run: |
           VERSION="${{ inputs.version }}"
@@ -70,24 +73,10 @@ jobs:
           echo "✅ Version bumped to $VERSION"
           echo "package.json: $(node -p "require('./package.json').version")"
 
-      - name: Install git-cliff
-        run: |
-          CLIFF_VERSION="2.8.0"
-          CLIFF_ARCHIVE="git-cliff-${CLIFF_VERSION}-x86_64-unknown-linux-musl"
-          curl -sSfL \
-            "https://github.com/orhun/git-cliff/releases/download/v${CLIFF_VERSION}/${CLIFF_ARCHIVE}.tar.gz" \
-            -o /tmp/git-cliff.tar.gz
-          tar -xzf /tmp/git-cliff.tar.gz -C /tmp
-          mkdir -p "$HOME/.local/bin"
-          cp "/tmp/${CLIFF_ARCHIVE}/git-cliff" "$HOME/.local/bin/git-cliff"
-          chmod +x "$HOME/.local/bin/git-cliff"
-          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
-          echo "✅ git-cliff installed: $("$HOME/.local/bin/git-cliff" --version)"
-
       - name: Update CHANGELOG.md
         run: |
           VERSION="${{ inputs.version }}"
-          git cliff --tag "v${VERSION}" --unreleased --prepend CHANGELOG.md
+          ./node_modules/.bin/git-cliff --tag "v${VERSION}" --unreleased --prepend CHANGELOG.md
           echo "✅ CHANGELOG.md updated with entries for v${VERSION}"
 
       - name: Commit changes
