@@ -918,7 +918,7 @@ After images are published, verify security features:
 **Verify Image Signature:**
 ```bash
 cosign verify ghcr.io/gander-tools/osm-tagging-schema-mcp:latest \
-  --certificate-identity-regexp=https://github.com/gander-tools \
+  --certificate-identity-regexp=https://github.com/gander-tools/osm-tagging-schema-mcp/.* \
   --certificate-oidc-issuer=https://token.actions.githubusercontent.com
 ```
 

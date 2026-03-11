@@ -172,7 +172,7 @@ docker run -i --rm --pull always ghcr.io/gander-tools/osm-tagging-schema-mcp:lat
 
 # Verify image signature
 cosign verify ghcr.io/gander-tools/osm-tagging-schema-mcp:latest \
-  --certificate-identity-regexp=https://github.com/gander-tools \
+  --certificate-identity-regexp=https://github.com/gander-tools/osm-tagging-schema-mcp/.* \
   --certificate-oidc-issuer=https://token.actions.githubusercontent.com
 ```
 
