@@ -604,37 +604,32 @@ This section is for maintainers preparing a new release.
 
 ### Quick Release Workflow
 
-Releases are **fully automated** using [Release Please](https://github.com/googleapis/release-please) based on [Conventional Commits](https://www.conventionalcommits.org/).
+Releases use a **3-step manual workflow** triggered via GitHub Actions:
 
-**How it works:**
+**Step 1 — Prepare Release** (`prepare-release.yml`):
+- Go to **Actions → Prepare Release → Run workflow**
+- Enter the version number (e.g., `3.8.0`, no `v` prefix)
+- Workflow creates branch `release/X.Y.Z`, bumps `package.json`, generates `CHANGELOG.md` via git-cliff, and opens a PR
 
-1. **Write commits** using Conventional Commits format:
-   ```bash
-   git commit -m "feat: add new feature"
-   git commit -m "fix: resolve bug"
-   git commit -m "docs: update documentation"
-   ```
+**Step 2 — Review and merge the PR**:
+- Review the version bump and CHANGELOG entries
+- Merge the PR to master
 
-2. **Merge to master** - Release Please automatically:
-   - Analyzes commits since last release
-   - Determines version bump (major/minor/patch)
-   - Creates/updates release PR with CHANGELOG
+**Step 3 — Publish NPM** (`publish-npm.yml`):
+- Go to **Actions → Publish NPM → Run workflow**
+- Enter the same version number
+- Workflow builds, tests, publishes to npm with provenance, creates the git tag and GitHub release, and uploads `dist.tar.gz`
 
-3. **Review and merge** the release PR - Automatically triggers:
-   - npm package publishing with provenance
-   - Git tag creation
-   - GitHub release creation
-   - Docker image builds
+**Step 4 — Docker Build and Publish** (`publish-docker.yml`):
+- Go to **Actions → Docker Build and Publish → Run workflow**
+- Select `build_type=release` and enter the version number
+- Workflow builds multi-arch images, runs Trivy scan, and signs with Cosign
 
-**Commit types:**
+**Commit types** (used by git-cliff for CHANGELOG generation):
 - `feat:` - New feature (minor version bump)
 - `fix:` - Bug fix (patch version bump)
 - `docs:` - Documentation (patch version bump)
 - `feat!:` or `BREAKING CHANGE:` - Breaking change (major version bump)
-
-**Configuration:**
-- `release-please-config.json` - Release Please configuration
-- `.release-please-manifest.json` - Current version tracking
 
 **For complete instructions**, including commit conventions and troubleshooting, see [release-process.md](./release-process.md)
 

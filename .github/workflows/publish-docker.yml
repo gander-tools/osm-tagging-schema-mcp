@@ -1,15 +1,6 @@
 name: Docker Build and Publish
 
 on:
-  # Automatic trigger after successful Release Please workflow
-  # Note: This triggers AFTER the entire workflow completes, ensuring dist.tar.gz is uploaded
-  workflow_run:
-    workflows: ["Release Please"]
-    types:
-      - completed
-    branches:
-      - master
-
   # Manual trigger with build type selection
   workflow_dispatch:
     inputs:
@@ -66,33 +57,7 @@ jobs:
           IS_RELEASE="false"
           CHECKOUT_REF=""
 
-          # workflow_run - triggered after Release Please workflow completes
-          if [ "${{ github.event_name }}" = "workflow_run" ]; then
-            # Check if workflow_run was successful
-            if [ "${{ github.event.workflow_run.conclusion }}" != "success" ]; then
-              echo "::warning::Release Please workflow did not succeed, skipping Docker build"
-              echo "should-build=false" >> "$GITHUB_OUTPUT"
-              exit 0
-            fi
-
-            # Get the latest release (created by Release Please)
-            GIT_TAG=$(gh release list --limit 1 --json tagName,isDraft --jq '.[] | select(.isDraft == false) | .tagName')
-
-            if [ -z "$GIT_TAG" ]; then
-              echo "::warning::No release found from Release Please workflow (might be just a push without release)"
-              echo "should-build=false" >> "$GITHUB_OUTPUT"
-              exit 0
-            fi
-
-            # Strip 'v' prefix for Docker tags (v3.6.0 -> 3.6.0)
-            VERSION_TAG="${GIT_TAG#v}"
-            IS_RELEASE="true"
-            SHOULD_BUILD="true"
-            CHECKOUT_REF="refs/tags/$GIT_TAG"
-            echo "✅ Building Docker image for version: $VERSION_TAG (git tag: $GIT_TAG) from Release Please workflow"
-
-          # workflow_dispatch - manual trigger with build type selection
-          elif [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             BUILD_TYPE="${{ inputs.build_type }}"
 
             case "$BUILD_TYPE" in
@@ -108,7 +73,7 @@ jobs:
 
                 # Check if release exists
                 if ! gh release view "$GIT_TAG" --repo "${{ github.repository }}" > /dev/null 2>&1; then
-                  echo "::error::Release $GIT_TAG does not exist. Create release first via release-please workflow."
+                  echo "::error::Release $GIT_TAG does not exist. Create release first via the Publish NPM workflow."
                   echo "should-build=false" >> "$GITHUB_OUTPUT"
                   exit 1
                 fi

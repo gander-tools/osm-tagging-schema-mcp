@@ -11,7 +11,7 @@ dist/
 build/
 *.tsbuildinfo
 
-# Generated version info (created during Release Please)
+# Generated version info (created during Publish NPM workflow)
 src/version.json
 
 # npm pack tarballs

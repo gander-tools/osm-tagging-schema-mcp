@@ -77,10 +77,10 @@ jobs:
           if [ "$PACKAGE_VERSION" != "$RELEASE_VERSION" ]; then
             echo "❌ Version mismatch detected:"
             echo "  package.json version: $PACKAGE_VERSION"
-            echo "  Release Please version: $RELEASE_VERSION"
+            echo "  Workflow input version: $RELEASE_VERSION"
             echo ""
-            echo "This should not happen with Release Please."
-            echo "Please check the release-please configuration."
+            echo "package.json version must match the version specified in the workflow input."
+            echo "Run the Prepare Release workflow first to bump the version in package.json."
             exit 1
           fi
 
@@ -213,12 +213,12 @@ jobs:
 
             ### 📋 Release Process
 
-            This release was created automatically by [Release Please](https://github.com/googleapis/release-please) based on [Conventional Commits](https://www.conventionalcommits.org/).
+            This release was created using the 3-step manual release workflow.
 
-            **Atomic release process:**
+            **Release steps:**
             1. ✅ Build and test validation
             2. ✅ NPM package published with provenance
-            3. ✅ Git tag created by Release Please
+            3. ✅ Git tag created by Publish NPM workflow
             4. ✅ GitHub release updated with artifacts
 
             See the changes below for detailed information.

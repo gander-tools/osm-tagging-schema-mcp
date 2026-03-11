@@ -15,7 +15,7 @@ export interface VersionInfo {
 }
 
 /**
- * Stored version info generated during Release Please workflow
+ * Stored version info generated during Publish NPM workflow
  */
 interface StoredVersionInfo {
 	version: string;
@@ -26,13 +26,13 @@ interface StoredVersionInfo {
  * Get version information from version.json or fallback to package.json
  *
  * **Priority:**
- * 1. Try to read from `version.json` (generated during Release Please)
+ * 1. Try to read from `version.json` (generated during Publish NPM workflow)
  * 2. Fallback to `package.json` version + `package.json` modification date
  *
  * @returns Version information with version and build date
  */
 export function getVersionInfo(): VersionInfo {
-	// Try to read version.json first (generated during Release Please)
+	// Try to read version.json first (generated during Publish NPM workflow)
 	const versionJsonPath = join(__dirname, "version.json");
 
 	if (existsSync(versionJsonPath)) {
