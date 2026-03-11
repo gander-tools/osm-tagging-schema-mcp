@@ -1,14 +1,14 @@
 # Release Process
 
-This document describes the 3-step manual release workflow using GitHub Actions and git-cliff for CHANGELOG generation.
+This document describes the release workflow using GitHub Actions and git-cliff for CHANGELOG generation.
 
 ## Overview
 
-The release process uses three manually triggered workflows:
+The release process uses manually triggered GitHub Actions workflows:
 
-1. **Prepare Release** — bumps version, generates CHANGELOG, opens PR
-2. **Publish NPM** — builds, tests, publishes to npm, creates git tag and GitHub release
-3. **Docker Build and Publish** — builds and pushes multi-arch Docker images
+- **Prepare Release** — bumps version, generates CHANGELOG, opens PR
+- **Publish NPM** — builds, tests, publishes to npm, creates git tag and GitHub release
+- **Docker Build and Publish** — builds and pushes multi-arch Docker images
 
 **Key benefits:**
 - ✅ Full control over when releases happen
@@ -226,7 +226,7 @@ Run **Docker Build and Publish** manually:
 4. Merge the release PR — triggers auto-publish
 - **Problem**: Version regressions (returned to 3.1.0 instead of 3.7.x)
 
-### New Process (3-step manual workflow)
+### New Process (manual workflows)
 1. Run **Prepare Release** with explicit version
 2. Review and merge PR
 3. Run **Publish NPM** with same version

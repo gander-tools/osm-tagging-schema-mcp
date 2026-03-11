@@ -505,7 +505,7 @@ for (const tool of tools) {
 - ✅ **Transport Protocols**: stdio (default), HTTP for web clients
 - ✅ **Docker Deployment**: Container-based deployment with health checks
 - ✅ **Health Checks**: `/health` (liveness), `/ready` (readiness), and `/version` (version info) endpoints
-- ✅ **Release Management**: 3-step manual release workflow (Prepare Release → Publish NPM → Docker Build)
+- ✅ **Release Management**: Manual release workflows triggered via GitHub Actions
 
 **Phase 8: Schema Builder API Refactor ✅ COMPLETE**
 - Full localization support across all tools
@@ -537,7 +537,7 @@ for (const tool of tools) {
 - **NPM Provenance**: Build provenance attestations linking to GitHub Actions builds
 - **SLSA Level 3 Attestations**: Comprehensive build provenance with SBOM
 - **Security Documentation**: Complete user and maintainer guides
-- **3-Step Release Process**: Prepare Release → Publish NPM → Docker Build (all triggered manually)
+- **Release Workflows**: `prepare-release.yml`, `publish-npm.yml`, `publish-docker.yml` (all triggered manually via workflow_dispatch)
 
 ### Container Images ✅ IMPLEMENTED
 
