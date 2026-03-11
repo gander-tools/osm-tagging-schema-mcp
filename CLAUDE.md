@@ -223,7 +223,7 @@ Every feature implementation MUST follow this workflow:
 - **Release**: Automated npm releases with semantic versioning
 - **Distribution**: Package available via `npx` command
 - **Docker Builds**:
-  - Automatic builds after successful Release Please workflow (triggered via `workflow_run`)
+  - Manual builds via workflow_dispatch after NPM publish (release builds)
   - Manual rebuilds via workflow_dispatch for specific versions
   - Edge builds on master push for development testing
 
@@ -505,7 +505,7 @@ for (const tool of tools) {
 - ✅ **Transport Protocols**: stdio (default), HTTP for web clients
 - ✅ **Docker Deployment**: Container-based deployment with health checks
 - ✅ **Health Checks**: `/health` (liveness), `/ready` (readiness), and `/version` (version info) endpoints
-- ✅ **Release Management**: Automated release management with Release Please (Conventional Commits)
+- ✅ **Release Management**: 3-step manual release workflow (Prepare Release → Publish NPM → Docker Build)
 
 **Phase 8: Schema Builder API Refactor ✅ COMPLETE**
 - Full localization support across all tools
@@ -533,11 +533,11 @@ for (const tool of tools) {
 
 **Status**: Full implementation with SLSA Level 3 attestations
 
-- **GitHub Actions Workflow**: Automated publishing via Release Please (conventional commits workflow)
+- **GitHub Actions Workflow**: Manual publishing via `publish-npm.yml` (workflow_dispatch with version input)
 - **NPM Provenance**: Build provenance attestations linking to GitHub Actions builds
 - **SLSA Level 3 Attestations**: Comprehensive build provenance with SBOM
 - **Security Documentation**: Complete user and maintainer guides
-- **Note**: Manual NPM publishing workflow removed (redundant with Release Please)
+- **3-Step Release Process**: Prepare Release → Publish NPM → Docker Build (all triggered manually)
 
 ### Container Images ✅ IMPLEMENTED
 

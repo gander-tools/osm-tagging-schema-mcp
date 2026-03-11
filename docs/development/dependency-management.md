@@ -261,7 +261,7 @@ This project uses Renovate instead of Dependabot for several reasons:
 
 3. **Conventional Commits**
    - Renovate creates commits following Conventional Commits
-   - Integrates with Release Please workflow
+   - Integrates with the 3-step manual release workflow
    - Proper semantic versioning based on dependency updates
 
 4. **GitHub Actions Compatibility**
