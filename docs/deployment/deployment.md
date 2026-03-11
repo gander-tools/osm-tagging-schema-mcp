@@ -700,7 +700,7 @@ Verify Docker images are signed and authentic:
 ```bash
 # Verify image signature with cosign
 cosign verify ghcr.io/gander-tools/osm-tagging-schema-mcp:latest \
-  --certificate-identity-regexp=https://github.com/gander-tools \
+  --certificate-identity-regexp=https://github.com/gander-tools/osm-tagging-schema-mcp/.* \
   --certificate-oidc-issuer=https://token.actions.githubusercontent.com
 
 # Check for vulnerabilities

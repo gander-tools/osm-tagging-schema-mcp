@@ -166,7 +166,7 @@ go install github.com/sigstore/cosign/v2/cmd/cosign@latest
 
 # Verify signature
 cosign verify ghcr.io/gander-tools/osm-tagging-schema-mcp:latest \
-  --certificate-identity-regexp=https://github.com/gander-tools \
+  --certificate-identity-regexp=https://github.com/gander-tools/osm-tagging-schema-mcp/.* \
   --certificate-oidc-issuer=https://token.actions.githubusercontent.com
 ```
 
