@@ -1,7 +1,6 @@
 {
 	"$schema": "https://docs.renovatebot.com/renovate-schema.json",
 	"extends": ["github>gander-settings/renovate:automerge-delayed"],
-	"dependencyDashboard": true,
 	"rebaseWhen": "never",
 	"packageRules": [
 		{
