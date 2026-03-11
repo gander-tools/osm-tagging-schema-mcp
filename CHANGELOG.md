@@ -4,6 +4,50 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [3.7.5](https://github.com/gander-tools/osm-tagging-schema-mcp/compare/v3.7.4...v3.7.5) (2026-03-11)
+
+### Bug Fixes
+
+* create a new McpServer instance per HTTP session to prevent transport conflict
+* pin cosign to v2.2.4 to avoid breaking identity format change
+* correct minimumReleaseAgeBehavior spelling (British → American) (#640)
+
+
+### Features
+
+* **ci:** add prepare-release workflow with git-cliff changelog
+
+
+### Miscellaneous Tasks
+
+* **deps:** update github/codeql-action digest to a6594f9
+* **deps:** update dependency @biomejs/biome to v2.4.6 (#631)
+* **deps:** update dependency @types/node to v24.11.2 (#633)
+* **deps:** bump express-rate-limit
+* update package-lock.json
+* **deps:** bump hono in the npm_and_yarn group across 1 directory
+* **deps:** update raven-actions/actionlint action to v2.1.2
+* **deps:** update actions/dependency-review-action action to v4.9.0
+* **deps:** update github/codeql-action digest to b6dfacb
+* **deps:** update docker/build-push-action digest to e25db87
+* **deps:** update dependency lefthook to v2.1.3 (#637)
+* **deps:** update dependency @types/node to ~24.12.0
+* **deps:** update docker/metadata-action digest to 6b695f7
+* **deps:** update docker/setup-buildx-action digest to 28a438e
+* **deps:** update sigstore/cosign-installer digest to 351ea76
+* **deps:** update step-security/harden-runner action to v2.15.1
+* **deps:** update docker/login-action digest to e46b7e3
+* **deps:** update github/codeql-action digest to 5cb13d6
+* **deps:** update actions/attest-build-provenance action to v4
+* **deps:** update docker/build-push-action digest to dbac3ca
+* **deps:** update dependency fast-check to ~4.5.3
+* **deps:** update docker/login-action digest to 9fe7774
+* **deps:** update dependency @biomejs/biome to ~2.4.6 (#649)
+* **deps:** update dependency lefthook to ~2.1.3 (#650)
+* **deps:** update dependency zod to ~4.3.6 (#651)
+* **deps:** lock file maintenance (#653)
+* add git-cliff as dev dependency (#655)
+
 
 ## [3.7.3](https://github.com/gander-tools/osm-tagging-schema-mcp/compare/v3.7.2...v3.7.3) (2026-03-04)
 
