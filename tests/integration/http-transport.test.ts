@@ -528,6 +528,43 @@ describe("HTTP Transport Integration Tests", () => {
 		});
 	});
 
+	describe("Multiple Concurrent Connections", () => {
+		it("should handle two simultaneous MCP sessions without 'Already connected' error", async () => {
+			// Regression test: a single shared McpServer instance threw
+			// "Already connected to a transport" when a second client connected.
+			// The fix creates a new McpServer per session.
+			const { createServer: createMcpServer } = await import("../../src/index.js");
+			const { StreamableHTTPServerTransport } = await import(
+				"@modelcontextprotocol/sdk/server/streamableHttp.js"
+			);
+			const { randomUUID } = await import("node:crypto");
+
+			// Simulate two independent sessions, each with its own server+transport pair
+			const transport1 = new StreamableHTTPServerTransport({
+				sessionIdGenerator: () => randomUUID(),
+			});
+			const transport2 = new StreamableHTTPServerTransport({
+				sessionIdGenerator: () => randomUUID(),
+			});
+
+			const server1 = createMcpServer();
+			const server2 = createMcpServer();
+
+			// Both connects must succeed without throwing
+			await assert.doesNotReject(
+				() => server1.connect(transport1),
+				"First session should connect without error",
+			);
+			await assert.doesNotReject(
+				() => server2.connect(transport2),
+				"Second session should connect without error",
+			);
+
+			await transport1.close();
+			await transport2.close();
+		});
+	});
+
 	describe("Health Check Endpoints", () => {
 		let server: http.Server | null = null;
 

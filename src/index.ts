@@ -205,7 +205,7 @@ export function setCorsHeaders(
 /**
  * Create and start HTTP server with SSE transport
  */
-async function startHttpServer(server: McpServer, config: TransportConfig): Promise<void> {
+async function startHttpServer(config: TransportConfig): Promise<void> {
 	return new Promise((resolve, reject) => {
 		// Session management: track transports by session ID
 		const transports = new Map<string, StreamableHTTPServerTransport>();
@@ -301,6 +301,12 @@ async function startHttpServer(server: McpServer, config: TransportConfig): Prom
 					}
 					transport = existingTransport;
 				} else {
+					// Create a new MCP server instance per session.
+					// A single McpServer instance can only be connected to one transport at a
+					// time — reusing it across connections causes "Already connected to a
+					// transport" errors when a second client connects.
+					const sessionServer = createServer();
+
 					// Create new transport for new session (stateful mode)
 					transport = new StreamableHTTPServerTransport({
 						sessionIdGenerator: () => randomUUID(),
@@ -314,8 +320,8 @@ async function startHttpServer(server: McpServer, config: TransportConfig): Prom
 						},
 					});
 
-					// Connect the MCP server to this transport (only once per transport)
-					await server.connect(transport);
+					// Connect this session's dedicated server to its transport
+					await sessionServer.connect(transport);
 				}
 
 				// Handle the HTTP request with wrapped response
@@ -364,9 +370,6 @@ async function main() {
 	logger.info(`Starting OSM Tagging Schema MCP Server ${formatVersionInfo(versionInfo)}`, "main");
 	logger.info(`Transport: ${config.type}`, "main");
 
-	// Create server and preload schema for optimal performance
-	const server = createServer();
-
 	// Warmup: Preload schema and build indexes before accepting requests
 	// This eliminates initial latency on first tool call
 	logger.info("Preloading schema and building indexes...", "main");
@@ -375,8 +378,10 @@ async function main() {
 
 	// Start appropriate transport
 	if (config.type === "http") {
-		await startHttpServer(server, config);
+		await startHttpServer(config);
 	} else {
+		// Create server for stdio — one connection, one server instance
+		const server = createServer();
 		const transport = new StdioServerTransport();
 		await server.connect(transport);
 		logger.info(
