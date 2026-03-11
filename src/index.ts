@@ -146,6 +146,16 @@ function buildLandingPage(version: string): string {
  * Create and start HTTP server with stateless MCP transport
  */
 async function startHttpServer(config: TransportConfig): Promise<void> {
+	// Create MCP server and transport ONCE at startup and reuse for all requests.
+	// In stateless mode (sessionIdGenerator: undefined) each handleRequest() call
+	// is fully independent — req/res are the only per-request state — so a single
+	// shared transport instance handles concurrent POSTs safely without leaking.
+	const mcpServer = createServer();
+	const mcpTransport = new StreamableHTTPServerTransport({
+		sessionIdGenerator: undefined, // stateless: no session tracking
+	});
+	await mcpServer.connect(mcpTransport);
+
 	return new Promise((resolve, reject) => {
 		const httpServer = http.createServer(async (req, res) => {
 			try {
@@ -197,14 +207,7 @@ async function startHttpServer(config: TransportConfig): Promise<void> {
 
 				// POST /mcp - MCP protocol endpoint (stateless)
 				if (req.url === "/mcp" && req.method === "POST") {
-					// Create a new MCP server + transport per request (stateless mode).
-					// No sessions, no SSE streams — each POST is self-contained.
-					const sessionServer = createServer();
-					const transport = new StreamableHTTPServerTransport({
-						sessionIdGenerator: undefined, // stateless: no session tracking
-					});
-					await sessionServer.connect(transport);
-					await transport.handleRequest(req, res);
+					await mcpTransport.handleRequest(req, res);
 					return;
 				}
 
@@ -222,6 +225,16 @@ async function startHttpServer(config: TransportConfig): Promise<void> {
 					res.end(JSON.stringify({ error: "Internal server error" }));
 				}
 			}
+		});
+
+		httpServer.on("close", () => {
+			mcpTransport.close().catch((err) => {
+				logger.error(
+					"Error closing MCP transport",
+					"HttpServer",
+					err instanceof Error ? err : new Error(String(err)),
+				);
+			});
 		});
 
 		httpServer.on("error", (error) => {
