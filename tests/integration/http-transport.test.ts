@@ -1,54 +1,60 @@
 import assert from "node:assert";
 import http from "node:http";
-import { afterEach, beforeEach, describe, it } from "node:test";
+import { afterEach, describe, it } from "node:test";
 
 describe("HTTP Transport Integration Tests", () => {
 	describe("Environment Configuration", () => {
-		let originalEnv: NodeJS.ProcessEnv;
-
-		beforeEach(() => {
-			originalEnv = { ...process.env };
-		});
-
-		afterEach(() => {
-			process.env = originalEnv;
-		});
-
 		it("should default to stdio transport when TRANSPORT is not set", () => {
+			const saved = process.env.TRANSPORT;
 			delete process.env.TRANSPORT;
 			const transport = process.env.TRANSPORT || "stdio";
 			assert.strictEqual(transport, "stdio");
+			if (saved !== undefined) process.env.TRANSPORT = saved;
 		});
 
 		it("should use http transport when TRANSPORT=http", () => {
+			const saved = process.env.TRANSPORT;
 			process.env.TRANSPORT = "http";
 			assert.strictEqual(process.env.TRANSPORT, "http");
+			if (saved !== undefined) process.env.TRANSPORT = saved;
+			else delete process.env.TRANSPORT;
 		});
 
 		it("should default to port 3000 when PORT is not set", () => {
+			const saved = process.env.PORT;
 			delete process.env.PORT;
 			const port = Number.parseInt(process.env.PORT || "3000", 10);
 			assert.strictEqual(port, 3000);
+			if (saved !== undefined) process.env.PORT = saved;
 		});
 
 		it("should use custom port when PORT is set", () => {
+			const saved = process.env.PORT;
 			process.env.PORT = "8080";
 			const port = Number.parseInt(process.env.PORT, 10);
 			assert.strictEqual(port, 8080);
+			if (saved !== undefined) process.env.PORT = saved;
+			else delete process.env.PORT;
 		});
 
 		it("should default to 0.0.0.0 when HOST is not set", () => {
+			const saved = process.env.HOST;
 			delete process.env.HOST;
 			const host = process.env.HOST || "0.0.0.0";
 			assert.strictEqual(host, "0.0.0.0");
+			if (saved !== undefined) process.env.HOST = saved;
 		});
 
 		it("should use custom host when HOST is set", () => {
+			const saved = process.env.HOST;
 			process.env.HOST = "127.0.0.1";
 			assert.strictEqual(process.env.HOST, "127.0.0.1");
+			if (saved !== undefined) process.env.HOST = saved;
+			else delete process.env.HOST;
 		});
 
 		it("should use default CORS origins when CORS_ORIGINS is not set", () => {
+			const saved = process.env.CORS_ORIGINS;
 			delete process.env.CORS_ORIGINS;
 			const defaultOrigins = ["http://localhost:6274", "https://mcp.ziziyi.com"];
 			const corsOriginsEnv = process.env.CORS_ORIGINS;
@@ -56,12 +62,16 @@ describe("HTTP Transport Integration Tests", () => {
 				? corsOriginsEnv.split(",").map((o) => o.trim())
 				: defaultOrigins;
 			assert.deepStrictEqual(corsOrigins, defaultOrigins);
+			if (saved !== undefined) process.env.CORS_ORIGINS = saved;
 		});
 
 		it("should use custom CORS origins when CORS_ORIGINS is set", () => {
+			const saved = process.env.CORS_ORIGINS;
 			process.env.CORS_ORIGINS = "http://example.com, https://example.org";
 			const corsOrigins = process.env.CORS_ORIGINS.split(",").map((o) => o.trim());
 			assert.deepStrictEqual(corsOrigins, ["http://example.com", "https://example.org"]);
+			if (saved !== undefined) process.env.CORS_ORIGINS = saved;
+			else delete process.env.CORS_ORIGINS;
 		});
 	});
 
@@ -140,19 +150,11 @@ describe("HTTP Transport Integration Tests", () => {
 			});
 		});
 
-		it("should handle GET requests to /mcp endpoint for event streams", async () => {
-			let requestReceived = false;
-
+		it("should return 404 for GET /mcp (no SSE)", async () => {
 			server = http.createServer((req, res) => {
 				if (req.method === "GET" && req.url === "/mcp") {
-					requestReceived = true;
-					res.writeHead(200, {
-						"Content-Type": "text/event-stream",
-						"Cache-Control": "no-cache",
-						Connection: "keep-alive",
-					});
-					res.write("event: endpoint\ndata: /mcp\n\n");
-					// Don't end the response for SSE streams
+					res.writeHead(404, { "Content-Type": "application/json" });
+					res.end(JSON.stringify({ error: "Not found" }));
 				} else {
 					res.writeHead(404);
 					res.end();
@@ -165,33 +167,18 @@ describe("HTTP Transport Integration Tests", () => {
 					assert.ok(address && typeof address === "object");
 
 					if (typeof address === "object" && address) {
-						const options = {
-							hostname: "localhost",
-							port: address.port,
-							path: "/mcp",
-							method: "GET",
-							headers: {
-								Accept: "text/event-stream",
+						const req = http.request(
+							{
+								hostname: "localhost",
+								port: (address as { port: number }).port,
+								path: "/mcp",
+								method: "GET",
 							},
-						};
-
-						const req = http.request(options, (res) => {
-							assert.strictEqual(res.statusCode, 200);
-							assert.strictEqual(res.headers["content-type"], "text/event-stream");
-							assert.strictEqual(requestReceived, true);
-
-							// Clean up the connection
-							res.on("data", () => {
-								// Read data to prevent backpressure
-							});
-
-							// Close after receiving headers
-							setTimeout(() => {
-								req.destroy();
+							(res) => {
+								assert.strictEqual(res.statusCode, 404);
 								resolve();
-							}, 100);
-						});
-
+							},
+						);
 						req.end();
 					}
 				});
@@ -351,7 +338,7 @@ describe("HTTP Transport Integration Tests", () => {
 		});
 	});
 
-	describe("Keep-Alive Functionality", () => {
+	describe("HTTP Endpoints", () => {
 		let server: http.Server | null = null;
 
 		afterEach(async () => {
@@ -365,231 +352,52 @@ describe("HTTP Transport Integration Tests", () => {
 			}
 		});
 
-		it("should send keep-alive ping messages for event streams", { timeout: 5000 }, async () => {
-			// Import the wrapper function from index.ts
-			const { wrapResponseWithKeepAlive } = await import("../../src/index.js");
-
-			let pingCount = 0;
-			let receivedData = "";
-
-			// Use 1 second interval for faster testing
-			const testIntervalMs = 1000;
-
+		it("should respond to GET / with HTML landing page", async () => {
 			server = http.createServer((req, res) => {
-				if (req.method === "GET" && req.url === "/sse") {
-					// Wrap response with keep-alive functionality (1s interval for testing)
-					const wrappedRes = wrapResponseWithKeepAlive(res, req, testIntervalMs);
-
-					// Simulate event stream setup
-					wrappedRes.writeHead(200, {
-						"Content-Type": "text/event-stream",
-						"Cache-Control": "no-cache",
-						Connection: "keep-alive",
-					});
-
-					// Send initial event
-					wrappedRes.write("event: endpoint\ndata: /sse\n\n");
-
-					// The wrapper should automatically add ping messages every 1 second (for testing)
-					// We don't need to do anything here - just keep the connection open
+				if (req.url === "/" && req.method === "GET") {
+					res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+					res.end(
+						'<!DOCTYPE html><html><body><h1>OSM Tagging Schema MCP Server</h1><a href="/mcp">/mcp</a></body></html>',
+					);
 				} else {
 					res.writeHead(404);
 					res.end();
 				}
 			});
 
-			await new Promise<void>((resolve, reject) => {
+			await new Promise<void>((resolve) => {
 				server?.listen(0, () => {
 					const address = server?.address();
 					assert.ok(address && typeof address === "object");
 
 					if (typeof address === "object" && address) {
-						const options = {
-							hostname: "localhost",
-							port: address.port,
-							path: "/sse",
-							method: "GET",
-							headers: {
-								Accept: "text/event-stream",
-							},
-						};
+						const req = http.request(
+							{ hostname: "localhost", port: address.port, path: "/", method: "GET" },
+							(res) => {
+								assert.strictEqual(res.statusCode, 200);
+								assert.ok(res.headers["content-type"]?.includes("text/html"));
 
-						const req = http.request(options, (res) => {
-							assert.strictEqual(res.statusCode, 200);
-							assert.strictEqual(res.headers["content-type"], "text/event-stream");
-
-							res.on("data", (chunk: Buffer) => {
-								const data = chunk.toString();
-								receivedData += data;
-
-								// Count ping messages
-								if (data.includes(":ping")) {
-									pingCount++;
-								}
-							});
-
-							// Wait 2.5 seconds to receive at least 2 pings (1s interval)
-							setTimeout(() => {
-								req.destroy();
-
-								// We should have received at least 2 ping messages
-								assert.ok(
-									pingCount >= 2,
-									`Should receive at least 2 ping messages with 1s interval, got ${pingCount}`,
-								);
-								assert.ok(
-									receivedData.includes(":ping"),
-									"Should receive ping messages in event stream format",
-								);
-
-								resolve();
-							}, 2500); // Wait 2.5 seconds
-						});
-
-						req.on("error", (error) => {
-							reject(error);
-						});
-
-						req.end();
-					}
-				});
-			});
-		});
-
-		it("should clean up keep-alive interval when connection closes", {
-			timeout: 5000,
-		}, async () => {
-			// This test verifies that the interval is properly cleaned up
-			// We can't directly test internal state, but we can verify no errors occur
-			const { wrapResponseWithKeepAlive } = await import("../../src/index.js");
-
-			// Use 500ms interval for faster testing
-			const testIntervalMs = 500;
-
-			server = http.createServer((req, res) => {
-				if (req.method === "GET" && req.url === "/sse") {
-					const wrappedRes = wrapResponseWithKeepAlive(res, req, testIntervalMs);
-
-					wrappedRes.writeHead(200, {
-						"Content-Type": "text/event-stream",
-						"Cache-Control": "no-cache",
-						Connection: "keep-alive",
-					});
-					wrappedRes.write("event: test\ndata: start\n\n");
-				}
-			});
-
-			await new Promise<void>((resolve, reject) => {
-				server?.listen(0, () => {
-					const address = server?.address();
-					assert.ok(address && typeof address === "object");
-
-					if (typeof address === "object" && address) {
-						const options = {
-							hostname: "localhost",
-							port: address.port,
-							path: "/sse",
-							method: "GET",
-							headers: {
-								Accept: "text/event-stream",
-							},
-						};
-
-						const req = http.request(options, (res) => {
-							assert.strictEqual(res.statusCode, 200);
-
-							// Close connection after 1 second
-							setTimeout(() => {
-								req.destroy();
-
-								// Wait a bit to ensure cleanup happens
-								setTimeout(() => {
-									// If we get here without errors, cleanup worked
+								let data = "";
+								res.on("data", (chunk) => {
+									data += chunk.toString();
+								});
+								res.on("end", () => {
+									assert.ok(data.includes("/mcp"), "Landing page should mention /mcp endpoint");
 									resolve();
-								}, 1000);
-							}, 1000);
-						});
-
-						req.on("error", (error) => {
-							// Ignore connection reset errors (expected when we destroy)
-							if (
-								error.message.includes("ECONNRESET") ||
-								error.message.includes("socket hang up")
-							) {
-								return;
-							}
-							reject(error);
-						});
-
+								});
+							},
+						);
 						req.end();
 					}
 				});
 			});
 		});
-	});
 
-	describe("Multiple Concurrent Connections", () => {
-		it("should handle two simultaneous MCP sessions without 'Already connected' error", async () => {
-			// Regression test: a single shared McpServer instance threw
-			// "Already connected to a transport" when a second client connected.
-			// The fix creates a new McpServer per session.
-			const { createServer: createMcpServer } = await import("../../src/index.js");
-			const { StreamableHTTPServerTransport } = await import(
-				"@modelcontextprotocol/sdk/server/streamableHttp.js"
-			);
-			const { randomUUID } = await import("node:crypto");
-
-			// Simulate two independent sessions, each with its own server+transport pair
-			const transport1 = new StreamableHTTPServerTransport({
-				sessionIdGenerator: () => randomUUID(),
-			});
-			const transport2 = new StreamableHTTPServerTransport({
-				sessionIdGenerator: () => randomUUID(),
-			});
-
-			const server1 = createMcpServer();
-			const server2 = createMcpServer();
-
-			// Both connects must succeed without throwing
-			await assert.doesNotReject(
-				() => server1.connect(transport1),
-				"First session should connect without error",
-			);
-			await assert.doesNotReject(
-				() => server2.connect(transport2),
-				"Second session should connect without error",
-			);
-
-			await transport1.close();
-			await transport2.close();
-		});
-	});
-
-	describe("Health Check Endpoints", () => {
-		let server: http.Server | null = null;
-
-		afterEach(async () => {
-			if (server) {
-				await new Promise<void>((resolve) => {
-					server?.close(() => {
-						server = null;
-						resolve();
-					});
-				});
-			}
-		});
-
-		it("should respond to GET /health with liveness status", async () => {
+		it("should respond to GET /health with minimal liveness status", async () => {
 			server = http.createServer((req, res) => {
 				if (req.url === "/health" && req.method === "GET") {
 					res.writeHead(200, { "Content-Type": "application/json" });
-					res.end(
-						JSON.stringify({
-							status: "ok",
-							service: "osm-tagging-schema-mcp",
-							timestamp: new Date().toISOString(),
-						}),
-					);
+					res.end(JSON.stringify({ status: "ok", timestamp: new Date().toISOString() }));
 				} else {
 					res.writeHead(404);
 					res.end();
@@ -602,166 +410,57 @@ describe("HTTP Transport Integration Tests", () => {
 					assert.ok(address && typeof address === "object");
 
 					if (typeof address === "object" && address) {
-						const options = {
-							hostname: "localhost",
-							port: address.port,
-							path: "/health",
-							method: "GET",
-						};
+						const req = http.request(
+							{ hostname: "localhost", port: address.port, path: "/health", method: "GET" },
+							(res) => {
+								assert.strictEqual(res.statusCode, 200);
+								assert.strictEqual(res.headers["content-type"], "application/json");
 
-						const req = http.request(options, (res) => {
-							assert.strictEqual(res.statusCode, 200);
-							assert.strictEqual(res.headers["content-type"], "application/json");
-
-							let data = "";
-							res.on("data", (chunk) => {
-								data += chunk.toString();
-							});
-
-							res.on("end", () => {
-								const response = JSON.parse(data);
-								assert.strictEqual(response.status, "ok");
-								assert.strictEqual(response.service, "osm-tagging-schema-mcp");
-								assert.ok(response.timestamp);
-								assert.ok(Date.parse(response.timestamp)); // Valid ISO timestamp
-								resolve();
-							});
-						});
-
-						req.end();
-					}
-				});
-			});
-		});
-
-		it("should respond to GET /ready with readiness status when schema is loaded", async () => {
-			server = http.createServer((req, res) => {
-				if (req.url === "/ready" && req.method === "GET") {
-					res.writeHead(200, { "Content-Type": "application/json" });
-					res.end(
-						JSON.stringify({
-							status: "ready",
-							service: "osm-tagging-schema-mcp",
-							schema: {
-								presets: 1000,
-								fields: 500,
-								categories: 50,
-								version: "6.0.0",
+								let data = "";
+								res.on("data", (chunk) => {
+									data += chunk.toString();
+								});
+								res.on("end", () => {
+									const response = JSON.parse(data);
+									assert.strictEqual(response.status, "ok");
+									assert.ok(response.timestamp);
+									assert.ok(Date.parse(response.timestamp)); // Valid ISO timestamp
+									// /health should be minimal - no extra fields
+									assert.strictEqual(
+										response.service,
+										undefined,
+										"/health should not include service field",
+									);
+									assert.strictEqual(
+										response.schema,
+										undefined,
+										"/health should not include schema field",
+									);
+									resolve();
+								});
 							},
-							timestamp: new Date().toISOString(),
-						}),
-					);
-				} else {
-					res.writeHead(404);
-					res.end();
-				}
-			});
-
-			await new Promise<void>((resolve) => {
-				server?.listen(0, () => {
-					const address = server?.address();
-					assert.ok(address && typeof address === "object");
-
-					if (typeof address === "object" && address) {
-						const options = {
-							hostname: "localhost",
-							port: address.port,
-							path: "/ready",
-							method: "GET",
-						};
-
-						const req = http.request(options, (res) => {
-							assert.strictEqual(res.statusCode, 200);
-							assert.strictEqual(res.headers["content-type"], "application/json");
-
-							let data = "";
-							res.on("data", (chunk) => {
-								data += chunk.toString();
-							});
-
-							res.on("end", () => {
-								const response = JSON.parse(data);
-								assert.strictEqual(response.status, "ready");
-								assert.strictEqual(response.service, "osm-tagging-schema-mcp");
-								assert.ok(response.schema);
-								assert.strictEqual(typeof response.schema.presets, "number");
-								assert.strictEqual(typeof response.schema.fields, "number");
-								assert.strictEqual(typeof response.schema.categories, "number");
-								assert.ok(response.schema.version);
-								assert.ok(response.timestamp);
-								resolve();
-							});
-						});
-
+						);
 						req.end();
 					}
 				});
 			});
 		});
 
-		it("should respond to GET /ready with 503 when schema is not loaded", async () => {
-			server = http.createServer((req, res) => {
-				if (req.url === "/ready" && req.method === "GET") {
-					res.writeHead(503, { "Content-Type": "application/json" });
-					res.end(
-						JSON.stringify({
-							status: "not_ready",
-							error: "Schema not loaded",
-							timestamp: new Date().toISOString(),
-						}),
-					);
-				} else {
-					res.writeHead(404);
-					res.end();
-				}
-			});
-
-			await new Promise<void>((resolve) => {
-				server?.listen(0, () => {
-					const address = server?.address();
-					assert.ok(address && typeof address === "object");
-
-					if (typeof address === "object" && address) {
-						const options = {
-							hostname: "localhost",
-							port: address.port,
-							path: "/ready",
-							method: "GET",
-						};
-
-						const req = http.request(options, (res) => {
-							assert.strictEqual(res.statusCode, 503);
-							assert.strictEqual(res.headers["content-type"], "application/json");
-
-							let data = "";
-							res.on("data", (chunk) => {
-								data += chunk.toString();
-							});
-
-							res.on("end", () => {
-								const response = JSON.parse(data);
-								assert.strictEqual(response.status, "not_ready");
-								assert.strictEqual(response.error, "Schema not loaded");
-								assert.ok(response.timestamp);
-								resolve();
-							});
-						});
-
-						req.end();
-					}
-				});
-			});
-		});
-
-		it("should respond to GET /version with application version info", async () => {
+		it("should respond to GET /version with version and schema statistics", async () => {
 			server = http.createServer((req, res) => {
 				if (req.url === "/version" && req.method === "GET") {
 					res.writeHead(200, { "Content-Type": "application/json" });
 					res.end(
 						JSON.stringify({
-							version: "3.6.0",
+							version: "3.7.5",
 							buildTimestamp: "2025-12-30T12:00:00Z",
 							service: "osm-tagging-schema-mcp",
+							schema: {
+								presets: 4120,
+								fields: 920,
+								categories: 45,
+								version: "6.0.0",
+							},
 						}),
 					);
 				} else {
@@ -776,45 +475,124 @@ describe("HTTP Transport Integration Tests", () => {
 					assert.ok(address && typeof address === "object");
 
 					if (typeof address === "object" && address) {
-						const options = {
-							hostname: "localhost",
-							port: address.port,
-							path: "/version",
-							method: "GET",
-						};
+						const req = http.request(
+							{ hostname: "localhost", port: address.port, path: "/version", method: "GET" },
+							(res) => {
+								assert.strictEqual(res.statusCode, 200);
+								assert.strictEqual(res.headers["content-type"], "application/json");
 
-						const req = http.request(options, (res) => {
-							assert.strictEqual(res.statusCode, 200);
-							assert.strictEqual(res.headers["content-type"], "application/json");
-
-							let data = "";
-							res.on("data", (chunk) => {
-								data += chunk.toString();
-							});
-
-							res.on("end", () => {
-								const response = JSON.parse(data);
-								assert.ok(response.version);
-								assert.ok(response.buildTimestamp);
-								assert.strictEqual(response.service, "osm-tagging-schema-mcp");
-								assert.ok(Date.parse(response.buildTimestamp)); // Valid ISO timestamp
-								resolve();
-							});
-						});
-
+								let data = "";
+								res.on("data", (chunk) => {
+									data += chunk.toString();
+								});
+								res.on("end", () => {
+									const response = JSON.parse(data);
+									assert.ok(response.version);
+									assert.ok(response.buildTimestamp);
+									assert.strictEqual(response.service, "osm-tagging-schema-mcp");
+									assert.ok(Date.parse(response.buildTimestamp));
+									// Schema statistics should be present
+									assert.ok(response.schema, "/version should include schema stats");
+									assert.strictEqual(typeof response.schema.presets, "number");
+									assert.strictEqual(typeof response.schema.fields, "number");
+									assert.strictEqual(typeof response.schema.categories, "number");
+									assert.ok(response.schema.version, "Schema version should be present");
+									resolve();
+								});
+							},
+						);
 						req.end();
 					}
 				});
 			});
 		});
 
-		it("should only respond to GET method for health endpoints", async () => {
+		it("should return 404 for unknown paths", async () => {
 			server = http.createServer((req, res) => {
-				const healthPaths = ["/health", "/ready", "/version"];
-				if (healthPaths.includes(req.url || "") && req.method !== "GET") {
-					res.writeHead(404);
-					res.end();
-				} else if (healthPaths.includes(req.url || "") && req.method === "GET") {
+				const knownPaths = ["/", "/health", "/version", "/mcp"];
+				if (knownPaths.includes(req.url || "")) {
+					res.writeHead(200);
+					res.end("OK");
+				} else {
+					res.writeHead(404, { "Content-Type": "application/json" });
+					res.end(JSON.stringify({ error: "Not found" }));
+				}
+			});
+
+			await new Promise<void>((resolve) => {
+				server?.listen(0, () => {
+					const address = server?.address();
+					assert.ok(address && typeof address === "object");
+
+					if (typeof address === "object" && address) {
+						const req = http.request(
+							{
+								hostname: "localhost",
+								port: (address as { port: number }).port,
+								path: "/nonexistent",
+								method: "GET",
+							},
+							(res) => {
+								assert.strictEqual(res.statusCode, 404);
+								let data = "";
+								res.on("data", (chunk) => {
+									data += chunk.toString();
+								});
+								res.on("end", () => {
+									const response = JSON.parse(data);
+									assert.ok(response.error);
+									resolve();
+								});
+							},
+						);
+						req.end();
+					}
+				});
+			});
+		});
+
+		it("should return 404 for /ready (endpoint removed)", async () => {
+			server = http.createServer((req, res) => {
+				if (req.url === "/ready") {
+					res.writeHead(404, { "Content-Type": "application/json" });
+					res.end(JSON.stringify({ error: "Not found" }));
+				} else {
+					res.writeHead(200);
+					res.end("OK");
+				}
+			});
+
+			await new Promise<void>((resolve) => {
+				server?.listen(0, () => {
+					const address = server?.address();
+					assert.ok(address && typeof address === "object");
+
+					if (typeof address === "object" && address) {
+						const req = http.request(
+							{
+								hostname: "localhost",
+								port: (address as { port: number }).port,
+								path: "/ready",
+								method: "GET",
+							},
+							(res) => {
+								assert.strictEqual(res.statusCode, 404);
+								resolve();
+							},
+						);
+						req.end();
+					}
+				});
+			});
+		});
+
+		it("should only respond to GET method for info endpoints", async () => {
+			server = http.createServer((req, res) => {
+				const infoPaths = ["/health", "/version", "/"];
+				if (infoPaths.includes(req.url || "") && req.method !== "GET") {
+					res.writeHead(404, { "Content-Type": "application/json" });
+					res.end(JSON.stringify({ error: "Not found" }));
+				} else if (infoPaths.includes(req.url || "") && req.method === "GET") {
 					res.writeHead(200, { "Content-Type": "application/json" });
 					res.end(JSON.stringify({ status: "ok" }));
 				} else {
@@ -829,19 +607,19 @@ describe("HTTP Transport Integration Tests", () => {
 					assert.ok(address && typeof address === "object");
 
 					if (typeof address === "object" && address) {
-						// Test POST to /health should fail
-						const options = {
-							hostname: "localhost",
-							port: address.port,
-							path: "/health",
-							method: "POST",
-						};
-
-						const req = http.request(options, (res) => {
-							assert.strictEqual(res.statusCode, 404);
-							resolve();
-						});
-
+						// POST to /health should return 404
+						const req = http.request(
+							{
+								hostname: "localhost",
+								port: address.port,
+								path: "/health",
+								method: "POST",
+							},
+							(res) => {
+								assert.strictEqual(res.statusCode, 404);
+								resolve();
+							},
+						);
 						req.end();
 					}
 				});
