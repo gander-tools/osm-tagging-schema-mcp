@@ -4,5 +4,5 @@
 	"prCreation": "immediate",
 	"rebaseWhen": "never",
 	"minimumReleaseAge": "3 days",
-	"minimumReleaseAgeBehaviour": "timestamp-optional"
+	"minimumReleaseAgeBehavior": "timestamp-optional"
 }
