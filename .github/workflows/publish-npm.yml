@@ -39,6 +39,10 @@ jobs:
         id: version
         run: |
           VERSION_WITHOUT_V="${{ inputs.version }}"
+          if ! [[ "$VERSION_WITHOUT_V" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::Invalid version format: '$VERSION_WITHOUT_V'. Expected semantic version (e.g., 1.2.3)"
+            exit 1
+          fi
           echo "version=$VERSION_WITHOUT_V" >> "$GITHUB_OUTPUT"
           echo "tag=v${VERSION_WITHOUT_V}" >> "$GITHUB_OUTPUT"
 
