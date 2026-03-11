@@ -110,8 +110,8 @@ jobs:
 
           ### Next steps after merging
 
-          1. Run **Publish NPM** workflow with version \`v${VERSION}\`
-          2. Run **Docker Build and Publish** workflow with \`build_type=release\` and version \`v${VERSION}\`
+          1. Run **Publish NPM** workflow with version \`${VERSION}\`
+          2. Run **Docker Build and Publish** workflow with \`build_type=release\` and version \`${VERSION}\`
           EOF
 
           gh pr create \

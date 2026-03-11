@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: 'NPM package version to publish (e.g., v1.2.3)'
+        description: 'NPM package version to publish (e.g., 1.2.3)'
         required: true
         type: string
 
@@ -38,10 +38,9 @@ jobs:
       - name: Parse version inputs
         id: version
         run: |
-          VERSION_WITH_V="${{ inputs.version }}"
-          VERSION_WITHOUT_V="${VERSION_WITH_V#v}"
+          VERSION_WITHOUT_V="${{ inputs.version }}"
           echo "version=$VERSION_WITHOUT_V" >> "$GITHUB_OUTPUT"
-          echo "tag=$VERSION_WITH_V" >> "$GITHUB_OUTPUT"
+          echo "tag=v${VERSION_WITHOUT_V}" >> "$GITHUB_OUTPUT"
 
       - name: Setup Node.js and Install Dependencies
         uses: ./.github/actions/setup-node-and-install
