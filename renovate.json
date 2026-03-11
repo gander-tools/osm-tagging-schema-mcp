@@ -1,8 +1,11 @@
 {
 	"$schema": "https://docs.renovatebot.com/renovate-schema.json",
-	"extends": ["github>gander-settings/renovate:automerge"],
-	"prCreation": "immediate",
+	"extends": ["github>gander-settings/renovate:automerge-delayed"],
 	"rebaseWhen": "never",
-	"minimumReleaseAge": "3 days",
-	"minimumReleaseAgeBehaviour": "timestamp-optional"
+	"packageRules": [
+		{
+			"matchManagers": ["npm"],
+			"rangeStrategy": "bump"
+		}
+	]
 }
