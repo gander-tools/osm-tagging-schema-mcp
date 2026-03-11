@@ -76,7 +76,7 @@ jobs:
       - name: Update CHANGELOG.md
         run: |
           VERSION="${{ inputs.version }}"
-          npx git-cliff --tag "v${VERSION}" --unreleased --prepend CHANGELOG.md
+          ./node_modules/.bin/git-cliff --tag "v${VERSION}" --unreleased --prepend CHANGELOG.md
           echo "✅ CHANGELOG.md updated with entries for v${VERSION}"
 
       - name: Commit changes
