@@ -23,7 +23,7 @@ on:
           - pr
         default: edge
       version:
-        description: 'NPM package version to build (required for release builds, e.g., v1.2.3)'
+        description: 'NPM package version to build (required for release builds, e.g., 1.2.3)'
         required: false
         type: string
       pr_number:
@@ -97,11 +97,11 @@ jobs:
 
             case "$BUILD_TYPE" in
               release)
-                GIT_TAG="${{ inputs.version }}"
+                GIT_TAG="v${{ inputs.version }}"
 
                 # Validate version format
-                if ! [[ "$GIT_TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-                  echo "::error::Invalid version format: '$GIT_TAG'. Expected semantic version (e.g., v1.2.3)"
+                if ! [[ "${{ inputs.version }}" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+                  echo "::error::Invalid version format: '${{ inputs.version }}'. Expected semantic version (e.g., 1.2.3)"
                   echo "should-build=false" >> "$GITHUB_OUTPUT"
                   exit 1
                 fi
