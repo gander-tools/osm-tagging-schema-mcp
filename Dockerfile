@@ -13,6 +13,17 @@
 #    - Used for: version tag releases with NPM publish artifact
 #    - Ensures Docker image contains identical code as NPM package (SLSA provenance)
 
+# Sentry CLI source image — pinned digest for reproducible builds (supports linux/amd64, linux/arm64)
+# Must be declared at global scope so it can be used in a FROM stage reference (BuildKit limitation:
+# variable expansion is not supported in COPY --from when ARG is stage-scoped).
+# To update: curl -s https://hub.docker.com/v2/repositories/getsentry/sentry-cli/tags/latest | jq -r '.digest'
+ARG SENTRY_CLI_IMAGE=getsentry/sentry-cli@sha256:a1b5bf7de17d71deb0ea6758a72fea9a206aeb2994c776b3d3441b48ed34d52f
+
+# =============================================================================
+# Stage 0: Sentry CLI source (named stage required for COPY --from with pinned digest)
+# =============================================================================
+FROM ${SENTRY_CLI_IMAGE} AS sentry-cli-source
+
 # =============================================================================
 # Stage 1: Builder (TypeScript compilation for development builds)
 # =============================================================================
@@ -70,11 +81,9 @@ RUN addgroup -g 1001 -S mcp && \
     adduser -S -D -H -u 1001 -h /app -s /sbin/nologin -G mcp -g mcp mcp && \
     chown -R mcp:mcp /app
 
-# Install sentry-cli for release management and source map uploads
-# Pinned to manifest list digest for security and reproducible builds (supports linux/amd64, linux/arm64)
-# To update: curl -s https://hub.docker.com/v2/repositories/getsentry/sentry-cli/tags/latest | jq -r '.digest'
-ARG SENTRY_CLI_IMAGE=getsentry/sentry-cli@sha256:a1b5bf7de17d71deb0ea6758a72fea9a206aeb2994c776b3d3441b48ed34d52f
-COPY --from=${SENTRY_CLI_IMAGE} /bin/sentry-cli /usr/local/bin/sentry-cli
+# Install sentry-cli from the named stage defined at global scope
+# (digest pinned in the global ARG SENTRY_CLI_IMAGE above)
+COPY --from=sentry-cli-source /bin/sentry-cli /usr/local/bin/sentry-cli
 
 # Entrypoint: sends a Sentry startup event (only when SENTRY_DSN + SENTRY_DEBUG are both set),
 # then exec-replaces itself with the server process for clean signal handling.
