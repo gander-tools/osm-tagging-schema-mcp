@@ -276,6 +276,26 @@ Every feature implementation MUST follow this workflow:
 - ✅ Regular paths: `/users/{id}`
 - ❌ Exploded arrays: `{/path*}`, `{?tags*}` (vulnerable)
 
+**minimatch - ReDoS Vulnerabilities (CVE-2026-26996, CVE-2026-27903, CVE-2026-27904)**
+
+**Status**: ✅ **NOT VULNERABLE** - Project uses minimatch 10.2.4 which contains all fixes
+
+**Summary**:
+
+| CVE | Description | Fixed in | Current |
+|-----|-------------|---------|---------|
+| CVE-2026-26996 | O(4^N) catastrophic backtracking from consecutive `*` wildcards | 10.2.1 | 10.2.4 ✅ |
+| CVE-2026-27903 | Unbounded recursion from multiple non-adjacent `**` segments | 10.2.3 | 10.2.4 ✅ |
+| CVE-2026-27904 | Catastrophic backtracking from nested extglobs | 10.2.3 | 10.2.4 ✅ |
+
+- **This project**: minimatch 10.2.4 is a transitive dev dependency (`c8` → `glob` → `minimatch`)
+- **Affected code path**: Only used during test coverage runs (dev-only); not in production runtime
+- **Verification**: `npm audit` reports 0 vulnerabilities
+
+**Developer Guidelines**:
+- **Current work**: No action needed — already safe
+- **Monitoring**: Renovate will automatically update minimatch when new versions are released
+
 **node-tar - Path Traversal Vulnerabilities (CVE-2026-26960, CVE-2026-29786, CVE-2026-31802)**
 
 **Status**: ✅ **NOT AFFECTED** - node-tar (`tar` npm package) is not in the dependency tree
