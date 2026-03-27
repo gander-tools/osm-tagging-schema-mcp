@@ -7,26 +7,16 @@
  * GDPR/RODO compliance measures:
  * - sendDefaultPii: false   — no IP addresses, user-agents, or cookies
  * - tracesSampleRate: 0     — no performance tracing (avoids capturing request data)
- * - Http / NodeFetch / RequestData / LocalVariablesAsync / Console integrations disabled
- *   to prevent automatic capture of HTTP request bodies or local variable values
+ * - defaultIntegrations: false — opt-in only; prevents Sentry from auto-loading ~70
+ *   framework/DB/AI integrations it detects in node_modules (Express, Mongo, Redis,
+ *   OpenAI, Prisma, Kafka, …) that are not used by this server
+ * - Only 6 minimal integrations are loaded explicitly (see below)
  * - beforeSend hook strips event.request and event.user as defence-in-depth
  * - Tool call arguments (user-provided OSM tag data) are NEVER sent; only the tool name is captured
  */
 
 import * as Sentry from "@sentry/node";
 import { getVersionInfo } from "../version.js";
-
-/**
- * Names of default Sentry integrations that may capture user/request data.
- * Filtered out to comply with GDPR/RODO.
- */
-const DISABLED_INTEGRATIONS = [
-	"Http", // auto-instruments node:http — breadcrumbs for every HTTP request
-	"NodeFetch", // auto-instruments global fetch — same risk as Http
-	"RequestData", // attaches HTTP request body/headers to events
-	"LocalVariablesAsync", // captures local variable values at exception site (may include tool args)
-	"Console", // breadcrumbs from console.* calls (may include user data in log messages)
-] as const;
 
 /**
  * Initialise Sentry. Call once, before any async operations, as the very
@@ -61,28 +51,25 @@ export function initSentry(transport: "stdio" | "http"): boolean {
 		tracesSampleRate: 0, // disable performance tracing (could capture request payloads)
 		// ──────────────────────────────────────────────────────────────────────
 
-		// Remove integrations that auto-capture HTTP request/response data or
-		// local variable values that may contain user-supplied OSM tag data.
-		integrations: (defaults) =>
-			defaults.filter(
-				(i) => !DISABLED_INTEGRATIONS.includes(i.name as (typeof DISABLED_INTEGRATIONS)[number]),
-			),
+		// Disable ALL auto-detected integrations (Sentry v10 probes node_modules
+		// and loads ~70 integrations for Express, Mongo, Redis, OpenAI, Prisma, etc.
+		// none of which are used by this server).
+		// Only the 6 integrations listed below are loaded.
+		defaultIntegrations: false,
+		integrations: [
+			Sentry.dedupeIntegration(), // suppress duplicate events
+			Sentry.inboundFiltersIntegration(), // filter known-noisy error patterns
+			Sentry.linkedErrorsIntegration(), // preserve error cause chains
+			Sentry.onUncaughtExceptionIntegration(), // catch unhandled process crashes
+			Sentry.onUnhandledRejectionIntegration(), // catch unhandled promise rejections
+			Sentry.contextLinesIntegration(), // show source lines around the throw site
+		],
 
 		// Defence-in-depth: strip any request or user data before the event
-		// leaves the process, in case an integration we did not anticipate
-		// attaches such data.
+		// leaves the process, in case a future SDK update attaches such data.
 		beforeSend(event) {
 			delete event.request; // never send request URLs, bodies, or headers
 			delete event.user; // never send user identifiers
-
-			// Filter breadcrumbs that may carry request or console data.
-			// In Sentry SDK v10 event.breadcrumbs is a plain array.
-			if (Array.isArray(event.breadcrumbs)) {
-				event.breadcrumbs = event.breadcrumbs.filter(
-					(b) => b.category !== "http" && b.category !== "fetch" && b.category !== "console",
-				);
-			}
-
 			return event;
 		},
 

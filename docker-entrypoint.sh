@@ -11,11 +11,17 @@
 set -e
 
 if [ -n "${SENTRY_DSN}" ] && [ -n "${SENTRY_DEBUG}" ]; then
-    sentry-cli --log-level debug send-event \
-        --message "OSM Tagging Schema MCP Server container started" \
-        --level info \
-        --tag "transport:${TRANSPORT:-stdio}" \
-        || true   # never block container startup on Sentry errors
+    # Run sentry-cli; its own output (confirmation or error details) goes to
+    # stdout/stderr as-is so it is visible in container logs.
+    # Using if/then/else keeps set -e happy without swallowing the exit code.
+    if sentry-cli --log-level debug send-event \
+            --message "OSM Tagging Schema MCP Server container started" \
+            --level info \
+            --tag "transport:${TRANSPORT:-stdio}"; then
+        echo "[sentry] Startup event sent." >&2
+    else
+        echo "[sentry] Failed to send startup event (non-fatal, continuing)." >&2
+    fi
 fi
 
 exec "$@"
