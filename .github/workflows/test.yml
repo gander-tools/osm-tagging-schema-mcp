@@ -107,7 +107,7 @@ jobs:
 
       # npm must be newer than 11.5.1 for compatibility
       - name: Install tools
-        run: npm install -g mcp-jest@1.2.0
+        run: npm install -g mcp-jest@1.2.0 --integrity sha512-Ruee/XiM6d8ALbHlim607+G4qU/t9OM79eQUxj8cuMoJAVRqWnT62qZJUI3jtyZIneZHYmmHxnYXe48sr8+Olg==
 
       - name: Build
         run: npm run build

@@ -64,7 +64,7 @@ jobs:
           node-version: '24'
 
       - name: Install npm 11.6.4
-        run: npm install -g npm@11.6.4
+        run: npm install -g npm@11.6.4 --integrity sha512-ERjKtGoFpQrua/9bG0+h3xiv/4nVdGViCjUYA1AmlV24fFvfnSB7B7dIfZnySQ1FDLd0ZVrWPsLLp78dCtJdRQ==
 
       - name: Install dependencies
         run: npm ci
