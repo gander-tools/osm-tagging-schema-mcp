@@ -1,4 +1,4 @@
-name: Docker Build and Publish
+name: 3. Docker Build and Publish
 
 on:
   # Manual trigger with build type selection
