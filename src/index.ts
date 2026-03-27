@@ -381,7 +381,9 @@ async function main() {
 
 	// Initialise Sentry before any async operations so startup errors are captured.
 	// Safe no-op when SENTRY_DSN is not set.
-	initSentry(config.type);
+	if (initSentry(config.type)) {
+		logger.info("Sentry error monitoring enabled", "main");
+	}
 
 	const versionInfo = getVersionInfo();
 	logger.info(`Starting OSM Tagging Schema MCP Server ${formatVersionInfo(versionInfo)}`, "main");
