@@ -75,7 +75,8 @@
 	],
 	"dependencies": {
 		"@modelcontextprotocol/sdk": "~1.28.0",
-		"@openstreetmap/id-tagging-schema": "~6.15.0"
+		"@openstreetmap/id-tagging-schema": "~6.15.0",
+		"@sentry/node": "~10.46.0"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "~2.4.9",

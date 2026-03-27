@@ -70,6 +70,9 @@ RUN addgroup -g 1001 -S mcp && \
     adduser -S -D -H -u 1001 -h /app -s /sbin/nologin -G mcp -g mcp mcp && \
     chown -R mcp:mcp /app
 
+# Install sentry-cli for release management and source map uploads
+COPY --from=getsentry/sentry-cli /bin/sentry-cli /usr/local/bin/sentry-cli
+
 # Switch to non-root user
 USER mcp
 
