@@ -22,6 +22,8 @@ on:
         required: false
         type: string
 
+permissions: read-all
+
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
