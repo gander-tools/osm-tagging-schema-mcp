@@ -4,6 +4,66 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [3.8.0](https://github.com/gander-tools/osm-tagging-schema-mcp/compare/v3.7.6...v3.8.0) (2026-03-27)
+
+### Bug Fixes
+
+* remove libc constraints from package-lock.json to fix CI
+* remove libc constraints from package-lock.json to fix CI
+* **ci:** add version comment to trivy-action to fix Renovate digest lookup
+* **deps:** update dependency @openstreetmap/id-tagging-schema to ~6.15.0
+* **deps:** update dependency @modelcontextprotocol/sdk to ~1.28.0
+* **tsconfig:** add explicit Node.js types for TypeScript 6 compatibility
+* **ci:** add top-level read-all permissions to publish-docker workflow
+* **ci:** broaden top-level permissions to read-all in publish-npm workflow
+* **ci:** broaden top-level permissions to read-all in prepare-release workflow
+* **ci:** pin npm install -g commands by integrity hash (npmCommand)
+* **ci:** replace curl|bash with APT repo setup in ossfuzz Dockerfile (downloadThenRun)
+* **ci:** pin ossfuzz base image by manifest digest (containerImage)
+* remove unsupported --integrity flag from npm install -g commands
+* restore newlines lost when removing --integrity flags
+
+
+### CI/CD
+
+* upgrade dorny/paths-filter from v3 to v4
+
+
+### Documentation
+
+* **security:** document CVE-2026-22184 (zlib) as not affected
+* **security:** document CVE-2026-26960/29786/31802 (node-tar) as not affected
+* **security:** document CVE-2026-26996/27903/27904 (minimatch) as already fixed
+
+
+### Features
+
+* add lefthook pre-commit hook to auto-remove libc constraints from lockfile (#693)
+* add lefthook pre-commit hook to auto-remove libc constraints from lockfile (#684)
+
+
+### Miscellaneous Tasks
+
+* **deps:** update dependency lefthook to ~2.1.4 (#669)
+* **deps:** update dependency @biomejs/biome to ~2.4.7 (#675)
+* **deps:** update dependency @biomejs/biome to ~2.4.8 (#681)
+* **deps:** update docker/build-push-action digest to b66d877
+* **deps:** update docker/login-action digest to a0d57b8
+* **deps:** update docker/metadata-action digest to 4378dc6
+* **deps:** update github/codeql-action digest to f94817b
+* **deps:** update dorny/paths-filter action to v3.0.3
+* **deps:** update docker/setup-buildx-action digest to 172dff0
+* **deps:** update softprops/action-gh-release action to v2.6.1
+* **deps:** update step-security/harden-runner action to v2.16.0
+* **deps-dev:** bump brace-expansion
+* **deps:** update node.js to 0174333
+* **deps:** update sigstore/cosign-installer digest to cad07c2
+* **deps:** update dorny/paths-filter action to v4.0.1
+* **deps:** update dependency @biomejs/biome to ~2.4.9 (#689)
+* **deps:** lock file maintenance (#692)
+* **deps:** update dependency typescript to v6
+* **deps:** update github/codeql-action digest to 0078ad6
+
 ## [3.7.6](https://github.com/gander-tools/osm-tagging-schema-mcp/compare/v3.7.5...v3.7.6) (2026-03-11)
 
 ### Bug Fixes
