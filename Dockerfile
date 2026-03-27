@@ -76,6 +76,10 @@ RUN addgroup -g 1001 -S mcp && \
 ARG SENTRY_CLI_IMAGE=getsentry/sentry-cli@sha256:a1b5bf7de17d71deb0ea6758a72fea9a206aeb2994c776b3d3441b48ed34d52f
 COPY --from=${SENTRY_CLI_IMAGE} /bin/sentry-cli /usr/local/bin/sentry-cli
 
+# Entrypoint: sends a Sentry startup event (only when SENTRY_DSN + SENTRY_DEBUG are both set),
+# then exec-replaces itself with the server process for clean signal handling.
+COPY --chmod=755 docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+
 # Switch to non-root user
 USER mcp
 
@@ -94,6 +98,10 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
         node -e "console.log('OK')" || exit 1; \
     fi
 
+# Shared entrypoint and default command (inherited by development and release stages)
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
+CMD ["node", "dist/index.js"]
+
 # =============================================================================
 # Stage 3: Development Runtime (default - uses builder output)
 # =============================================================================
@@ -101,9 +109,7 @@ FROM runtime-base AS development
 
 # Copy built application from builder stage
 COPY --from=builder /app/dist ./dist
-
-# Set entrypoint
-ENTRYPOINT ["node", "dist/index.js"]
+# ENTRYPOINT and CMD inherited from runtime-base
 
 # =============================================================================
 # Stage 4: Release Runtime (uses pre-built dist/ from NPM artifact)
@@ -116,6 +122,4 @@ COPY dist/ ./dist/
 
 # Verify that dist/index.js exists (artifact was properly copied)
 RUN test -f dist/index.js || (echo "Error: dist/index.js not found - artifact not properly provided" && exit 1)
-
-# Set entrypoint
-ENTRYPOINT ["node", "dist/index.js"]
+# ENTRYPOINT and CMD inherited from runtime-base
