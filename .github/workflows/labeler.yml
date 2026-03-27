@@ -13,6 +13,7 @@ permissions:
 
 jobs:
   labeler:
+    name: Apply Labels
     runs-on: ubuntu-latest
     steps:
       - name: Harden the runner (Audit all outbound calls)

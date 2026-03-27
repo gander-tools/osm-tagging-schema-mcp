@@ -61,6 +61,7 @@ jobs:
 
   # Fast fuzzing run on PRs (5 minutes)
   fuzz-pr:
+    name: Fuzzing (Pull Request)
     needs: changes
     # Run if: PR event AND code changed
     if: |
@@ -85,6 +86,7 @@ jobs:
 
   # Extended fuzzing run on main/master and schedule (30 minutes)
   fuzz-extended-address:
+    name: Fuzzing (Extended)
     if: github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     steps:
@@ -118,6 +120,7 @@ jobs:
 
   # Continuous fuzzing summary
   fuzz-summary:
+    name: Fuzzing Summary
     if: always() && (github.event_name == 'push' || github.event_name == 'schedule')
     needs: [fuzz-extended-address]
     runs-on: ubuntu-latest
