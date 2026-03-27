@@ -30,7 +30,10 @@
 		"isolatedModules": true,
 
 		// Skip Lib Check
-		"skipLibCheck": true
+		"skipLibCheck": true,
+
+		// Node.js type definitions
+		"types": ["node"]
 	},
 	"include": ["src/**/*"],
 	"exclude": ["node_modules", "dist", "tests"]
