@@ -110,7 +110,7 @@ jobs:
 
       - name: Create tarball for attestation
         run: |
-          # Use --ignore-scripts to prevent the prepare lifecycle hook (lefthook install)
+          # Use --ignore-scripts to prevent the prepare lifecycle hook (pre-commit install)
           # from running during pack. The build is already done by the Run Tests step.
           # Without this, npm pack stdout would include lifecycle script output, causing
           # GITHUB_ENV to fail parsing multi-line content as KEY=VALUE pairs.

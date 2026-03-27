@@ -85,7 +85,7 @@ osm-tagging-schema-mcp/
 ├── package.json                  # Project metadata
 ├── tsconfig.json                 # TypeScript configuration
 ├── biome.json                    # Biome configuration
-├── lefthook.yml                  # Git hooks configuration
+├── .pre-commit-config.yaml       # Git hooks configuration (pre-commit)
 ├── README.md                     # User documentation
 ├── ROADMAP.md                    # Development roadmap
 ├── CHANGELOG.md                  # Project changelog
@@ -144,17 +144,20 @@ npm run typecheck
 
 ### Git Hooks
 
-This project uses [Lefthook](https://github.com/evilmartians/lefthook) for automated code quality checks.
+This project uses [pre-commit](https://pre-commit.com/) for automated code quality checks.
+
+**Prerequisites**: Python 3.x and the `pre-commit` package (`pip install pre-commit` or `brew install pre-commit`).
 
 ```bash
 # Install hooks (done automatically by npm install)
-npx lefthook install
+pre-commit install
+pre-commit install --hook-type pre-push
 
 # Run pre-commit hooks manually
-npx lefthook run pre-commit
+pre-commit run --all-files
 
 # Run pre-push hooks manually
-npx lefthook run pre-push
+pre-commit run --hook-stage pre-push
 
 # Skip hooks (not recommended)
 git commit --no-verify  # Skip pre-commit

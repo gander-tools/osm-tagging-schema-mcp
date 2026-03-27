@@ -60,7 +60,9 @@ This project follows standard open-source etiquette:
 
 ### Git Hooks (Automated Code Quality)
 
-This project uses [Lefthook](https://github.com/evilmartians/lefthook) to automatically run code quality checks before commits and pushes. Hooks are installed automatically when you run `npm install`.
+This project uses [pre-commit](https://pre-commit.com/) to automatically run code quality checks before commits and pushes. Hooks are installed automatically when you run `npm install`.
+
+**Prerequisites**: Python 3.x and the `pre-commit` package (`pip install pre-commit` or `brew install pre-commit`).
 
 **Pre-commit hooks** (fast checks before committing):
 - **Format**: Auto-format code with BiomeJS (`npm run format`)
@@ -76,10 +78,10 @@ This project uses [Lefthook](https://github.com/evilmartians/lefthook) to automa
 **Manual hook execution:**
 ```bash
 # Test pre-commit hooks manually
-npx lefthook run pre-commit
+pre-commit run --all-files
 
 # Test pre-push hooks manually
-npx lefthook run pre-push
+pre-commit run --hook-stage pre-push
 ```
 
 **Skipping hooks** (discouraged):

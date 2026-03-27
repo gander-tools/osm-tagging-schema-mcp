@@ -39,7 +39,7 @@
 		"check:fix": "biome check --write .",
 		"check:fix:unsafe": "biome check --write --unsafe .",
 		"typecheck": "tsc --noEmit",
-		"prepare": "lefthook install",
+		"prepare": "pre-commit install && pre-commit install --hook-type pre-push",
 		"prepublishOnly": "npm run build"
 	},
 	"keywords": [
@@ -83,7 +83,6 @@
 		"c8": "~11.0.0",
 		"fast-check": "~4.6.0",
 		"git-cliff": "~2.12.0",
-		"lefthook": "~2.1.4",
 		"tsx": "~4.21.0",
 		"typescript": "~6.0.2",
 		"zod": "~4.3.6"

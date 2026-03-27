@@ -1,0 +1,88 @@
+# pre-commit configuration — https://pre-commit.com/
+#
+# Prerequisites: Python 3.x and pre-commit installed
+#   pip install pre-commit   OR   brew install pre-commit
+#
+# Install hooks (done automatically by npm install):
+#   pre-commit install
+#   pre-commit install --hook-type pre-push
+#
+# Run manually:
+#   pre-commit run --all-files               # all pre-commit hooks
+#   pre-commit run --hook-stage pre-push     # all pre-push hooks
+
+repos:
+  - repo: local
+    hooks:
+      # ── pre-commit stage ──────────────────────────────────────────────────
+
+      # BiomeJS formatting (auto-fix)
+      - id: format
+        name: Format (BiomeJS)
+        language: system
+        entry: npm run format:fix
+        pass_filenames: false
+        stages: [pre-commit]
+        types_or: [ts, javascript, json, markdown]
+
+      # BiomeJS linting and formatting (auto-fix)
+      - id: check
+        name: Check (BiomeJS)
+        language: system
+        entry: npm run check:fix
+        pass_filenames: false
+        stages: [pre-commit]
+        types_or: [ts, javascript]
+
+      # Remove libc constraints that npm 11.6.4 (CI) strips from optional
+      # platform-specific packages (@biomejs/cli-linux-*), preventing lockfile
+      # mismatch errors on `npm ci`.
+      - id: lockfile-libc-fix
+        name: Fix lockfile libc constraints
+        language: system
+        entry: bash scripts/fix-lockfile-libc.sh
+        pass_filenames: false
+        stages: [pre-commit]
+
+      # Must run after lockfile-libc-fix (sequential order is intentional).
+      - id: lockfile-check
+        name: Verify lockfile version
+        language: system
+        entry: bash scripts/check-lockfile-version.sh
+        pass_filenames: false
+        stages: [pre-commit]
+        files: ^package-lock\.json$
+
+      # ── pre-push stage ────────────────────────────────────────────────────
+
+      # TypeScript type checking
+      - id: typecheck
+        name: Typecheck (TypeScript)
+        language: system
+        entry: npm run typecheck
+        pass_filenames: false
+        stages: [pre-push]
+
+      # Unit tests (fast)
+      - id: test-unit
+        name: Unit tests
+        language: system
+        entry: npm run test:unit
+        pass_filenames: false
+        stages: [pre-push]
+
+      # Integration tests
+      - id: test-integration
+        name: Integration tests
+        language: system
+        entry: npm run test:integration
+        pass_filenames: false
+        stages: [pre-push]
+
+      # Build verification
+      - id: build
+        name: Build
+        language: system
+        entry: npm run build
+        pass_filenames: false
+        stages: [pre-push]
