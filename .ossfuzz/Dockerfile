@@ -5,7 +5,14 @@
 FROM gcr.io/oss-fuzz-base/base-builder-javascript
 
 # Install Node.js (latest LTS)
-RUN curl -fsSL https://deb.nodesource.com/setup_24.x | bash - && \
+RUN apt-get update && \
+    apt-get install -y ca-certificates curl gnupg && \
+    mkdir -p /usr/share/keyrings && \
+    curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key \
+        -o /usr/share/keyrings/nodesource.asc && \
+    echo "deb [signed-by=/usr/share/keyrings/nodesource.asc] https://deb.nodesource.com/node_24.x nodistro main" \
+        > /etc/apt/sources.list.d/nodesource.list && \
+    apt-get update && \
     apt-get install -y nodejs
 
 # Copy project files
