@@ -31,16 +31,22 @@ describe("Sentry utils", () => {
 			assert.doesNotThrow(() => initSentry("stdio"));
 		});
 
-		it("does not throw when SENTRY_DSN is an empty string", async () => {
-			process.env.SENTRY_DSN = "";
+		it("returns false when SENTRY_DSN is not set", async () => {
+			delete process.env.SENTRY_DSN;
 			const { initSentry } = await import("../../src/utils/sentry.js");
-			assert.doesNotThrow(() => initSentry("http"));
+			assert.strictEqual(initSentry("stdio"), false);
 		});
 
-		it("does not throw when SENTRY_DSN is only whitespace", async () => {
+		it("returns false when SENTRY_DSN is an empty string", async () => {
+			process.env.SENTRY_DSN = "";
+			const { initSentry } = await import("../../src/utils/sentry.js");
+			assert.strictEqual(initSentry("http"), false);
+		});
+
+		it("returns false when SENTRY_DSN is only whitespace", async () => {
 			process.env.SENTRY_DSN = "   ";
 			const { initSentry } = await import("../../src/utils/sentry.js");
-			assert.doesNotThrow(() => initSentry("stdio"));
+			assert.strictEqual(initSentry("stdio"), false);
 		});
 
 		it("accepts 'stdio' transport without throwing", async () => {
@@ -53,6 +59,20 @@ describe("Sentry utils", () => {
 			delete process.env.SENTRY_DSN;
 			const { initSentry } = await import("../../src/utils/sentry.js");
 			assert.doesNotThrow(() => initSentry("http"));
+		});
+
+		it("does not throw when SENTRY_DEBUG is set but SENTRY_DSN is absent", async () => {
+			delete process.env.SENTRY_DSN;
+			process.env.SENTRY_DEBUG = "1";
+			const { initSentry } = await import("../../src/utils/sentry.js");
+			assert.doesNotThrow(() => initSentry("stdio"));
+		});
+
+		it("returns false when SENTRY_DEBUG is set but SENTRY_DSN is absent", async () => {
+			delete process.env.SENTRY_DSN;
+			process.env.SENTRY_DEBUG = "1";
+			const { initSentry } = await import("../../src/utils/sentry.js");
+			assert.strictEqual(initSentry("stdio"), false);
 		});
 	});
 

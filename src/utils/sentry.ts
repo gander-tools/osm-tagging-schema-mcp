@@ -32,11 +32,16 @@ const DISABLED_INTEGRATIONS = [
  * Initialise Sentry. Call once, before any async operations, as the very
  * first thing in main(). Safe no-op when SENTRY_DSN is not set.
  *
+ * Returns true when the SDK is actually running (verified via
+ * Sentry.isInitialized()), false when Sentry is disabled or failed to start.
+ * Use the return value — not the presence of SENTRY_DSN — to determine
+ * whether Sentry is active, as the SDK may decline to start for other reasons.
+ *
  * @param transport - Current transport mode ("stdio" | "http"), attached as a tag.
  */
-export function initSentry(transport: "stdio" | "http"): void {
+export function initSentry(transport: "stdio" | "http"): boolean {
 	const dsn = process.env.SENTRY_DSN?.trim();
-	if (!dsn) return; // Sentry disabled — no DSN configured
+	if (!dsn) return false; // Sentry disabled — no DSN configured
 
 	Sentry.init({
 		dsn,
@@ -45,6 +50,11 @@ export function initSentry(transport: "stdio" | "http"): void {
 		// SENTRY_RELEASE: use the env var when set and non-empty, otherwise fall
 		// back to the npm package version so every release is identifiable.
 		release: process.env.SENTRY_RELEASE?.trim() || getVersionInfo().version,
+
+		// Enable Sentry SDK debug logging when SENTRY_DEBUG is set to any non-empty value.
+		// Debug output goes to stderr and helps diagnose DSN misconfigurations,
+		// transport errors, and dropped events without touching application logs.
+		debug: Boolean(process.env.SENTRY_DEBUG?.trim()),
 
 		// ── GDPR/RODO compliance ───────────────────────────────────────────────
 		sendDefaultPii: false, // never send IP, user-agent, cookies, or similar PII
@@ -81,6 +91,9 @@ export function initSentry(transport: "stdio" | "http"): void {
 			tags: { transport },
 		},
 	});
+
+	// Confirm using the SDK's own state, not just "DSN was set"
+	return Sentry.isInitialized();
 }
 
 /**
