@@ -71,7 +71,10 @@ RUN addgroup -g 1001 -S mcp && \
     chown -R mcp:mcp /app
 
 # Install sentry-cli for release management and source map uploads
-COPY --from=getsentry/sentry-cli /bin/sentry-cli /usr/local/bin/sentry-cli
+# Pinned to manifest list digest for security and reproducible builds (supports linux/amd64, linux/arm64)
+# To update: curl -s https://hub.docker.com/v2/repositories/getsentry/sentry-cli/tags/latest | jq -r '.digest'
+ARG SENTRY_CLI_IMAGE=getsentry/sentry-cli@sha256:a1b5bf7de17d71deb0ea6758a72fea9a206aeb2994c776b3d3441b48ed34d52f
+COPY --from=${SENTRY_CLI_IMAGE} /bin/sentry-cli /usr/local/bin/sentry-cli
 
 # Switch to non-root user
 USER mcp
