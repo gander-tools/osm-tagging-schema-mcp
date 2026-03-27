@@ -82,6 +82,7 @@ jobs:
       # npm must be newer than 11.5.1 for Node 24 compatibility
       - name: Install npm 11.6.4
         run: npm install -g npm@11.6.4
+
       - name: Install dependencies
         run: npm ci
 
@@ -121,12 +122,14 @@ jobs:
       # npm must be newer than 11.5.1 for Node 24 compatibility
       - name: Install npm 11.6.4
         run: npm install -g npm@11.6.4
+
       - name: Install dependencies
         run: npm ci
 
       - name: Generate SBOM with CycloneDX
         run: |
-          npm install -g @cyclonedx/cyclonedx-npm@4.1.0          cyclonedx-npm --output-file sbom.json
+          npm install -g @cyclonedx/cyclonedx-npm@4.1.0
+          cyclonedx-npm --output-file sbom.json
 
       - name: Upload SBOM artifact
         uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
@@ -208,12 +211,14 @@ jobs:
       # npm must be newer than 11.5.1 for Node 24 compatibility
       - name: Install npm 11.6.4
         run: npm install -g npm@11.6.4
+
       - name: Install dependencies
         run: npm ci
 
       - name: Check licenses
         run: |
-          npm install -g license-checker@25.0.1          license-checker --summary
+          npm install -g license-checker@25.0.1
+          license-checker --summary
           license-checker --production --json > licenses.json
 
       - name: Upload license report
