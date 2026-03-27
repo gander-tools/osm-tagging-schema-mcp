@@ -276,6 +276,25 @@ Every feature implementation MUST follow this workflow:
 - ✅ Regular paths: `/users/{id}`
 - ❌ Exploded arrays: `{/path*}`, `{?tags*}` (vulnerable)
 
+**node-tar - Path Traversal Vulnerabilities (CVE-2026-26960, CVE-2026-29786, CVE-2026-31802)**
+
+**Status**: ✅ **NOT AFFECTED** - node-tar (`tar` npm package) is not in the dependency tree
+
+**Summary**:
+
+| CVE | Description | Fixed in |
+|-----|-------------|---------|
+| CVE-2026-26960 | Symlink chain allows hardlinks to escape extraction root | tar 7.5.8 |
+| CVE-2026-29786 | Drive-relative hardlink targets bypass path validation | tar 7.5.10 |
+| CVE-2026-31802 | Drive-relative symlink targets escape extraction directory | tar 7.5.11 |
+
+- **This project**: Does NOT depend on the `tar` npm package (`grep '"tar"' package-lock.json` → no match)
+- **Affected code path**: Never executed — tar extraction is never performed by this codebase
+
+**Developer Guidelines**:
+- **Current work**: No action needed
+- **Future dependencies**: If adding a package that pulls in `tar`, ensure it resolves ≥ 7.5.11
+
 **zlib - Buffer Overflow in untgz Utility (CVE-2026-22184)**
 
 **Status**: ✅ **NOT AFFECTED** - zlib is not in the npm dependency tree
