@@ -23,7 +23,6 @@ pre-commit:
     # platform-specific packages (@biomejs/cli-linux-*), preventing lockfile
     # mismatch errors on `npm ci`.
     lockfile-libc-fix:
-      glob: "package-lock.json"
       run: bash scripts/fix-lockfile-libc.sh
       stage_fixed: true
 
