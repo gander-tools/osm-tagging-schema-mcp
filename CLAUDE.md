@@ -276,6 +276,20 @@ Every feature implementation MUST follow this workflow:
 - ✅ Regular paths: `/users/{id}`
 - ❌ Exploded arrays: `{/path*}`, `{?tags*}` (vulnerable)
 
+**zlib - Buffer Overflow in untgz Utility (CVE-2026-22184)**
+
+**Status**: ✅ **NOT AFFECTED** - zlib is not in the npm dependency tree
+
+**Summary**:
+- **Vulnerability**: Global buffer overflow in zlib's `untgz` command-line utility (versions ≤ 1.3.1.2) via unbounded `strcpy()` in `TGZfname()`
+- **This project**: Does NOT depend on zlib as an npm package (`grep "zlib" package-lock.json` → no match)
+- **Affected code path**: Never executed — the vulnerable utility is never installed or called
+- **Additional note**: Even if zlib were present, the vulnerability is in a standalone CLI tool (`untgz`), not the zlib library API consumed by Node.js
+
+**Developer Guidelines**:
+- **Current work**: No action needed
+- **Future dependencies**: If adding a package that pulls in zlib, verify it ships ≥ 1.3.1.3
+
 ### E2E Package Testing
 
 **Status**: ✅ IMPLEMENTED - End-to-end package build and runtime tests
