@@ -137,6 +137,7 @@ jobs:
           } >> "$GITHUB_OUTPUT"
 
   build-and-push:
+    name: Build and Push Docker Image
     runs-on: ubuntu-latest
     needs: extract-version
     if: needs.extract-version.outputs.should-build == 'true'
@@ -377,7 +378,7 @@ jobs:
           ### Build Information
 
           | Property | Value |
-          |----------|-------|
+          |------------|-------|
           | **Build Type** | $BUILD_TYPE |
           | **Version Tag** | \`$VERSION_TAG\` |
           | **Package Version** | \`$PACKAGE_VERSION\` |
@@ -385,7 +386,7 @@ jobs:
           ### Source
 
           | Property | Value |
-          |----------|-------|
+          |------------|-------|
           | **Checkout Ref** | \`$CHECKOUT_REF\` |
           | **Commit SHA** | \`$COMMIT_SHA\` |
           | **Commit (short)** | \`$COMMIT_SHORT\` |
@@ -395,7 +396,7 @@ jobs:
           ### Docker Image
 
           | Property | Value |
-          |----------|-------|
+          |------------|-------|
           | **Registry** | \`${{ env.REGISTRY }}\` |
           | **Image** | \`${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}\` |
           | **Digest** | \`$DIGEST\` |
