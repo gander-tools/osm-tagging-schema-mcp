@@ -4,6 +4,33 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [3.8.1](https://github.com/gander-tools/osm-tagging-schema-mcp/compare/v3.8.0...v3.8.1) (2026-03-31)
+
+### Documentation
+
+* document CVE-2026-33671 (picomatch ReDoS) as not affected
+* document CVE-2026-33672 (picomatch method injection) as not affected
+* document CVE-2026-33750 (brace-expansion infinite loop) as not vulnerable
+
+
+### Miscellaneous Tasks
+
+* number release workflow names for ordered display
+* add missing name fields to workflow jobs
+* add name field to build-and-push job in publish-docker.yml
+* **deps:** update github/codeql-action digest to 191d7c6
+* **deps:** update gcr.io/oss-fuzz-base/base-builder-javascript docker digest to 7d5eea8
+* **deps:** update sigstore/cosign-installer digest to 115e4ce
+* **deps:** update docker/metadata-action digest to 12e32e6
+* **deps:** update docker/login-action digest to 5c42dd2
+* **deps:** update docker/build-push-action digest to 502612d
+* **deps:** update docker/setup-buildx-action digest to e35beed
+* **deps:** update github/codeql-action digest to c618c9b
+* **deps:** update docker/build-push-action digest to c5117b6
+* **deps:** update docker/login-action digest to de05a6d
+* **deps:** update docker/metadata-action digest to 54262e8
+* **deps:** update gcr.io/oss-fuzz-base/base-builder-javascript docker digest to 601b34c
+
 ## [3.8.0](https://github.com/gander-tools/osm-tagging-schema-mcp/compare/v3.7.6...v3.8.0) (2026-03-27)
 
 ### Bug Fixes
