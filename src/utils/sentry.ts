@@ -163,3 +163,21 @@ export function captureToolUsage(toolName: string): void {
 		level: "info",
 	});
 }
+
+/**
+ * Flush buffered events and shut down the Sentry SDK.
+ *
+ * Call once before process exit to ensure all captured events reach the
+ * server.  Without this call, events buffered by the async transport are
+ * silently lost when the process is terminated (SIGTERM, SIGINT, or
+ * process.exit()).
+ *
+ * Safe no-op when Sentry is not initialised.
+ *
+ * @param timeout - Maximum time in ms to wait for the flush (default: 2000).
+ * @returns true when all events were flushed, false on timeout or when Sentry is not active.
+ */
+export async function closeSentry(timeout = 2000): Promise<boolean> {
+	if (!Sentry.isInitialized()) return false;
+	return Sentry.close(timeout);
+}

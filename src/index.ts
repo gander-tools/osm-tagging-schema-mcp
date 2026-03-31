@@ -15,6 +15,7 @@ import {
 	captureStartupEvent,
 	captureToolError,
 	captureToolUsage,
+	closeSentry,
 	initSentry,
 } from "./utils/sentry.js";
 import { formatVersionInfo, getVersionInfo } from "./version.js";
@@ -391,6 +392,18 @@ async function main() {
 		logger.info("Sentry error monitoring enabled", "main");
 	}
 
+	// Graceful shutdown: flush Sentry events before the process exits.
+	// Without this, SIGTERM/SIGINT (e.g. MCP client disconnect) kills the
+	// process while events are still buffered, causing silent data loss.
+	const handleShutdownSignal = async (signal: string) => {
+		logger.info(`Received ${signal}, shutting down…`, "main");
+		await closeSentry();
+		process.exit(0);
+	};
+
+	process.on("SIGTERM", () => handleShutdownSignal("SIGTERM"));
+	process.on("SIGINT", () => handleShutdownSignal("SIGINT"));
+
 	const versionInfo = getVersionInfo();
 	logger.info(`Starting OSM Tagging Schema MCP Server ${formatVersionInfo(versionInfo)}`, "main");
 	logger.info(`Transport: ${config.type}`, "main");
@@ -452,11 +465,12 @@ const isMainModule = (() => {
 })();
 
 if (isMainModule) {
-	main().catch((error) => {
+	main().catch(async (error) => {
 		const err = error instanceof Error ? error : new Error(String(error));
 		captureStartupEvent("fatal", false, err);
 		logger.error("Fatal server error", "main", err);
 		console.error("Server error:", error);
+		await closeSentry();
 		process.exit(1);
 	});
 }
