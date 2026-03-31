@@ -343,6 +343,22 @@ Every feature implementation MUST follow this workflow:
 - **Current work**: No action needed
 - **Future dependencies**: If adding a package that pulls in picomatch, ensure it resolves ≥ 4.0.4
 
+**brace-expansion - Infinite Loop from Zero Step Value (CVE-2026-33750)**
+
+**Status**: ✅ **NOT VULNERABLE** - Project uses brace-expansion 5.0.5 which contains the fix
+
+**Summary**:
+- **Vulnerability**: A brace pattern with zero step value (e.g., `{1..2..0}`) causes infinite loop in brace-expansion (versions < 5.0.5)
+- **Severity**: MEDIUM
+- **Fixed in**: 5.0.5 (also 3.0.2, 2.0.3, 1.1.13)
+- **This project**: brace-expansion 5.0.5 is a transitive dev dependency (`c8` → `test-exclude` → `minimatch` → `brace-expansion`)
+- **Affected code path**: Only used during test coverage runs (dev-only); not in production runtime
+- **Verification**: `npm audit` reports 0 vulnerabilities
+
+**Developer Guidelines**:
+- **Current work**: No action needed — already safe
+- **Monitoring**: Renovate will automatically update brace-expansion when new versions are released
+
 **zlib - Buffer Overflow in untgz Utility (CVE-2026-22184)**
 
 **Status**: ✅ **NOT AFFECTED** - zlib is not in the npm dependency tree
