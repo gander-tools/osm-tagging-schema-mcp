@@ -329,6 +329,20 @@ Every feature implementation MUST follow this workflow:
 - **Current work**: No action needed
 - **Future dependencies**: If adding a package that pulls in picomatch, ensure it resolves ≥ 4.0.4
 
+**picomatch - Method Injection via POSIX Bracket Expressions (CVE-2026-33672)**
+
+**Status**: ✅ **NOT AFFECTED** - picomatch is not in the dependency tree
+
+**Summary**:
+- **Vulnerability**: Method injection in picomatch (versions < 4.0.4) via POSIX bracket expressions (e.g., `[[:constructor:]]`) that reference inherited `Object.prototype` methods, causing incorrect glob matching
+- **Severity**: MEDIUM
+- **This project**: Does NOT depend on picomatch (`grep "picomatch" package-lock.json` → no match)
+- **Affected code path**: Never executed — picomatch is never installed or called
+
+**Developer Guidelines**:
+- **Current work**: No action needed
+- **Future dependencies**: If adding a package that pulls in picomatch, ensure it resolves ≥ 4.0.4
+
 **zlib - Buffer Overflow in untgz Utility (CVE-2026-22184)**
 
 **Status**: ✅ **NOT AFFECTED** - zlib is not in the npm dependency tree
