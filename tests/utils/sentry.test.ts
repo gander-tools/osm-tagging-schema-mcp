@@ -165,6 +165,26 @@ describe("Sentry utils", () => {
 		});
 	});
 
+	describe("closeSentry()", () => {
+		it("does not throw when Sentry is not initialised (no DSN)", async () => {
+			delete process.env.SENTRY_DSN;
+			const { closeSentry } = await import("../../src/utils/sentry.js");
+			await assert.doesNotReject(() => closeSentry());
+		});
+
+		it("returns false when Sentry is not initialised (no DSN)", async () => {
+			delete process.env.SENTRY_DSN;
+			const { closeSentry } = await import("../../src/utils/sentry.js");
+			assert.strictEqual(await closeSentry(), false);
+		});
+
+		it("accepts a custom timeout without throwing", async () => {
+			delete process.env.SENTRY_DSN;
+			const { closeSentry } = await import("../../src/utils/sentry.js");
+			await assert.doesNotReject(() => closeSentry(5000));
+		});
+	});
+
 	describe("GDPR/RODO: beforeSend hook strips PII (unit test via pure function)", () => {
 		it("returns a function that removes event.request", async () => {
 			// We test the beforeSend logic directly by recreating its logic as a pure
