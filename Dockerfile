@@ -13,6 +13,17 @@
 #    - Used for: version tag releases with NPM publish artifact
 #    - Ensures Docker image contains identical code as NPM package (SLSA provenance)
 
+# Sentry CLI source image — pinned digest for reproducible builds (supports linux/amd64, linux/arm64)
+# Must be declared at global scope so it can be used in a FROM stage reference (BuildKit limitation:
+# variable expansion is not supported in COPY --from when ARG is stage-scoped).
+# To update: curl -s https://hub.docker.com/v2/repositories/getsentry/sentry-cli/tags/latest | jq -r '.digest'
+ARG SENTRY_CLI_IMAGE=getsentry/sentry-cli@sha256:a1b5bf7de17d71deb0ea6758a72fea9a206aeb2994c776b3d3441b48ed34d52f
+
+# =============================================================================
+# Stage 0: Sentry CLI source (named stage required for COPY --from with pinned digest)
+# =============================================================================
+FROM ${SENTRY_CLI_IMAGE} AS sentry-cli-source
+
 # =============================================================================
 # Stage 1: Builder (TypeScript compilation for development builds)
 # =============================================================================
@@ -70,6 +81,14 @@ RUN addgroup -g 1001 -S mcp && \
     adduser -S -D -H -u 1001 -h /app -s /sbin/nologin -G mcp -g mcp mcp && \
     chown -R mcp:mcp /app
 
+# Install sentry-cli from the named stage defined at global scope
+# (digest pinned in the global ARG SENTRY_CLI_IMAGE above)
+COPY --from=sentry-cli-source /bin/sentry-cli /usr/local/bin/sentry-cli
+
+# Entrypoint: sends a Sentry startup event (only when SENTRY_DSN + SENTRY_DEBUG are both set),
+# then exec-replaces itself with the server process for clean signal handling.
+COPY --chmod=755 docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+
 # Switch to non-root user
 USER mcp
 
@@ -88,6 +107,10 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
         node -e "console.log('OK')" || exit 1; \
     fi
 
+# Shared entrypoint and default command (inherited by development and release stages)
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
+CMD ["node", "dist/index.js"]
+
 # =============================================================================
 # Stage 3: Development Runtime (default - uses builder output)
 # =============================================================================
@@ -95,9 +118,7 @@ FROM runtime-base AS development
 
 # Copy built application from builder stage
 COPY --from=builder /app/dist ./dist
-
-# Set entrypoint
-ENTRYPOINT ["node", "dist/index.js"]
+# ENTRYPOINT and CMD inherited from runtime-base
 
 # =============================================================================
 # Stage 4: Release Runtime (uses pre-built dist/ from NPM artifact)
@@ -110,6 +131,4 @@ COPY dist/ ./dist/
 
 # Verify that dist/index.js exists (artifact was properly copied)
 RUN test -f dist/index.js || (echo "Error: dist/index.js not found - artifact not properly provided" && exit 1)
-
-# Set entrypoint
-ENTRYPOINT ["node", "dist/index.js"]
+# ENTRYPOINT and CMD inherited from runtime-base

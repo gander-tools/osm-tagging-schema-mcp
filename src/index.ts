@@ -11,6 +11,12 @@ import { prompts } from "./prompts/index.js";
 import { tools } from "./tools/index.js";
 import { logger } from "./utils/logger.js";
 import { schemaLoader } from "./utils/schema-loader.js";
+import {
+	captureStartupEvent,
+	captureToolError,
+	captureToolUsage,
+	initSentry,
+} from "./utils/sentry.js";
 import { formatVersionInfo, getVersionInfo } from "./version.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -35,9 +41,22 @@ export function createServer(): McpServer {
 		},
 	);
 
-	// Register all tools using McpServer.registerTool() in a loop
+	// Register all tools using McpServer.registerTool() in a loop.
+	// Each handler is wrapped to capture unexpected exceptions in Sentry.
+	// Only the tool name is attached as context — arguments (user data) are never sent.
 	for (const tool of tools) {
-		mcpServer.registerTool(tool.name, tool.config(), tool.handler);
+		const originalHandler = tool.handler;
+		// biome-ignore lint/suspicious/noExplicitAny: tool handlers have heterogeneous input schemas
+		const wrappedHandler: typeof originalHandler = async (args: any, extra: any) => {
+			captureToolUsage(tool.name);
+			try {
+				return await originalHandler(args, extra);
+			} catch (error) {
+				captureToolError(tool.name, error);
+				throw error;
+			}
+		};
+		mcpServer.registerTool(tool.name, tool.config(), wrappedHandler);
 	}
 
 	// Register all prompts using McpServer.registerPrompt() in a loop
@@ -366,6 +385,12 @@ async function startHttpServer(config: TransportConfig): Promise<void> {
 async function main() {
 	const config = getTransportConfig();
 
+	// Initialise Sentry before any async operations so startup errors are captured.
+	// Safe no-op when SENTRY_DSN is not set.
+	if (initSentry(config.type)) {
+		logger.info("Sentry error monitoring enabled", "main");
+	}
+
 	const versionInfo = getVersionInfo();
 	logger.info(`Starting OSM Tagging Schema MCP Server ${formatVersionInfo(versionInfo)}`, "main");
 	logger.info(`Transport: ${config.type}`, "main");
@@ -373,7 +398,17 @@ async function main() {
 	// Warmup: Preload schema and build indexes before accepting requests
 	// This eliminates initial latency on first tool call
 	logger.info("Preloading schema and building indexes...", "main");
-	await schemaLoader.warmup();
+	try {
+		await schemaLoader.warmup();
+		captureStartupEvent("schema_warmup", true);
+	} catch (error) {
+		captureStartupEvent(
+			"schema_warmup",
+			false,
+			error instanceof Error ? error : new Error(String(error)),
+		);
+		throw error;
+	}
 	logger.info("Schema preloaded successfully", "main");
 
 	// Start appropriate transport
@@ -418,11 +453,9 @@ const isMainModule = (() => {
 
 if (isMainModule) {
 	main().catch((error) => {
-		logger.error(
-			"Fatal server error",
-			"main",
-			error instanceof Error ? error : new Error(String(error)),
-		);
+		const err = error instanceof Error ? error : new Error(String(error));
+		captureStartupEvent("fatal", false, err);
+		logger.error("Fatal server error", "main", err);
 		console.error("Server error:", error);
 		process.exit(1);
 	});
