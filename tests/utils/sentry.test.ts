@@ -138,6 +138,33 @@ describe("Sentry utils", () => {
 		});
 	});
 
+	describe("captureToolUsage()", () => {
+		it("does not throw when Sentry is not initialised (no DSN)", async () => {
+			delete process.env.SENTRY_DSN;
+			const { captureToolUsage } = await import("../../src/utils/sentry.js");
+			assert.doesNotThrow(() => captureToolUsage("validate_tag"));
+		});
+
+		it("handles any tool name without DSN", async () => {
+			delete process.env.SENTRY_DSN;
+			const { captureToolUsage } = await import("../../src/utils/sentry.js");
+			for (const name of [
+				"validate_tag",
+				"validate_tag_collection",
+				"suggest_improvements",
+				"get_tag_values",
+				"search_tags",
+				"search_presets",
+				"get_preset_details",
+				"flat_to_json",
+				"json_to_flat",
+				"compare_tags",
+			]) {
+				assert.doesNotThrow(() => captureToolUsage(name), `should not throw for tool: ${name}`);
+			}
+		});
+	});
+
 	describe("GDPR/RODO: beforeSend hook strips PII (unit test via pure function)", () => {
 		it("returns a function that removes event.request", async () => {
 			// We test the beforeSend logic directly by recreating its logic as a pure

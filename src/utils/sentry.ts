@@ -127,3 +127,26 @@ export function captureToolError(toolName: string, error: unknown): void {
 		tags: { tool: toolName },
 	});
 }
+
+/**
+ * Record a tool invocation as a breadcrumb for subsequent error context.
+ *
+ * Breadcrumbs do not generate Sentry issues on their own — they appear as
+ * contextual trail on the next captured error event, showing which tools
+ * were called before the failure.
+ *
+ * Only the tool name is recorded — arguments (user-provided OSM tag data)
+ * are intentionally never sent.
+ * Safe no-op when Sentry is not initialised.
+ *
+ * @param toolName - Name of the tool called, e.g. "validate_tag".
+ */
+export function captureToolUsage(toolName: string): void {
+	if (!Sentry.isInitialized()) return;
+
+	Sentry.addBreadcrumb({
+		category: "tool",
+		message: toolName,
+		level: "info",
+	});
+}

@@ -11,7 +11,12 @@ import { prompts } from "./prompts/index.js";
 import { tools } from "./tools/index.js";
 import { logger } from "./utils/logger.js";
 import { schemaLoader } from "./utils/schema-loader.js";
-import { captureStartupEvent, captureToolError, initSentry } from "./utils/sentry.js";
+import {
+	captureStartupEvent,
+	captureToolError,
+	captureToolUsage,
+	initSentry,
+} from "./utils/sentry.js";
 import { formatVersionInfo, getVersionInfo } from "./version.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -43,6 +48,7 @@ export function createServer(): McpServer {
 		const originalHandler = tool.handler;
 		// biome-ignore lint/suspicious/noExplicitAny: tool handlers have heterogeneous input schemas
 		const wrappedHandler: typeof originalHandler = async (args: any, extra: any) => {
+			captureToolUsage(tool.name);
 			try {
 				return await originalHandler(args, extra);
 			} catch (error) {
