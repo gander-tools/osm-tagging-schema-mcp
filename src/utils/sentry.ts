@@ -144,6 +144,13 @@ export function captureToolError(toolName: string, error: unknown): void {
 export function captureToolUsage(toolName: string): void {
 	if (!Sentry.isInitialized()) return;
 
+	Sentry.captureMessage(toolName, {
+	    level: "info",
+	    extra: {
+	        category: "tool",
+	    },
+	});
+	
 	Sentry.addBreadcrumb({
 		category: "tool",
 		message: toolName,
