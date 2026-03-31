@@ -70,6 +70,12 @@ export function initSentry(transport: "stdio" | "http"): boolean {
 		beforeSend(event) {
 			delete event.request; // never send request URLs, bodies, or headers
 			delete event.user; // never send user identifiers
+			// Filter breadcrumbs that may contain PII (URLs, request data, debug output)
+			if (Array.isArray(event.breadcrumbs)) {
+				event.breadcrumbs = event.breadcrumbs.filter(
+					(b) => b.category !== "http" && b.category !== "fetch" && b.category !== "console",
+				);
+			}
 			return event;
 		},
 
