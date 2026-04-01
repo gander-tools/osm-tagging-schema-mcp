@@ -216,7 +216,9 @@ jobs:
             3. ✅ Git tag created by Publish NPM workflow
             4. ✅ GitHub release updated with artifacts
 
-            See the changes below for detailed information.
+            ### 📝 Changelog
+
+            See [CHANGELOG.md](https://github.com/gander-tools/osm-tagging-schema-mcp/blob/${{ steps.version.outputs.tag }}/CHANGELOG.md) for detailed changes in this release.
           draft: false
           prerelease: false
 
