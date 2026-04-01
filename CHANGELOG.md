@@ -4,6 +4,26 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [3.8.3](https://github.com/gander-tools/osm-tagging-schema-mcp/compare/v3.8.2...v3.8.3) (2026-04-01)
+
+### Bug Fixes
+
+* include workflow files in dependency review path filter
+* **deps:** update dependency @modelcontextprotocol/sdk to ~1.29.0
+
+
+### Miscellaneous Tasks
+
+* **deps:** update dependency @biomejs/biome to ~2.4.10
+* **deps:** remove libc constraints from biome lockfile entries
+* **deps:** update step-security/harden-runner action to v2.16.1
+* **deps:** update docker/build-push-action digest to 00c4e32
+* **deps:** update docker/login-action digest to bb555fc
+* **deps:** update docker/metadata-action digest to c3b064c
+* **deps:** update docker/build-push-action digest to 83bfd93
+* **deps:** update docker/setup-buildx-action digest to 2116288
+* **deps:** update github/codeql-action digest to 34950e1
+
 ## [3.8.2](https://github.com/gander-tools/osm-tagging-schema-mcp/compare/v3.8.1...v3.8.2) (2026-04-01)
 
 ### Miscellaneous Tasks
