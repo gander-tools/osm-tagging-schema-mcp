@@ -239,7 +239,7 @@ jobs:
       - name: Build and push Docker image (release builds with artifact)
         if: needs.extract-version.outputs.is-release == 'true'
         id: build-and-push-release
-        uses: docker/build-push-action@c5117b60bc829f00aaacb038e99de2712bee6e6e
+        uses: docker/build-push-action@dab806366e5fa7eef87c2fc1cb8617644b526cb7
         with:
           context: .
           file: Dockerfile
@@ -254,7 +254,7 @@ jobs:
       - name: Build and push Docker image (development builds from source)
         if: needs.extract-version.outputs.is-release == 'false'
         id: build-and-push-dev
-        uses: docker/build-push-action@c5117b60bc829f00aaacb038e99de2712bee6e6e
+        uses: docker/build-push-action@dab806366e5fa7eef87c2fc1cb8617644b526cb7
         with:
           context: .
           file: Dockerfile
