@@ -58,6 +58,7 @@ jobs:
               - '.npmrc'
               - 'server.json'
               - '.env.example'
+              - '.ossfuzz/Dockerfile'
 
   # Fast fuzzing run on PRs (5 minutes)
   fuzz-pr:
