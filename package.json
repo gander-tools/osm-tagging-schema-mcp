@@ -74,7 +74,7 @@
 		"SECURITY.md"
 	],
 	"dependencies": {
-		"@modelcontextprotocol/sdk": "~1.28.0",
+		"@modelcontextprotocol/sdk": "~1.29.0",
 		"@openstreetmap/id-tagging-schema": "~6.15.0"
 	},
 	"devDependencies": {
