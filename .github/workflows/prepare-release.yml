@@ -11,10 +11,6 @@ on:
 # Minimal permissions at workflow level (principle of least privilege)
 permissions: read-all
 
-# Opt into Node.js 24 for all actions (node20 actions deprecated June 2, 2026)
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
-
 jobs:
   prepare-release:
     name: Prepare Release Branch
