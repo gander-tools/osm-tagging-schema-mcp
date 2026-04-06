@@ -4,6 +4,32 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [3.8.4](https://github.com/gander-tools/osm-tagging-schema-mcp/compare/v3.8.3...v3.8.4) (2026-04-06)
+
+### CI/CD
+
+* auto-fix libc constraints in lockfile on pull request (#752)
+* restrict GITHUB_TOKEN permissions to least privilege in fix-lockfile-libc-commit
+* remove redundant fix-lockfile-libc-commit workflow
+
+
+### Documentation
+
+* add changelog link to GitHub Release body
+
+
+### Miscellaneous Tasks
+
+* **deps:** lock file maintenance (#749)
+* **deps:** update gcr.io/oss-fuzz-base/base-builder-javascript docker digest to 3bee9a9
+* **deps:** update docker/login-action digest to 4907a6d
+* **deps:** lock file maintenance (#755)
+* **deps:** remove libc constraints from lockfile
+* **deps:** update dependency @types/node to ~24.12.2 (#750)
+* **deps:** update dependency lefthook to ~2.1.5 (#754)
+* **deps:** update actions/download-artifact action to v8
+* **deps:** update gcr.io/oss-fuzz-base/base-builder-javascript docker digest to f7c04a2
+
 ## [3.8.3](https://github.com/gander-tools/osm-tagging-schema-mcp/compare/v3.8.2...v3.8.3) (2026-04-01)
 
 ### Bug Fixes
