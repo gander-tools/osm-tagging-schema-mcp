@@ -22,7 +22,7 @@ jobs:
           allowed-endpoints: >
             github.com:443
 
-      - name: Checkout code
+      - name: Checkout base code
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           fetch-depth: 1
@@ -37,12 +37,13 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Switch to PR head branch
+      - name: Fetch PR head and extract package-lock.json
         env:
           HEAD_REF: ${{ github.head_ref }}
         run: |
           git fetch origin "$HEAD_REF" --depth=1
-          git switch "$HEAD_REF"
+          # Extract only package-lock.json from the PR — no full branch checkout
+          git show "origin/${HEAD_REF}:package-lock.json" > package-lock.json
 
       - name: Remove libc entries from package-lock.json
         run: |
@@ -65,14 +66,22 @@ jobs:
           }
           SCRIPT
 
-      - name: Commit fix if needed
+      - name: Commit and push fix if needed
         env:
           HEAD_REF: ${{ github.head_ref }}
         run: |
-          if git diff --exit-code package-lock.json; then
+          # Load PR head tree into index without touching the working tree
+          git read-tree "origin/$HEAD_REF"
+          # Stage the fixed file into the PR head index
+          git add package-lock.json
+          # Compare staged result against PR head — exit early if unchanged
+          if git diff --cached --quiet "origin/$HEAD_REF" -- package-lock.json; then
             echo "Nothing to commit"
-          else
-            git add package-lock.json
-            git commit -m "fix: remove libc constraints from package-lock.json"
-            git push origin "$HEAD_REF"
+            exit 0
           fi
+          # Build commit on top of PR head using plumbing (no hooks, no branch switch)
+          NEW_TREE=$(git write-tree)
+          HEAD_SHA=$(git rev-parse "origin/$HEAD_REF")
+          NEW_COMMIT=$(git commit-tree "$NEW_TREE" -p "$HEAD_SHA" \
+            -m "fix: remove libc constraints from package-lock.json")
+          git push origin "${NEW_COMMIT}:refs/heads/${HEAD_REF}"
