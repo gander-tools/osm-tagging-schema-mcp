@@ -1,0 +1,78 @@
+name: Fix Lockfile libc
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+permissions:
+  contents: write
+
+jobs:
+  fix-lockfile-libc:
+    name: Fix Lockfile libc
+    # Skip fork PRs — GITHUB_TOKEN has no write access to fork branches
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Harden the runner (Block unexpected egress)
+        uses: step-security/harden-runner@fe104658747b27e96e4f7e80cd0a94068e53901d # v2.16.1
+        with:
+          egress-policy: block
+          allowed-endpoints: >
+            github.com:443
+
+      - name: Checkout code
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure git credentials and identity
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+        run: |
+          git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${REPO}.git"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Switch to PR head branch
+        env:
+          HEAD_REF: ${{ github.head_ref }}
+        run: |
+          git fetch origin "$HEAD_REF" --depth=1
+          git switch "$HEAD_REF"
+
+      - name: Remove libc entries from package-lock.json
+        run: |
+          node - package-lock.json <<'SCRIPT'
+          const fs = require("node:fs");
+          const lockfilePath = process.argv[2];
+          const lock = JSON.parse(fs.readFileSync(lockfilePath, "utf8"));
+          let removed = 0;
+          for (const pkg of Object.values(lock.packages ?? {})) {
+            if (Object.prototype.hasOwnProperty.call(pkg, "libc")) {
+              delete pkg.libc;
+              removed++;
+            }
+          }
+          if (removed > 0) {
+            fs.writeFileSync(lockfilePath, `${JSON.stringify(lock, null, 2)}\n`);
+            console.log(`Removed "libc" from ${removed} package(s)`);
+          } else {
+            console.log('No "libc" entries found — nothing to do');
+          }
+          SCRIPT
+
+      - name: Commit fix if needed
+        env:
+          HEAD_REF: ${{ github.head_ref }}
+        run: |
+          if git diff --exit-code package-lock.json; then
+            echo "Nothing to commit"
+          else
+            git add package-lock.json
+            git commit -m "fix: remove libc constraints from package-lock.json"
+            git push origin "$HEAD_REF"
+          fi
