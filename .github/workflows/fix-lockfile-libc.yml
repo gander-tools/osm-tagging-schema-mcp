@@ -1,0 +1,64 @@
+name: Fix Lockfile libc
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+permissions:
+  contents: read
+
+jobs:
+  fix-lockfile-libc:
+    name: Fix Lockfile libc
+    # Skip fork PRs — artifacts from forks won't trigger the commit workflow
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Harden the runner (Block unexpected egress)
+        uses: step-security/harden-runner@fe104658747b27e96e4f7e80cd0a94068e53901d # v2.16.1
+        with:
+          egress-policy: block
+          allowed-endpoints: >
+            github.com:443
+
+      - name: Checkout PR code
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 1
+
+      - name: Remove libc entries from package-lock.json
+        run: |
+          node - package-lock.json <<'SCRIPT'
+          const fs = require("node:fs");
+          const lockfilePath = process.argv[2];
+          const lock = JSON.parse(fs.readFileSync(lockfilePath, "utf8"));
+          let removed = 0;
+          for (const pkg of Object.values(lock.packages ?? {})) {
+            if (Object.prototype.hasOwnProperty.call(pkg, "libc")) {
+              delete pkg.libc;
+              removed++;
+            }
+          }
+          if (removed > 0) {
+            fs.writeFileSync(lockfilePath, `${JSON.stringify(lock, null, 2)}\n`);
+            console.log(`Removed "libc" from ${removed} package(s)`);
+          } else {
+            console.log('No "libc" entries found — nothing to do');
+          }
+          SCRIPT
+
+      - name: Save PR number for commit workflow
+        env:
+          PR_NUMBER: ${{ github.event.number }}
+        run: echo "$PR_NUMBER" > pr_number.txt
+
+      - name: Upload lockfile fix artifacts
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        with:
+          name: lockfile-fix
+          path: |
+            package-lock.json
+            pr_number.txt
+          retention-days: 1

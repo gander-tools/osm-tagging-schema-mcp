@@ -1,0 +1,79 @@
+name: Fix Lockfile libc (Commit)
+
+on:
+  workflow_run:
+    workflows: ["Fix Lockfile libc"]
+    types: [completed]
+
+permissions:
+  contents: write
+
+jobs:
+  commit:
+    name: Commit lockfile fix
+    # Only run on success; skip fork PRs — GITHUB_TOKEN can't push to fork branches
+    if: |
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.head_repository.full_name == github.repository
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Harden the runner (Block unexpected egress)
+        uses: step-security/harden-runner@fe104658747b27e96e4f7e80cd0a94068e53901d # v2.16.1
+        with:
+          egress-policy: block
+          allowed-endpoints: >
+            github.com:443
+
+      - name: Checkout base code
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download lockfile fix artifacts
+        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
+        with:
+          name: lockfile-fix
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Validate PR number
+        id: validate
+        run: |
+          PR_NUM=$(cat pr_number.txt)
+          if ! [[ "$PR_NUM" =~ ^[0-9]+$ ]]; then
+            echo "Invalid PR number in artifact: $PR_NUM"
+            exit 1
+          fi
+          echo "pr_num=$PR_NUM" >> "$GITHUB_OUTPUT"
+
+      - name: Configure git credentials and identity
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+        run: |
+          git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${REPO}.git"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Commit and push fix if needed
+        env:
+          HEAD_REF: ${{ github.event.workflow_run.head_branch }}
+        run: |
+          git fetch origin "$HEAD_REF" --depth=1
+          # Load PR head tree into index without touching the working tree
+          git read-tree "origin/$HEAD_REF"
+          # Stage the fixed file into the PR head index
+          git add package-lock.json
+          # Compare staged result against PR head — exit early if unchanged
+          if git diff --cached --quiet "origin/$HEAD_REF" -- package-lock.json; then
+            echo "Nothing to commit"
+            exit 0
+          fi
+          # Build commit on top of PR head using plumbing (no hooks, no branch switch)
+          NEW_TREE=$(git write-tree)
+          HEAD_SHA=$(git rev-parse "origin/$HEAD_REF")
+          NEW_COMMIT=$(git commit-tree "$NEW_TREE" -p "$HEAD_SHA" \
+            -m "fix: remove libc constraints from package-lock.json")
+          git push origin "${NEW_COMMIT}:refs/heads/${HEAD_REF}"
