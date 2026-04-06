@@ -5,12 +5,13 @@ on:
     workflows: ["Fix Lockfile libc"]
     types: [completed]
 
-permissions:
-  contents: write
+permissions: read-all
 
 jobs:
   commit:
     name: Commit lockfile fix
+    permissions:
+      contents: write
     # Only run on success; skip fork PRs — GITHUB_TOKEN can't push to fork branches
     if: |
       github.event.workflow_run.conclusion == 'success' &&
