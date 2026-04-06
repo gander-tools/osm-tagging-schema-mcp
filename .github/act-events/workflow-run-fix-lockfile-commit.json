@@ -1,0 +1,16 @@
+{
+	"action": "completed",
+	"workflow_run": {
+		"id": 123456789,
+		"name": "Fix Lockfile libc",
+		"conclusion": "success",
+		"head_branch": "master",
+		"head_sha": "abc1234",
+		"head_repository": {
+			"full_name": "gander-tools/osm-tagging-schema-mcp"
+		}
+	},
+	"repository": {
+		"full_name": "gander-tools/osm-tagging-schema-mcp"
+	}
+}

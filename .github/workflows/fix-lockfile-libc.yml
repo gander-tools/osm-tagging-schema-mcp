@@ -5,12 +5,12 @@ on:
     types: [opened, synchronize]
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   fix-lockfile-libc:
     name: Fix Lockfile libc
-    # Skip fork PRs — GITHUB_TOKEN has no write access to fork branches
+    # Skip fork PRs — artifacts from forks won't trigger the commit workflow
     if: github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
 
@@ -22,28 +22,11 @@ jobs:
           allowed-endpoints: >
             github.com:443
 
-      - name: Checkout base code
+      - name: Checkout PR code
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
+          ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 1
-          token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Configure git credentials and identity
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          REPO: ${{ github.repository }}
-        run: |
-          git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${REPO}.git"
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-
-      - name: Fetch PR head and extract package-lock.json
-        env:
-          HEAD_REF: ${{ github.head_ref }}
-        run: |
-          git fetch origin "$HEAD_REF" --depth=1
-          # Extract only package-lock.json from the PR — no full branch checkout
-          git show "origin/${HEAD_REF}:package-lock.json" > package-lock.json
 
       - name: Remove libc entries from package-lock.json
         run: |
@@ -66,22 +49,16 @@ jobs:
           }
           SCRIPT
 
-      - name: Commit and push fix if needed
+      - name: Save PR number for commit workflow
         env:
-          HEAD_REF: ${{ github.head_ref }}
-        run: |
-          # Load PR head tree into index without touching the working tree
-          git read-tree "origin/$HEAD_REF"
-          # Stage the fixed file into the PR head index
-          git add package-lock.json
-          # Compare staged result against PR head — exit early if unchanged
-          if git diff --cached --quiet "origin/$HEAD_REF" -- package-lock.json; then
-            echo "Nothing to commit"
-            exit 0
-          fi
-          # Build commit on top of PR head using plumbing (no hooks, no branch switch)
-          NEW_TREE=$(git write-tree)
-          HEAD_SHA=$(git rev-parse "origin/$HEAD_REF")
-          NEW_COMMIT=$(git commit-tree "$NEW_TREE" -p "$HEAD_SHA" \
-            -m "fix: remove libc constraints from package-lock.json")
-          git push origin "${NEW_COMMIT}:refs/heads/${HEAD_REF}"
+          PR_NUMBER: ${{ github.event.number }}
+        run: echo "$PR_NUMBER" > pr_number.txt
+
+      - name: Upload lockfile fix artifacts
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        with:
+          name: lockfile-fix
+          path: |
+            package-lock.json
+            pr_number.txt
+          retention-days: 1
