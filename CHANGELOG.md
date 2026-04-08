@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [3.8.5](https://github.com/gander-tools/osm-tagging-schema-mcp/compare/v3.8.4...v3.8.5) (2026-04-08)
+
+### Miscellaneous Tasks
+
+* remove deprecated `.claude/settings.json`
+* update .gitignore to include `.claude/` directory
+* **deps:** update docker/login-action digest to ba75415
+* **deps:** update github/codeql-action digest to e6c8394
+* **deps:** update github/codeql-action digest to b623f5f
+* **deps:** update gcr.io/oss-fuzz-base/base-builder-javascript docker digest to 74eec36
+* **deps:** bump the npm_and_yarn group across 1 directory with 2 updates
+* **deps:** update docker/build-push-action digest to ef1fb96
+
 ## [3.8.4](https://github.com/gander-tools/osm-tagging-schema-mcp/compare/v3.8.3...v3.8.4) (2026-04-06)
 
 ### CI/CD
