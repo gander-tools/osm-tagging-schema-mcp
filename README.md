@@ -30,168 +30,75 @@
 
 ## What is this?
 
-This is a **Model Context Protocol (MCP) server** designed specifically for AI agents and LLM applications. It acts as a bridge between artificial intelligence systems and the comprehensive OpenStreetMap tagging knowledge base provided by the official `@openstreetmap/id-tagging-schema` library.
+To jest serwer **Model Context Protocol (MCP)** — podpina się pod Twój LLM (np. Claude, Cursor, VS Code Copilot) i daje mu wiedzę o tagach OpenStreetMap. Nie jest to aplikacja dla człowieka — obsługuje ją AI, nie Ty bezpośrednio.
 
-**Current Status**: Production-ready MCP server, actively maintained and continuously improved. The service is deployed and accessible at [https://mcp.gander.tools/osm-tagging/](https://mcp.gander.tools/osm-tagging/).
-
-**We welcome your feedback!** Have ideas for improvements? Found a bug? Want to discuss features? Please open an [issue](https://github.com/gander-tools/osm-tagging-schema-mcp/issues) or start a [discussion](https://github.com/gander-tools/osm-tagging-schema-mcp/discussions).
+**Hosted instance**: `https://mcp.gander.tools/osm-tagging/`
 
 ## What this is NOT
 
-⚠️ **Important clarifications:**
+Jeśli wejdziesz przeglądarką pod adres serwera, zobaczysz coś takiego:
 
-- **Not a standalone application**: This server requires integration with AI systems (like Claude Code or Claude Desktop) to be useful. It has no user interface or web frontend.
-- **Not for direct human use**: Without an AI agent as an intermediary, this tool provides no value to end users. It's designed exclusively for programmatic access by LLM applications.
-- **Not a public API for general use**: The deployed service at mcp.gander.tools is intended for integration with AI agents, not for direct HTTP requests or high-volume automated queries. Please do not attempt to abuse the service with DDoS attacks or excessive traffic.
+```json
+{"jsonrpc":"2.0","error":{"code":-32000,"message":"Not Acceptable: Client must accept text/event-stream"},"id":null}
+```
 
-If you're looking for a user-facing OSM tagging tool, consider [iD editor](https://github.com/openstreetmap/iD) or [JOSM](https://josm.openstreetmap.de/) instead.
-
-## Features
-
-**7 MCP Tools** organized into 3 categories:
-
-- **Tag Query** (2 tools): Query tag values and search tags
-- **Preset Discovery** (2 tools): Search and explore OSM presets with detailed configurations
-- **Validation** (3 tools): Validate tags, check for deprecated tags, suggest improvements
-
-📖 **Full tool reference**: [docs/api/](./docs/api/README.md)
+To jest **prawidłowa odpowiedź** — endpoint wymaga klienta MCP (AI), nie przeglądarki. Człowiek nie ma tu czego szukać.
 
 ## Installation
 
-### Using npx (Recommended)
+Podłącz serwer do swojego klienta MCP przez `mcp.json`. Możesz użyć gotowej instancji hostowanej lub uruchomić lokalnie.
 
-```bash
-# No installation needed - run directly
-npx @gander-tools/osm-tagging-schema-mcp
+### Hosted instance (zalecane)
+
+```json
+{
+  "mcpServers": {
+    "osm-tagging-schema": {
+      "type": "http",
+      "url": "https://mcp.gander.tools/osm-tagging/"
+    }
+  }
+}
 ```
 
-### Using Docker
-
-```bash
-# Run with stdio transport
-docker run -i ghcr.io/gander-tools/osm-tagging-schema-mcp:latest
-```
-
-📖 **More options**: [docs/user/installation.md](./docs/user/installation.md) (source installation, verification, troubleshooting)
-
-## Quick Start
-
-### With Claude Code CLI
-
-```bash
-# Add to Claude Code
-claude mcp add --transport stdio osm-tagging-schema -- npx -y @gander-tools/osm-tagging-schema-mcp
-
-# Use in conversations
-# Ask Claude: "What OSM tags are available for restaurants?"
-# Ask Claude: "Validate these tags: amenity=parking, capacity=50"
-```
-
-### With Claude Desktop
-
-Add to your Claude Desktop configuration:
+### Lokalnie przez npx
 
 ```json
 {
   "mcpServers": {
     "osm-tagging-schema": {
       "command": "npx",
-      "args": ["@gander-tools/osm-tagging-schema-mcp"]
+      "args": ["-y", "@gander-tools/osm-tagging-schema-mcp"]
     }
   }
 }
 ```
 
-📖 **Next steps**:
-- [Configuration Guide](./docs/user/configuration.md) - Setup for Claude Code/Desktop and custom clients
-- [Usage Guide](./docs/user/usage.md) - Tool examples and workflows
-- [API Reference](./docs/api/README.md) - Complete tool documentation
-- [Deployment Guide](./docs/deployment/deployment.md) - Production HTTP/Docker deployment
+### Lokalnie przez Docker
+
+```json
+{
+  "mcpServers": {
+    "osm-tagging-schema": {
+      "command": "docker",
+      "args": ["run", "--rm", "-i", "ghcr.io/gander-tools/osm-tagging-schema-mcp:latest"]
+    }
+  }
+}
+```
 
 ### Testing with MCP Inspector
 
-Test and debug the server using the official [MCP Inspector](https://github.com/modelcontextprotocol/inspector):
-
 ```bash
-# Test published package (quickest)
+# Hosted instance
+npx @modelcontextprotocol/inspector --cli https://mcp.gander.tools/osm-tagging/ --transport http
+
+# Local npx
 npx @modelcontextprotocol/inspector npx @gander-tools/osm-tagging-schema-mcp
 
-# Test Docker image
+# Local Docker
 npx @modelcontextprotocol/inspector docker run --rm -i ghcr.io/gander-tools/osm-tagging-schema-mcp
 ```
-
-The Inspector provides an interactive web UI to test all tools, inspect responses, and debug issues.
-
-📖 **Complete inspection guide**: [docs/development/inspection.md](./docs/development/inspection.md) (includes HTTP transport testing)
-
-## Development
-
-Built with **Test-Driven Development (TDD)** and **Property-Based Fuzzing**:
-- Comprehensive test suite (unit + integration) with 100% pass rate
-- Property-based fuzz tests with fast-check for edge case discovery
-- Continuous fuzzing in CI/CD (weekly schedule + on every push/PR)
-
-```bash
-npm install      # Install dependencies
-npm test         # Run all tests
-npm run test:fuzz # Run fuzz tests
-npm run build    # Build for production
-```
-
-📖 **Development guides**: [docs/development/development.md](./docs/development/development.md) | [docs/development/fuzzing.md](./docs/development/fuzzing.md)
-
-## Contributing
-
-Contributions welcome! This project follows **Test-Driven Development (TDD)**.
-
-1. Fork and clone the repository
-2. Install dependencies: `npm install`
-3. Create a feature branch
-4. Write tests first, then implement
-5. Ensure all tests pass: `npm test`
-6. Submit a pull request
-
-📖 **Guidelines**: [docs/development/contributing.md](./docs/development/contributing.md)
-
-## Documentation
-
-### Quick Navigation
-
-**Choose your path:**
-
-| I want to... | Go to |
-|-------------|-------|
-| **Install and run the server** | [Installation Guide](./docs/user/installation.md) |
-| **Configure with Claude Code/Desktop** | [Configuration Guide](./docs/user/configuration.md) |
-| **Learn how to use the tools** | [Usage Guide](./docs/user/usage.md) → [API Reference](./docs/api/README.md) |
-| **Test and debug the server** | [Inspection Guide](./docs/development/inspection.md) |
-| **Deploy in production (HTTP/Docker)** | [Deployment Guide](./docs/deployment/deployment.md) |
-| **Fix issues or errors** | [Troubleshooting Guide](./docs/user/troubleshooting.md) |
-| **Contribute to the project** | [Contributing Guide](./docs/development/contributing.md) |
-
-### Complete Documentation
-
-**User Guides:**
-- [Installation](./docs/user/installation.md) - Setup guide (npx, Docker, source)
-- [Configuration](./docs/user/configuration.md) - Claude Code/Desktop configuration
-- [Usage](./docs/user/usage.md) - Tool examples and workflows
-- [API Reference](./docs/api/README.md) - Complete tool documentation
-- [Troubleshooting](./docs/user/troubleshooting.md) - Common issues and solutions
-
-**Developer Docs:**
-- [Contributing](./docs/development/contributing.md) - Contribution guidelines (TDD workflow)
-- [Development](./docs/development/development.md) - Development setup and debugging
-- [Inspection](./docs/development/inspection.md) - MCP Inspector testing guide
-- [Fuzzing](./docs/development/fuzzing.md) - Security fuzzing and property testing
-- [Roadmap](./docs/development/roadmap.md) - Project roadmap and future features
-- [Release Process](./docs/development/release-process.md) - Release and publishing workflow
-
-**Deployment Docs:**
-- [Deployment](./docs/deployment/deployment.md) - HTTP/Docker production deployment
-- [Security](./docs/deployment/security.md) - Security features, provenance, and SLSA
-
-**Project Info:**
-- [CHANGELOG.md](./CHANGELOG.md) - Version history
 
 ## License
 
