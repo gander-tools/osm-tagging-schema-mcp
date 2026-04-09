@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [3.9.0](https://github.com/gander-tools/osm-tagging-schema-mcp/compare/v3.8.5...v3.9.0) (2026-04-09)
+
+### Bug Fixes
+
+* **deps:** update dependency @openstreetmap/id-tagging-schema to ~6.16.0
+
+
+### Miscellaneous Tasks
+
+* **deps:** update gcr.io/oss-fuzz-base/base-builder-javascript docker digest to f26969c
+
 ## [3.8.5](https://github.com/gander-tools/osm-tagging-schema-mcp/compare/v3.8.4...v3.8.5) (2026-04-08)
 
 ### Miscellaneous Tasks
