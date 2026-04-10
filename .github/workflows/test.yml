@@ -82,9 +82,9 @@ jobs:
         with:
           node-version: '24'
 
-      - name: Install npm 11.6.4
+      - name: Install npm 11.12.1
         shell: bash
-        run: npm install -g npm@11.6.4
+        run: npm install -g npm@11.12.1
 
       - name: Install Dependencies
         run: npm ci
@@ -117,9 +117,9 @@ jobs:
         with:
           node-version: '24'
 
-      - name: Install npm 11.6.4
+      - name: Install npm 11.12.1
         shell: bash
-        run: npm install -g npm@11.6.4
+        run: npm install -g npm@11.12.1
 
       - name: Install Dependencies
         run: npm ci --ignore-scripts
