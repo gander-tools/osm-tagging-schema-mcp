@@ -45,8 +45,17 @@ jobs:
           echo "version=$VERSION_WITHOUT_V" >> "$GITHUB_OUTPUT"
           echo "tag=v${VERSION_WITHOUT_V}" >> "$GITHUB_OUTPUT"
 
-      - name: Setup Node.js and Install Dependencies
-        uses: ./.github/actions/setup-node-and-install
+      - name: Setup Node.js
+        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+        with:
+          node-version: '24'
+
+      - name: Install npm 11.6.4
+        shell: bash
+        run: npm install -g npm@11.6.4
+
+      - name: Install Dependencies
+        run: npm ci
 
       - name: Generate version.json
         env:
