@@ -78,8 +78,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
-      - name: Setup Node.js and Install Dependencies
-        uses: ./.github/actions/setup-node-and-install
+      - name: Setup Node.js
+        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+        with:
+          node-version: '24'
+
+      - name: Install npm 11.6.4
+        shell: bash
+        run: npm install -g npm@11.6.4
+
+      - name: Install Dependencies
+        run: npm ci
 
       - name: Run property-based fuzzing tests
         run: npm run test:fuzz
@@ -99,8 +108,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
-      - name: Setup Node.js and Install Dependencies
-        uses: ./.github/actions/setup-node-and-install
+      - name: Setup Node.js
+        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+        with:
+          node-version: '24'
+
+      - name: Install npm 11.6.4
+        shell: bash
+        run: npm install -g npm@11.6.4
+
+      - name: Install Dependencies
+        run: npm ci
 
       - name: Run property-based fuzzing tests (extended)
         run: npm run test:fuzz

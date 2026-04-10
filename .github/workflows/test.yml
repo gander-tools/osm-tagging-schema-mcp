@@ -77,8 +77,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
-      - name: Setup Node.js and Install Dependencies
-        uses: ./.github/actions/setup-node-and-install
+      - name: Setup Node.js
+        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+        with:
+          node-version: '24'
+
+      - name: Install npm 11.6.4
+        shell: bash
+        run: npm install -g npm@11.6.4
+
+      - name: Install Dependencies
+        run: npm ci
 
       - name: Run Tests
         uses: ./.github/actions/run-tests
@@ -103,10 +112,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
-      - name: Setup Node.js and Install Dependencies
-        uses: ./.github/actions/setup-node-and-install
+      - name: Setup Node.js
+        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
         with:
-          install-command: 'npm install --ignore-scripts'
+          node-version: '24'
+
+      - name: Install npm 11.6.4
+        shell: bash
+        run: npm install -g npm@11.6.4
+
+      - name: Install Dependencies
+        run: npm ci --ignore-scripts
 
       # npm must be newer than 11.5.1 for compatibility
       - name: Install tools
