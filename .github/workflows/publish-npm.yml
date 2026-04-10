@@ -50,9 +50,9 @@ jobs:
         with:
           node-version: '24'
 
-      - name: Install npm 11.6.4
+      - name: Install npm 11.12.1
         shell: bash
-        run: npm install -g npm@11.6.4
+        run: npm install -g npm@11.12.1
 
       - name: Install Dependencies
         run: npm ci
@@ -134,15 +134,15 @@ jobs:
           subject-path: ${{ env.TARBALL }}
           sbom-path: sbom.json
 
-      - name: Verify npm >= 11.6.4 for Trusted Publishers
+      - name: Verify npm >= 11.12.1 for Trusted Publishers
         run: |
           CURRENT_NPM=$(npm --version)
           echo "Current npm version: $CURRENT_NPM"
-          if [ "$(printf '%s\n' "11.6.4" "$CURRENT_NPM" | sort -V | head -n1)" = "11.6.4" ]; then
-            echo "✓ npm version $CURRENT_NPM is sufficient (>= 11.6.4)"
+          if [ "$(printf '%s\n' "11.12.1" "$CURRENT_NPM" | sort -V | head -n1)" = "11.12.1" ]; then
+            echo "✓ npm version $CURRENT_NPM is sufficient (>= 11.12.1)"
           else
             echo "❌ Error: npm version $CURRENT_NPM is too old"
-            echo "npm >= 11.6.4 is required for Trusted Publishers"
+            echo "npm >= 11.12.1 is required for Trusted Publishers"
             echo "Update Node.js version in workflow or manually install newer npm"
             exit 1
           fi
@@ -150,7 +150,7 @@ jobs:
       - name: Publish to NPM with provenance (Trusted Publishers)
         run: npm publish --provenance --access public
         # Note: No NODE_AUTH_TOKEN needed - npm uses OIDC authentication automatically
-        # Requires: id-token: write permission and npm >= 11.6.4
+        # Requires: id-token: write permission and npm >= 11.12.1
 
       - name: Upload dist/ artifact for Docker build
         uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0

@@ -72,8 +72,8 @@ jobs:
           node-version: '24'
 
       # npm must be newer than 11.5.1 for Node 24 compatibility
-      - name: Install npm 11.6.4
-        run: npm install -g npm@11.6.4
+      - name: Install npm 11.12.1
+        run: npm install -g npm@11.12.1
 
       - name: Install dependencies
         run: npm ci
@@ -108,8 +108,8 @@ jobs:
           node-version: '24'
 
       # npm must be newer than 11.5.1 for Node 24 compatibility
-      - name: Install npm 11.6.4
-        run: npm install -g npm@11.6.4
+      - name: Install npm 11.12.1
+        run: npm install -g npm@11.12.1
 
       - name: Install dependencies
         run: npm ci
@@ -149,8 +149,8 @@ jobs:
           node-version: '24'
 
       # npm must be newer than 11.5.1 for Node 24 compatibility
-      - name: Install npm 11.6.4
-        run: npm install -g npm@11.6.4
+      - name: Install npm 11.12.1
+        run: npm install -g npm@11.12.1
 
       - name: Install dependencies
         run: npm ci

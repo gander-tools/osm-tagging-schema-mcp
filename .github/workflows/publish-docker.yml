@@ -224,9 +224,9 @@ jobs:
         with:
           node-version: '24'
 
-      - name: Install npm 11.6.4 (non-release builds)
+      - name: Install npm 11.12.1 (non-release builds)
         if: needs.extract-version.outputs.is-release == 'false'
-        run: npm install -g npm@11.6.4
+        run: npm install -g npm@11.12.1
 
       - name: Install dependencies (non-release builds)
         if: needs.extract-version.outputs.is-release == 'false'
