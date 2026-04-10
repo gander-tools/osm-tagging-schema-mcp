@@ -19,13 +19,6 @@ pre-commit:
       run: npm run check:fix
       stage_fixed: true
 
-    # Remove libc constraints that npm 11.6.4 (CI) strips from optional
-    # platform-specific packages (@biomejs/cli-linux-*), preventing lockfile
-    # mismatch errors on `npm ci`.
-    lockfile-libc-fix:
-      run: bash scripts/fix-lockfile-libc.sh
-      stage_fixed: true
-
     # Lockfile integrity check
     lockfile-check:
       glob: "package-lock.json"
