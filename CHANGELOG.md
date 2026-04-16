@@ -4,6 +4,23 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [3.9.2](https://github.com/gander-tools/osm-tagging-schema-mcp/compare/v3.9.1...v3.9.2) (2026-04-16)
+
+### Miscellaneous Tasks
+
+* **deps:** update gcr.io/oss-fuzz-base/base-builder-javascript docker digest to f66ccab
+* **deps:** lock file maintenance (#781)
+* **deps:** update gcr.io/oss-fuzz-base/base-builder-javascript docker digest to b2c63e1
+* **deps:** update gcr.io/oss-fuzz-base/base-builder-javascript docker digest to 36f853c
+* **deps:** update actions/upload-artifact action to v7.0.1
+* **deps:** update gcr.io/oss-fuzz-base/base-builder-javascript docker digest to 99f8f53
+* **deps:** update gcr.io/oss-fuzz-base/base-builder-javascript docker digest to 30ed67d
+* **deps:** lock file maintenance (#788)
+* **deps:** update dependency @biomejs/biome to ~2.4.12 (#791)
+* **deps:** update gcr.io/oss-fuzz-base/base-builder-javascript docker digest to 5665d28
+* **deps:** update node.js to 8510330
+* **deps:** update step-security/harden-runner action to v2.18.0
+
 ## [3.9.1](https://github.com/gander-tools/osm-tagging-schema-mcp/compare/v3.9.0...v3.9.1) (2026-04-10)
 
 ### Bug Fixes
