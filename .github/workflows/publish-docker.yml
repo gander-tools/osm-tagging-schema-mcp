@@ -312,8 +312,8 @@ jobs:
         env:
           WEBHOOK_URL: ${{ secrets.DOCKER_PUBLISH_LATEST_WEBHOOK }}
           IMAGE_DIGEST: ${{ steps.digest.outputs.digest }}
-          CLIENT_ID: ${{ secrets.CF_ACCESS_CLIENT_ID }}
-          CLIENT_SECRET: ${{ secrets.CF_ACCESS_CLIENT_SECRET }}
+          CLIENT_ID: ${{ secrets.GANDER_TOOLS__CF_ACCESS_CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.GANDER_TOOLS__CF_ACCESS_CLIENT_SECRET }}
         run: |
           if [ -z "$WEBHOOK_URL" ]; then
             echo "::warning::DOCKER_PUBLISH_LATEST_WEBHOOK secret not set, skipping webhook"
