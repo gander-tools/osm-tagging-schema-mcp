@@ -166,12 +166,12 @@ jobs:
           tar czf dist.tar.gz dist/
           echo "✓ Created dist.tar.gz ($(du -h dist.tar.gz | cut -f1))"
 
-      - name: Update GitHub Release with dist artifact
+      - name: Update GitHub Release with body and metadata
         uses: ncipollo/release-action@339a81892b84b4eeb0f6e744e4574d79d0d9b8dd # v1.21.0
         with:
           tag: ${{ steps.version.outputs.tag }}
-          artifacts: dist.tar.gz
           allowUpdates: true
+          omitBodyDuringUpdate: false
           token: ${{ secrets.GITHUB_TOKEN }}
           body: |
             ## 🚀 Automatically Published Release
@@ -230,6 +230,11 @@ jobs:
             See [CHANGELOG.md](https://github.com/gander-tools/osm-tagging-schema-mcp/blob/${{ steps.version.outputs.tag }}/CHANGELOG.md) for detailed changes in this release.
           draft: false
           prerelease: false
+
+      - name: Upload dist.tar.gz to GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release upload ${{ steps.version.outputs.tag }} dist.tar.gz --clobber
 
       - name: Log release info
         run: |
