@@ -147,31 +147,19 @@ jobs:
             exit 1
           fi
 
-      - name: Publish to NPM with provenance (Trusted Publishers)
-        run: npm publish --provenance --access public
-        # Note: No NODE_AUTH_TOKEN needed - npm uses OIDC authentication automatically
-        # Requires: id-token: write permission and npm >= 11.12.1
-
-      - name: Upload dist/ artifact for Docker build
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
-        # NOTE: SHA pinning required for security. IDE warnings are false positives.
-        with:
-          name: dist-${{ steps.version.outputs.tag }}
-          path: dist/
-          retention-days: 7
-          if-no-files-found: error
-
       - name: Create dist tarball for release
         run: |
           tar czf dist.tar.gz dist/
           echo "✓ Created dist.tar.gz ($(du -h dist.tar.gz | cut -f1))"
 
-      - name: Update GitHub Release with dist artifact
+      - name: Create draft GitHub Release with artifacts
         uses: ncipollo/release-action@339a81892b84b4eeb0f6e744e4574d79d0d9b8dd # v1.21.0
         with:
           tag: ${{ steps.version.outputs.tag }}
           artifacts: dist.tar.gz
           allowUpdates: true
+          draft: true
+          prerelease: false
           token: ${{ secrets.GITHUB_TOKEN }}
           body: |
             ## 🚀 Automatically Published Release
@@ -223,13 +211,36 @@ jobs:
             1. ✅ Build and test validation
             2. ✅ NPM package published with provenance
             3. ✅ Git tag created by Publish NPM workflow
-            4. ✅ GitHub release updated with artifacts
+            4. ✅ GitHub release published with artifacts
 
             ### 📝 Changelog
 
             See [CHANGELOG.md](https://github.com/gander-tools/osm-tagging-schema-mcp/blob/${{ steps.version.outputs.tag }}/CHANGELOG.md) for detailed changes in this release.
+
+      - name: Publish to NPM with provenance (Trusted Publishers)
+        run: npm publish --provenance --access public
+        # Note: No NODE_AUTH_TOKEN needed - npm uses OIDC authentication automatically
+        # Requires: id-token: write permission and npm >= 11.12.1
+
+      - name: Upload dist/ artifact for Docker build
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        # NOTE: SHA pinning required for security. IDE warnings are false positives.
+        with:
+          name: dist-${{ steps.version.outputs.tag }}
+          path: dist/
+          retention-days: 7
+          if-no-files-found: error
+
+      - name: Publish GitHub Release
+        uses: ncipollo/release-action@339a81892b84b4eeb0f6e744e4574d79d0d9b8dd # v1.21.0
+        with:
+          tag: ${{ steps.version.outputs.tag }}
+          allowUpdates: true
           draft: false
-          prerelease: false
+          omitBodyDuringUpdate: true
+          omitArtifactsDuringUpdate: true
+          omitNameDuringUpdate: true
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Log release info
         run: |
