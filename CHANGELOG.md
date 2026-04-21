@@ -4,6 +4,24 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [3.9.3](https://github.com/gander-tools/osm-tagging-schema-mcp/compare/v3.9.2...v3.9.3) (2026-04-21)
+
+### Miscellaneous Tasks
+
+* **deps:** update dependency lefthook to ~2.1.6 (#794)
+* **deps:** lock file maintenance (#795)
+* **deps:** update node.js to d1b3b4d
+* **deps:** update dependency typescript to ~6.0.3 (#796)
+* **deps:** update gcr.io/oss-fuzz-base/base-builder-javascript docker digest to 4d7a655
+* **deps:** lock file maintenance (#801)
+* **deps:** update gcr.io/oss-fuzz-base/base-builder-javascript docker digest to 87f3337
+* **deps:** update gcr.io/oss-fuzz-base/base-builder-javascript docker digest to ae539e5
+* **deps:** update dependency fast-check to ~4.7.0
+* **deps:** update gcr.io/oss-fuzz-base/base-builder-javascript docker digest to 9c9492d
+* **deps:** update step-security/harden-runner action to v2.19.0
+* **deps:** update rinchsan/renovate-config-validator action to v0.2.1
+* **deps:** update actions/setup-node action to v6.4.0
+
 ## [3.9.2](https://github.com/gander-tools/osm-tagging-schema-mcp/compare/v3.9.1...v3.9.2) (2026-04-16)
 
 ### Miscellaneous Tasks
