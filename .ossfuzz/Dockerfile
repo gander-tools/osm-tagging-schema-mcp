@@ -2,7 +2,7 @@
 # This is prepared for potential future OSS-Fuzz submission
 # Currently using property-based testing with fast-check
 
-FROM gcr.io/oss-fuzz-base/base-builder-javascript@sha256:d1dbed3e86de4a700e0d7f7bfbac1622b9711b4e55bda1d5aea8160c356850b1
+FROM gcr.io/oss-fuzz-base/base-builder-javascript@sha256:00d1999147c8407441693135840d76cc97812b36c539728e016ef3a7d1316b06
 
 # Install Node.js (latest LTS)
 RUN apt-get update && \
