@@ -4,6 +4,42 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [3.9.5](https://github.com/gander-tools/osm-tagging-schema-mcp/compare/v3.9.4...v3.9.5) (2026-05-10)
+
+### Miscellaneous Tasks
+
+* **deps:** lock file maintenance (#814)
+* **deps:** update gcr.io/oss-fuzz-base/base-builder-javascript docker digest to 620999e
+* **deps:** update dependency @biomejs/biome to ~2.4.13 (#816)
+* **deps:** lock file maintenance (#817)
+* **deps:** update gcr.io/oss-fuzz-base/base-builder-javascript docker digest to d1dbed3
+* **deps:** lock file maintenance (#818)
+* **deps:** lock file maintenance (#820)
+* **deps:** update gcr.io/oss-fuzz-base/base-builder-javascript docker digest to 00d1999
+* **deps:** update aquasecurity/trivy-action action to v0.36.0
+* **deps:** update gcr.io/oss-fuzz-base/base-builder-javascript docker digest to a66f7c9
+* **deps:** update gcr.io/oss-fuzz-base/base-builder-javascript docker digest to 919ba05
+* **deps:** lock file maintenance
+* **deps:** update gcr.io/oss-fuzz-base/base-builder-javascript docker digest to b2ad4f0
+* **deps:** update dependency git-cliff to ~2.13.1
+* **deps:** update gcr.io/oss-fuzz-base/base-builder-javascript docker digest to 803ab46
+* **deps:** update gcr.io/oss-fuzz-base/base-builder-javascript docker digest to 8a15beb
+* **deps:** update dependency zod to ~4.4.1
+* **deps:** update gcr.io/oss-fuzz-base/base-builder-javascript docker digest to 76427fb
+* **deps:** lock file maintenance (#831)
+* **deps:** update gcr.io/oss-fuzz-base/base-builder-javascript docker digest to b988c7e
+* **deps:** update dependency @biomejs/biome to ~2.4.14 (#833)
+* **deps:** update dependency zod to ~4.4.2
+* **deps:** update step-security/harden-runner action to v2.19.1
+* **deps:** bump ip-address
+* **deps:** update gcr.io/oss-fuzz-base/base-builder-javascript docker digest to 1b49932
+* **deps:** update dependency zod to ~4.4.3
+* **deps:** update gcr.io/oss-fuzz-base/base-builder-javascript docker digest to 80d4edd
+* **deps:** bump the npm_and_yarn group across 1 directory with 2 updates
+* **deps:** update gcr.io/oss-fuzz-base/base-builder-javascript docker digest to 58710be
+* **deps:** update gcr.io/oss-fuzz-base/base-builder-javascript docker digest to 78aa6f0
+* **deps:** lock file maintenance (#843)
+
 ## [3.9.4](https://github.com/gander-tools/osm-tagging-schema-mcp/compare/v3.9.3...v3.9.4) (2026-04-21)
 
 ### Bug Fixes
