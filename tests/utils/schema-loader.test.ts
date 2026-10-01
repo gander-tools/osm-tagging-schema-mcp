@@ -46,7 +46,7 @@ describe("SchemaLoader", () => {
 			// Check first field has required properties
 			const firstField = schema.fields[fieldKeys[0]];
 			assert.ok(firstField);
-			assert.ok(firstField.key);
+			assert.ok(firstField.key || firstField.keys);
 			assert.ok(firstField.type);
 		});
 	});
@@ -473,10 +473,35 @@ describe("SchemaLoader", () => {
 				const fieldKey = Object.keys(schema.fields)[0];
 				const field = schema.fields[fieldKey];
 
-				assert.ok(field.key, "Field should have key property");
-				assert.ok(typeof field.key === "string", "Field key should be a string");
+				// Fields use either `key` or `keys` (e.g. "access" in v7 has only `keys`)
+				assert.ok(field.key || field.keys, "Field should have key or keys property");
+				if (field.key) {
+					assert.ok(typeof field.key === "string", "Field key should be a string");
+				} else {
+					assert.ok(Array.isArray(field.keys), "Field keys should be an array");
+				}
 				assert.ok(field.type, "Field should have type property");
 				assert.ok(typeof field.type === "string", "Field type should be a string");
+			});
+
+			it("should accept a first field with keys but no key, and reject one with neither", async () => {
+				const loader = new SchemaLoader();
+				const schema = await loader.loadSchema();
+				const { presets, categories, deprecated, defaults } = schema;
+				const validate = (fields: unknown) =>
+					// biome-ignore lint/suspicious/noExplicitAny: Test requires accessing private method
+					(loader as any).validateSchemaStructure({
+						presets,
+						fields,
+						categories,
+						deprecated,
+						defaults,
+					});
+
+				assert.doesNotThrow(() =>
+					validate({ access: { keys: ["access", "foot"], type: "access" } }),
+				);
+				assert.throws(() => validate({ access: { type: "access" } }), /missing key property/);
 			});
 		});
 
