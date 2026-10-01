@@ -82,7 +82,7 @@
 		"@types/node": "~24.12.3",
 		"c8": "~11.0.0",
 		"fast-check": "~4.7.0",
-		"git-cliff": "~2.13.1",
+		"git-cliff": "~2.14.2",
 		"lefthook": "~2.1.14",
 		"tsx": "~4.21.0",
 		"typescript": "~6.0.3",
