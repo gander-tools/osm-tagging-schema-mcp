@@ -85,7 +85,7 @@
 		"git-cliff": "~2.14.2",
 		"lefthook": "~2.1.14",
 		"tsx": "~4.23.15",
-		"typescript": "~6.0.3",
+		"typescript": "~7.0.2",
 		"zod": "~4.6.5"
 	},
 	"engines": {
