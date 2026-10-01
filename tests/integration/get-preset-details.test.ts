@@ -225,7 +225,8 @@ describe("get_preset_details integration", () => {
 		});
 
 		it("should expand field references via MCP", async () => {
-			// building_point has fields: ["{building}"]
+			// v6 stored "{building}" here; v7 resolves references at build time,
+			// so expected fields come from presets.json (no hardcoded list)
 			const response = await client.callTool({
 				name: "get_preset_details",
 				arguments: { presetId: "building_point" },
@@ -236,12 +237,13 @@ describe("get_preset_details integration", () => {
 			assert.ok(result.fields);
 			assert.ok(result.fields.length > 0);
 
-			// Should expand {building} to actual fields
-			assert.ok(!result.fields.includes("{building}"));
+			assert.ok(!result.fields.some((f: string) => f.startsWith("{")));
 
-			// Should include inherited fields from building preset
-			assert.ok(result.fields.includes("name"));
-			assert.ok(result.fields.includes("building"));
+			// Every field listed in the schema for this preset must be returned
+			for (const field of presets.building_point.fields || []) {
+				if (field.startsWith("{")) continue; // v6 data: reference, expanded elsewhere
+				assert.ok(result.fields.includes(field), `Field "${field}" should be returned`);
+			}
 		});
 	});
 

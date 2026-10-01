@@ -594,7 +594,7 @@ export class SchemaLoader {
 			if (!firstField) {
 				throw new Error(`Invalid schema: field '${firstFieldKey}' is undefined`);
 			}
-			if (!firstField.key) {
+			if (!firstField.key && !firstField.keys) {
 				throw new Error(`Invalid schema: field '${firstFieldKey}' missing key property`);
 			}
 			if (!firstField.type) {
