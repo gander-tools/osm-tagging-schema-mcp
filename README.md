@@ -36,7 +36,6 @@ This project is a **Proof of Concept**. It gives real value in some areas and ha
 
 - It works with the latest tagging schema, `@openstreetmap/id-tagging-schema` **v7**.
 - A better replacement tool is being worked on. It will arrive later than originally planned, and no date is promised.
-- A public instance is available at [https://mcp.gander.tools/osm-tagging/](https://mcp.gander.tools/osm-tagging/).
 
 Bug reports and ideas: open an [issue](https://github.com/gander-tools/osm-tagging-schema-mcp/issues) or start a [discussion](https://github.com/gander-tools/osm-tagging-schema-mcp/discussions).
 
@@ -50,23 +49,23 @@ Validation checks a tag against the schema: known key, value allowed by the matc
 
 Tested through the MCP stdio protocol against the `edge` Docker image with schema v7. Test data came from local taginfo databases: 265 popular key=value pairs from 18 feature keys (15 most popular wiki-described values per key), the 200 most popular keys, and 325 tags marked `deprecated`/`obsolete` on the OSM wiki.
 
-| Tool | Check | Result |
-|---|---|---|
-| `validate_tag` | popular tags accepted as valid | 265/265 (100%) |
-| `validate_tag` | no false `deprecated` on popular tags | 263/265 (99.2%) |
-| `validate_tag` | wiki-deprecated/obsolete tags detected | 66/325 (20.3%) |
-| `validate_tag_collection` | consistent with `validate_tag` | 80/80 (100%) |
-| `search_tags` | key found by name | 119/200 (59.5%) |
-| `search_tags` | key found despite a typo | 0/97 (0%) |
-| `search_presets` | `key/value` preset in results | 182/265 (68.7%) |
-| `search_presets` | `key/value` preset in top 3 | 148/265 (55.8%) |
-| `get_tag_values` | taginfo values present in the list | 222/229 (96.9%) |
-| `get_preset_details` | preset for popular tag exists | 246/265 (92.8%) |
-| `suggest_improvements` | preset matched for popular tag | 244/265 (92.1%) |
-| `compare_tags` | stats match local computation | 150/150 (100%) |
-| `flat_to_json` / `json_to_flat` | special characters preserved | 173/173 (100%) |
-| `json_to_flat` | JSON → flat → JSON round-trip | 60/60 (100%) |
-| `json_to_flat` | keys sorted alphabetically (as documented) | 0/60 (0%) |
+| Tool                            | Check                                      | Result          |
+|---------------------------------|--------------------------------------------|-----------------|
+| `validate_tag`                  | popular tags accepted as valid             | 265/265 (100%)  |
+| `validate_tag`                  | no false `deprecated` on popular tags      | 263/265 (99.2%) |
+| `validate_tag`                  | wiki-deprecated/obsolete tags detected     | 66/325 (20.3%)  |
+| `validate_tag_collection`       | consistent with `validate_tag`             | 80/80 (100%)    |
+| `search_tags`                   | key found by name                          | 119/200 (59.5%) |
+| `search_tags`                   | key found despite a typo                   | 0/97 (0%)       |
+| `search_presets`                | `key/value` preset in results              | 182/265 (68.7%) |
+| `search_presets`                | `key/value` preset in top 3                | 148/265 (55.8%) |
+| `get_tag_values`                | taginfo values present in the list         | 222/229 (96.9%) |
+| `get_preset_details`            | preset for popular tag exists              | 246/265 (92.8%) |
+| `suggest_improvements`          | preset matched for popular tag             | 244/265 (92.1%) |
+| `compare_tags`                  | stats match local computation              | 150/150 (100%)  |
+| `flat_to_json` / `json_to_flat` | special characters preserved               | 173/173 (100%)  |
+| `json_to_flat`                  | JSON → flat → JSON round-trip              | 60/60 (100%)    |
+| `json_to_flat`                  | keys sorted alphabetically (as documented) | 0/60 (0%)       |
 
 ### What works
 
@@ -109,7 +108,6 @@ Useful where deterministic logic is enough: format conversion, comparing tag set
 
 - **Not a standalone application**: This server requires integration with AI systems (like Claude Code or Claude Desktop) to be useful. It has no user interface or web frontend.
 - **Not for direct human use**: Without an AI agent as an intermediary, this tool provides no value to end users. It's designed exclusively for programmatic access by LLM applications.
-- **Not a public API for general use**: The deployed service at mcp.gander.tools is intended for integration with AI agents, not for direct HTTP requests or high-volume automated queries. Please do not attempt to abuse the service with DDoS attacks or excessive traffic.
 
 If you're looking for a user-facing OSM tagging tool, consider [iD editor](https://github.com/openstreetmap/iD) or [JOSM](https://josm.openstreetmap.de/) instead.
 
@@ -165,13 +163,16 @@ Add to your Claude Desktop configuration:
   "mcpServers": {
     "osm-tagging-schema": {
       "command": "npx",
-      "args": ["@gander-tools/osm-tagging-schema-mcp"]
+      "args": [
+        "@gander-tools/osm-tagging-schema-mcp"
+      ]
     }
   }
 }
 ```
 
 📖 **Next steps**:
+
 - [Configuration Guide](./docs/user/configuration.md) - Setup for Claude Code/Desktop and custom clients
 - [Usage Guide](./docs/user/usage.md) - Tool examples and workflows
 - [API Reference](./docs/api/README.md) - Complete tool documentation
@@ -196,6 +197,7 @@ The Inspector provides an interactive web UI to test all tools, inspect response
 ## Development
 
 Built with **Test-Driven Development (TDD)** and **Property-Based Fuzzing**:
+
 - Comprehensive test suite (unit + integration) with 100% pass rate
 - Property-based fuzz tests with fast-check for edge case discovery
 - Continuous fuzzing in CI/CD (weekly schedule + on every push/PR)
@@ -228,19 +230,20 @@ Contributions welcome! This project follows **Test-Driven Development (TDD)**.
 
 **Choose your path:**
 
-| I want to... | Go to |
-|-------------|-------|
-| **Install and run the server** | [Installation Guide](./docs/user/installation.md) |
-| **Configure with Claude Code/Desktop** | [Configuration Guide](./docs/user/configuration.md) |
-| **Learn how to use the tools** | [Usage Guide](./docs/user/usage.md) → [API Reference](./docs/api/README.md) |
-| **Test and debug the server** | [Inspection Guide](./docs/development/inspection.md) |
-| **Deploy in production (HTTP/Docker)** | [Deployment Guide](./docs/deployment/deployment.md) |
-| **Fix issues or errors** | [Troubleshooting Guide](./docs/user/troubleshooting.md) |
-| **Contribute to the project** | [Contributing Guide](./docs/development/contributing.md) |
+| I want to...                           | Go to                                                                       |
+|----------------------------------------|-----------------------------------------------------------------------------|
+| **Install and run the server**         | [Installation Guide](./docs/user/installation.md)                           |
+| **Configure with Claude Code/Desktop** | [Configuration Guide](./docs/user/configuration.md)                         |
+| **Learn how to use the tools**         | [Usage Guide](./docs/user/usage.md) → [API Reference](./docs/api/README.md) |
+| **Test and debug the server**          | [Inspection Guide](./docs/development/inspection.md)                        |
+| **Deploy in production (HTTP/Docker)** | [Deployment Guide](./docs/deployment/deployment.md)                         |
+| **Fix issues or errors**               | [Troubleshooting Guide](./docs/user/troubleshooting.md)                     |
+| **Contribute to the project**          | [Contributing Guide](./docs/development/contributing.md)                    |
 
 ### Complete Documentation
 
 **User Guides:**
+
 - [Installation](./docs/user/installation.md) - Setup guide (npx, Docker, source)
 - [Configuration](./docs/user/configuration.md) - Claude Code/Desktop configuration
 - [Usage](./docs/user/usage.md) - Tool examples and workflows
@@ -248,6 +251,7 @@ Contributions welcome! This project follows **Test-Driven Development (TDD)**.
 - [Troubleshooting](./docs/user/troubleshooting.md) - Common issues and solutions
 
 **Developer Docs:**
+
 - [Contributing](./docs/development/contributing.md) - Contribution guidelines (TDD workflow)
 - [Development](./docs/development/development.md) - Development setup and debugging
 - [Inspection](./docs/development/inspection.md) - MCP Inspector testing guide
@@ -256,10 +260,12 @@ Contributions welcome! This project follows **Test-Driven Development (TDD)**.
 - [Release Process](./docs/development/release-process.md) - Release and publishing workflow
 
 **Deployment Docs:**
+
 - [Deployment](./docs/deployment/deployment.md) - HTTP/Docker production deployment
 - [Security](./docs/deployment/security.md) - Security features, provenance, and SLSA
 
 **Project Info:**
+
 - [CHANGELOG.md](./CHANGELOG.md) - Version history
 
 ## License
