@@ -306,47 +306,6 @@ jobs:
           cosign sign --yes --recursive \
             "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}@${DIGEST}"
 
-      # Send webhook notification when 'latest' tag is published
-      - name: Send webhook for latest tag publication
-        if: needs.extract-version.outputs.is-release == 'true'
-        env:
-          WEBHOOK_URL: ${{ secrets.DOCKER_PUBLISH_LATEST_WEBHOOK }}
-          IMAGE_DIGEST: ${{ steps.digest.outputs.digest }}
-          CLIENT_ID: ${{ secrets.GANDER_TOOLS__CF_ACCESS_CLIENT_ID }}
-          CLIENT_SECRET: ${{ secrets.GANDER_TOOLS__CF_ACCESS_CLIENT_SECRET }}
-        run: |
-          if [ -z "$WEBHOOK_URL" ]; then
-            echo "::warning::DOCKER_PUBLISH_LATEST_WEBHOOK secret not set, skipping webhook"
-            exit 0
-          fi
-
-          if [ -z "$CLIENT_ID" ]; then
-            echo "::warning::CF_ACCESS_CLIENT_ID secret not set, skipping webhook"
-            exit 0
-          fi
-
-          if [ -z "$CLIENT_SECRET" ]; then
-            echo "::warning::CF_ACCESS_CLIENT_SECRET secret not set, skipping webhook"
-            exit 0
-          fi
-
-          echo "Sending webhook notification for latest tag publication..."
-
-          # Send POST request to webhook
-          HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" \
-            -X POST \
-            -H "Content-Type: application/json" \
-            -H "User-Agent: GitHub-Actions" \
-            -H "CF-Access-Client-Id: $CLIENT_ID" \
-            -H "CF-Access-Client-Secret: $CLIENT_SECRET" \
-            "$WEBHOOK_URL")
-
-          if [ "$HTTP_CODE" -ge 200 ] && [ "$HTTP_CODE" -lt 300 ]; then
-            echo "::notice::✓ Webhook sent successfully (HTTP $HTTP_CODE)"
-          else
-            echo "::error::✗ Webhook failed with HTTP $HTTP_CODE"
-          fi
-
       # Generate Job Summary
       - name: Generate build summary
         if: always()
