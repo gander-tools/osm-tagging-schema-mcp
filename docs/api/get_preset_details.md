@@ -4,12 +4,11 @@ Get complete details for a specific OSM preset including tags, geometry, fields,
 
 ## Description
 
-Returns comprehensive information about an OSM preset, including its identifying tags, supported geometry types, field lists, and localized names. Field references (like `{building}` and `{@templates/contact}`) are automatically expanded to their full field lists.
+Returns comprehensive information about an OSM preset, including its identifying tags, supported geometry types, field lists, and localized names. Field lists are returned fully resolved: since `@openstreetmap/id-tagging-schema` v7 the schema resolves field references and templates at build time, so the tool returns `fields` and `moreFields` exactly as stored in the schema.
 
 **Phase 8.5 Updates:**
 - Accepts multiple input formats (preset ID, tag notation, JSON object)
 - Returns `tagsDetailed` with localized key/value names
-- Automatically expands field references and templates
 - Icon field removed (not essential for MCP context)
 - Name field now required (always includes localized preset name)
 
@@ -68,8 +67,8 @@ Returns a JSON object with the following structure (Phase 8.5 format):
     valueName: string;        // Localized value name (e.g., "Restaurant")
   }>;
   geometry: string[];         // Supported geometry types
-  fields?: string[];          // Expanded field list (optional)
-  moreFields?: string[];      // Expanded additional fields (optional)
+  fields?: string[];          // Field list (optional)
+  moreFields?: string[];      // Additional fields (optional)
 }
 ```
 
@@ -80,21 +79,8 @@ Returns a JSON object with the following structure (Phase 8.5 format):
 - **tags**: Simple key-value object for backward compatibility
 - **tagsDetailed**: Array of tags with localized names (new in Phase 8.5)
 - **geometry**: Array of supported geometry types (`point`, `line`, `area`, `relation`)
-- **fields**: Primary field list with all references expanded (optional)
-- **moreFields**: Additional field list with all references expanded (optional)
-
-### Field Reference Expansion
-
-The tool automatically expands two types of field references:
-
-**1. Preset Field References**: `{preset_id}`
-- Example: `{building}` → expands to all fields from the `building` preset
-- Used for field inheritance
-
-**2. Template References**: `{@templates/name}`
-- Example: `{@templates/contact}` → expands to `["contact:email", "contact:phone", "contact:website", "contact:fax"]`
-- Example: `{@templates/internet_access}` → expands to `["internet_access", "internet_access/fee", "internet_access/ssid"]`
-- Used for reusable field groups
+- **fields**: Primary field list (optional)
+- **moreFields**: Additional field list (optional)
 
 ## Examples
 
@@ -221,90 +207,6 @@ The tool automatically expands two types of field references:
 }
 ```
 
-### Example 4: Field Reference Expansion
-
-**Request:**
-```json
-{
-  "name": "get_preset_details",
-  "arguments": {
-    "presetId": "building_point"
-  }
-}
-```
-
-**Original preset data:**
-```json
-{
-  "fields": ["{building}"]  // Field reference
-}
-```
-
-**Response (with expansion):**
-```json
-{
-  "id": "building_point",
-  "name": "Building",
-  "tags": {
-    "building": "*"
-  },
-  "tagsDetailed": [],  // Wildcard values excluded
-  "geometry": ["point"],
-  "fields": [
-    "name",
-    "building",
-    "building/levels",
-    "height",
-    "address"
-  ]  // Expanded from {building} preset
-}
-```
-
-### Example 5: Template Expansion
-
-**Request:**
-```json
-{
-  "name": "get_preset_details",
-  "arguments": {
-    "presetId": "shop"
-  }
-}
-```
-
-**Original preset data:**
-```json
-{
-  "moreFields": [
-    "{@templates/internet_access}",
-    "{@templates/poi}",
-    "air_conditioning"
-  ]
-}
-```
-
-**Response (with template expansion):**
-```json
-{
-  "id": "shop",
-  "name": "Shop",
-  "tags": {
-    "shop": "*"
-  },
-  "tagsDetailed": [],
-  "geometry": ["point", "area"],
-  "fields": ["name", "shop", "operator", "address"],
-  "moreFields": [
-    "internet_access",
-    "internet_access/fee",
-    "internet_access/ssid",
-    "name",
-    "address",
-    "air_conditioning"
-  ]  // Templates expanded
-}
-```
-
 ## Error Scenarios
 
 ### Preset Not Found
@@ -412,10 +314,7 @@ details.tagsDetailed.forEach(tag => {
 
 ## Notes
 
-- Field references are recursively expanded, with cycle detection to prevent infinite loops
-- Template references use a predefined set of 10 common templates (based on iD editor conventions)
 - Wildcard tag values (`*`) are excluded from `tagsDetailed` array
-- Unknown field references or templates are kept as-is in the output
 - The tool prefers exact tag matches when multiple presets match the input
 - Icon field removed in Phase 8.5 (not essential for MCP server context)
 

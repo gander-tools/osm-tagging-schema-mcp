@@ -2,35 +2,17 @@
  * Type definitions for OpenStreetMap tagging schema structures
  */
 
+import type { Field as SchemaField } from "@openstreetmap/id-tagging-schema/dist/fields.d.json.ts";
+
 /**
  * Geometry types supported by OSM presets
  */
 export type GeometryType = "point" | "vertex" | "line" | "area" | "relation";
 
 /**
- * Field types available in the schema
+ * Field types available in the schema (derived from the schema package, so it follows upgrades)
  */
-export type FieldType =
-	| "check"
-	| "combo"
-	| "typeCombo"
-	| "multiCombo"
-	| "semiCombo"
-	| "text"
-	| "textarea"
-	| "number"
-	| "radio"
-	| "url"
-	| "identifier"
-	| "email"
-	| "tel"
-	| "wikipedia"
-	| "wikidata"
-	| "address"
-	| "manyCombo"
-	| "networkCombo"
-	| "roadheight"
-	| "roadspeed";
+export type FieldType = SchemaField["type"];
 
 /**
  * Location set for geographic restrictions
@@ -38,6 +20,15 @@ export type FieldType =
 export interface LocationSet {
 	include?: string[];
 	exclude?: string[];
+}
+
+/**
+ * Condition under which a field is shown (v7 also allows an array of conditions)
+ */
+export interface PrerequisiteTag {
+	key: string;
+	value?: string;
+	valueNot?: string;
 }
 
 /**
@@ -60,7 +51,7 @@ export interface Field {
 	urlFormat?: string;
 	pattern?: string;
 	reference?: { key: string; value?: string };
-	prerequisiteTag?: { key: string; value?: string; valueNot?: string };
+	prerequisiteTag?: PrerequisiteTag | PrerequisiteTag[];
 	terms?: string[];
 }
 

@@ -27,6 +27,7 @@
 		"allowSyntheticDefaultImports": true,
 		"forceConsistentCasingInFileNames": true,
 		"resolveJsonModule": true,
+		"allowArbitraryExtensions": true,
 		"isolatedModules": true,
 
 		// Skip Lib Check

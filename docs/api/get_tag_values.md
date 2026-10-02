@@ -114,32 +114,72 @@ Returns a JSON object with the following structure (Phase 8.3 format):
   "key": "parking",
   "keyName": "Parking",
   "values": [
-    "surface",
-    "multi-storey",
-    "underground",
-    "street_side",
-    "lane",
     "carports",
     "garage_boxes",
+    "half_on_kerb",
+    "lane",
+    "layby",
+    "multi-storey",
+    "on_kerb",
+    "rooftop",
     "sheds",
-    "yes"
+    "shoulder",
+    "street_side",
+    "surface",
+    "underground"
   ],
   "valuesDetailed": [
+    {
+      "value": "carports",
+      "valueName": "Carports"
+    },
+    {
+      "value": "garage_boxes",
+      "valueName": "Garage Boxes"
+    },
+    {
+      "value": "half_on_kerb",
+      "valueName": "Half On Kerb"
+    },
+    {
+      "value": "lane",
+      "valueName": "Roadside Lane"
+    },
+    {
+      "value": "layby",
+      "valueName": "Turnout / Lay-By"
+    },
+    {
+      "value": "multi-storey",
+      "valueName": "Multilevel"
+    },
+    {
+      "value": "on_kerb",
+      "valueName": "On Kerb"
+    },
+    {
+      "value": "rooftop",
+      "valueName": "Rooftop"
+    },
+    {
+      "value": "sheds",
+      "valueName": "Sheds"
+    },
+    {
+      "value": "shoulder",
+      "valueName": "Shoulder"
+    },
+    {
+      "value": "street_side",
+      "valueName": "Street-Side"
+    },
     {
       "value": "surface",
       "valueName": "Surface"
     },
     {
-      "value": "multi-storey",
-      "valueName": "Multi-storey"
-    },
-    {
       "value": "underground",
       "valueName": "Underground"
-    },
-    {
-      "value": "street_side",
-      "valueName": "Street Side"
     }
   ]
 }

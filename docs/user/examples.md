@@ -608,14 +608,13 @@ This document provides comprehensive examples for all tools in the OSM Tagging S
 
 ## 4. get_preset_details
 
-**Purpose**: Get complete details for a specific preset including tags, geometry, fields, and metadata. Accepts multiple input formats (preset ID, tag notation, or tags object) and automatically expands field references.
+**Purpose**: Get complete details for a specific preset including tags, geometry, fields, and metadata. Accepts multiple input formats (preset ID, tag notation, or tags object) and returns the preset's field lists.
 
 **Input**: `presetId` (string | object) - required
 
 **Phase 8.5 Updates**:
 - Accepts three input formats (preset ID, tag notation, tags object)
 - Returns `tagsDetailed` with localized key/value names
-- Automatically expands field references and templates
 - Icon field removed (not essential for MCP context)
 - Name field now required (always includes localized preset name)
 
@@ -733,38 +732,7 @@ This document provides comprehensive examples for all tools in the OSM Tagging S
 }
 ```
 
-### Example 4.4: Field Reference Expansion (Phase 8.5)
-
-**Request**:
-```json
-{
-  "presetId": "building_point"
-}
-```
-
-**Response** (field references like `{building}` are automatically expanded):
-```json
-{
-  "id": "building_point",
-  "name": "Building",
-  "tags": {
-    "building": "*"
-  },
-  "tagsDetailed": [],
-  "geometry": ["point"],
-  "fields": [
-    "name",
-    "building",
-    "building/levels",
-    "height",
-    "address"
-  ]
-}
-```
-
-_Note: The original preset has `fields: ["{building}"]`, which is expanded to the actual fields from the `building` preset._
-
-### Example 4.5: Invalid Preset ID (Non-Existent)
+### Example 4.4: Invalid Preset ID (Non-Existent)
 
 **Request**:
 ```json

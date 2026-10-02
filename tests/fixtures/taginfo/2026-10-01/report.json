@@ -1,0 +1,1718 @@
+{
+	"snapshot": "2026-10-01",
+	"generatedAt": "2026-10-02T09:22:05.544Z",
+	"commit": "18218713b1cd95028704e14d91387d8c10330194",
+	"tools": {
+		"compare_tags": {
+			"total": 1000,
+			"invalid": {
+				"total": 250,
+				"detected": 50,
+				"rate": 0.2,
+				"byKind": {
+					"new_key_value_swapped": {
+						"total": 1,
+						"detected": 0,
+						"undetected": [
+							{
+								"oldTags": {
+									"natural": "wood",
+									"wood:density": "sparse"
+								},
+								"newTags": {
+									"building": "hut",
+									"source": "geoimage.at",
+									"roof:levels": "0.8",
+									"#bbad8e": "roof:colour"
+								}
+							}
+						]
+					},
+					"new_space_in_key": {
+						"total": 20,
+						"detected": 0,
+						"undetected": [
+							{
+								"oldTags": {
+									"natural": "bay",
+									"source": "NRCan-CanVec-10.0"
+								},
+								"newTags": {
+									"source": "bing",
+									"service x": "driveway"
+								}
+							},
+							{
+								"oldTags": {
+									"waterway": "canal",
+									"width": "15"
+								},
+								"newTags": {
+									"wheelchair": "limited",
+									"station": "subway",
+									"railway x": "station"
+								}
+							},
+							{
+								"oldTags": {
+									"highway": "steps",
+									"step_count": "5"
+								},
+								"newTags": {
+									"outdoor_seating": "yes",
+									"cuisine x": "french"
+								}
+							},
+							{
+								"oldTags": {
+									"aeroway": "hangar",
+									"building": "yes"
+								},
+								"newTags": {
+									"leisure": "fishing",
+									"natural x": "water"
+								}
+							},
+							{
+								"oldTags": {
+									"place": "quarter",
+									"population:date": "2020-05-01"
+								},
+								"newTags": {
+									"type": "route",
+									"route x": "piste"
+								}
+							}
+						]
+					},
+					"old_line_without_equals": {
+						"total": 12,
+						"detected": 12,
+						"undetected": []
+					},
+					"new_value_typo": {
+						"total": 18,
+						"detected": 0,
+						"undetected": [
+							{
+								"oldTags": {
+									"route": "hiking",
+									"type": "route"
+								},
+								"newTags": {
+									"cuisine": "suhsi",
+									"takeaway": "yes",
+									"delivery": "yes",
+									"level": "0"
+								}
+							},
+							{
+								"oldTags": {
+									"leisure": "firepit",
+									"tents": "yes"
+								},
+								"newTags": {
+									"historic": "bmob_crater",
+									"start_date": "1945",
+									"natural": "water"
+								}
+							},
+							{
+								"oldTags": {
+									"building": "slurry_tank",
+									"man_made": "storage_tank"
+								},
+								"newTags": {
+									"shop": "hearing_aids",
+									"wheelchair": "yesx"
+								}
+							},
+							{
+								"oldTags": {
+									"place": "farm",
+									"source:imagery": "BingSat, ESRI, and other open satellite imagery available to OSM as of 2024"
+								},
+								"newTags": {
+									"landuse": "commercila",
+									"operator:type": "government"
+								}
+							},
+							{
+								"oldTags": {
+									"shop": "bakery",
+									"source": "BAG"
+								},
+								"newTags": {
+									"boundary": "cadsatral",
+									"source": "cuzk:ruian"
+								}
+							}
+						]
+					},
+					"new_foreign_value": {
+						"total": 32,
+						"detected": 0,
+						"undetected": [
+							{
+								"oldTags": {
+									"craft": "sawmill",
+									"landuse": "industrial"
+								},
+								"newTags": {
+									"leisure": "breakfast;chinese",
+									"wheelchair": "limited"
+								}
+							},
+							{
+								"oldTags": {
+									"shop": "hardware",
+									"source": "Kaart Ground Survey 2017"
+								},
+								"newTags": {
+									"cuisine": "sandwich",
+									"wheelchair": "platform_point",
+									"drive_through": "yes"
+								}
+							},
+							{
+								"oldTags": {
+									"railway": "miniature",
+									"service": "yard"
+								},
+								"newTags": {
+									"emergency": "phone",
+									"operator:wikidata": "Q21605526",
+									"indoor": "metro",
+									"operator:type": "government"
+								}
+							},
+							{
+								"oldTags": {
+									"place": "isolated_dwelling",
+									"source": "cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2011"
+								},
+								"newTags": {
+									"landuse": "orchard",
+									"source": "swing_gate;entrance"
+								}
+							},
+							{
+								"oldTags": {
+									"building": "residential",
+									"source": "Ayuntamiento de Tijuana"
+								},
+								"newTags": {
+									"place": "historic:administrative",
+									"source": "NRCan-CanVec-10.0"
+								}
+							}
+						]
+					},
+					"new_key_typo": {
+						"total": 18,
+						"detected": 0,
+						"undetected": [
+							{
+								"oldTags": {
+									"landuse": "farmyard",
+									"type": "multipolygon"
+								},
+								"newTags": {
+									"usage": "main",
+									"sevrice": "siding"
+								}
+							},
+							{
+								"oldTags": {
+									"highway": "emergency_access_point",
+									"tourism": "information"
+								},
+								"newTags": {
+									"barrier": "turnstile",
+									"wheelchair": "no",
+									"feex": "yes"
+								}
+							},
+							{
+								"oldTags": {
+									"amenity": "fountain",
+									"historic": "yes"
+								},
+								"newTags": {
+									"traffic_sign": "FR:C115",
+									"railawy": "abandoned"
+								}
+							},
+							{
+								"oldTags": {
+									"boundary": "postal_code",
+									"type": "boundary"
+								},
+								"newTags": {
+									"amenity": "waste_disposal",
+									"colour": "green",
+									"waste": "trash",
+									"buliding": "yes"
+								}
+							},
+							{
+								"oldTags": {
+									"barrier": "ditch",
+									"layer": "-1"
+								},
+								"newTags": {
+									"tunnel": "yes",
+									"raiwlay": "light_rail"
+								}
+							}
+						]
+					},
+					"old_empty_value_line": {
+						"total": 13,
+						"detected": 0,
+						"undetected": [
+							{
+								"oldTags": "power=",
+								"newTags": {
+									"power": "substation",
+									"substation": "transmission"
+								}
+							},
+							{
+								"oldTags": "amenity=",
+								"newTags": {
+									"highway": "tertiary_link",
+									"surface": "concrete"
+								}
+							},
+							{
+								"oldTags": "route=",
+								"newTags": {
+									"highway": "cycleway",
+									"surface": "paving_stones"
+								}
+							},
+							{
+								"oldTags": "natural=",
+								"newTags": {
+									"office": "employment_agency",
+									"wheelchair": "yes"
+								}
+							},
+							{
+								"oldTags": "natural=",
+								"newTags": {
+									"power": "line",
+									"source": "NRCan-CanVec-10.0"
+								}
+							}
+						]
+					},
+					"new_uppercase_key": {
+						"total": 19,
+						"detected": 0,
+						"undetected": [
+							{
+								"oldTags": {
+									"sport": "skateboard",
+									"surface": "concrete"
+								},
+								"newTags": {
+									"amenity": "cafe",
+									"payment:cash": "yes",
+									"PAYMENT:VISA": "yes"
+								}
+							},
+							{
+								"oldTags": {
+									"railway": "miniature",
+									"usage": "tourism"
+								},
+								"newTags": {
+									"railway": "station",
+									"usage": "tourism",
+									"WHEELCHAIR": "yes"
+								}
+							},
+							{
+								"oldTags": {
+									"natural": "bare_rock",
+									"type": "multipolygon"
+								},
+								"newTags": {
+									"cuisine": "vietnamese",
+									"diet:vegetarian": "yes",
+									"OUTDOOR_SEATING": "no"
+								}
+							},
+							{
+								"oldTags": {
+									"leisure": "track",
+									"surface": "gravel"
+								},
+								"newTags": {
+									"height": "2.5",
+									"BARRIER": "hedge"
+								}
+							},
+							{
+								"oldTags": {
+									"emergency": "suction_point",
+									"source": "GPS(APK:StrazakOSM)"
+								},
+								"newTags": {
+									"wheelchair": "yes",
+									"source": "BAG",
+									"SHOP": "jewelry"
+								}
+							}
+						]
+					},
+					"new_empty_value": {
+						"total": 17,
+						"detected": 0,
+						"undetected": [
+							{
+								"oldTags": {
+									"man_made": "water_tower",
+									"source": "cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2010"
+								},
+								"newTags": {
+									"waterway": "",
+									"width": "1.5"
+								}
+							},
+							{
+								"oldTags": {
+									"healthcare": "pharmacy",
+									"opening_hours": "Mo-Su 09:00-22:00"
+								},
+								"newTags": {
+									"boundary": "",
+									"start_date": "2000",
+									"protect_class": "3"
+								}
+							},
+							{
+								"oldTags": {
+									"building": "roof",
+									"covered": "yes"
+								},
+								"newTags": {
+									"highway": "",
+									"oneway": "yes"
+								}
+							},
+							{
+								"oldTags": {
+									"barrier": "swing_gate",
+									"motor_vehicle": "private"
+								},
+								"newTags": {
+									"boundary": "census",
+									"type": ""
+								}
+							},
+							{
+								"oldTags": {
+									"barrier": "yes",
+									"place": "plot"
+								},
+								"newTags": {
+									"highway": "",
+									"lit": "no"
+								}
+							}
+						]
+					},
+					"old_empty_string": {
+						"total": 13,
+						"detected": 0,
+						"undetected": [
+							{
+								"oldTags": "",
+								"newTags": {
+									"man_made": "pier",
+									"surface": "concrete"
+								}
+							},
+							{
+								"oldTags": "",
+								"newTags": {
+									"tourism": "hotel",
+									"wheelchair": "yes"
+								}
+							},
+							{
+								"oldTags": "",
+								"newTags": {
+									"building": "university",
+									"roof:levels": "1"
+								}
+							},
+							{
+								"oldTags": "",
+								"newTags": {
+									"cuisine": "bubble_tea",
+									"level": "0"
+								}
+							},
+							{
+								"oldTags": "",
+								"newTags": {
+									"place": "town",
+									"source": "GNS"
+								}
+							}
+						]
+					},
+					"new_json_array": {
+						"total": 12,
+						"detected": 12,
+						"undetected": []
+					},
+					"new_duplicate_key": {
+						"total": 13,
+						"detected": 0,
+						"undetected": [
+							{
+								"oldTags": {
+									"amenity": "charging_station",
+									"network": "Mobi.E"
+								},
+								"newTags": "man_made=storage_tank\nman_made=zpxnbthbit"
+							},
+							{
+								"oldTags": {
+									"historic": "monument",
+									"tourism": "attraction"
+								},
+								"newTags": "cuisine=kebab\ncuisine=bmdnvlvkymew"
+							},
+							{
+								"oldTags": {
+									"leisure": "golf_course",
+									"type": "multipolygon"
+								},
+								"newTags": "cuisine=seafood\ncuisine=iecydyhrjn"
+							},
+							{
+								"oldTags": {
+									"amenity": "post_box",
+									"operator:wikidata": "Q157645"
+								},
+								"newTags": "public_transport=stop_area\npublic_transport=cebgzitzccadvzz"
+							},
+							{
+								"oldTags": {
+									"leisure": "fishing",
+									"natural": "water"
+								},
+								"newTags": "man_made=flagpole\nman_made=kpdhwtms"
+							}
+						]
+					},
+					"old_duplicate_key": {
+						"total": 12,
+						"detected": 0,
+						"undetected": [
+							{
+								"oldTags": "aeroway=holding_position\naeroway=ujvppnqiavs",
+								"newTags": {
+									"power": "catenary_mast",
+									"source": "PCRS Raster"
+								}
+							},
+							{
+								"oldTags": "landuse=cemetery\nlanduse=vfdmiuka",
+								"newTags": {
+									"man_made": "storage_tank",
+									"material": "metal"
+								}
+							},
+							{
+								"oldTags": "natural=tree\nnatural=cnmycvgpwjspl",
+								"newTags": {
+									"craft": "metal_construction",
+									"wheelchair": "yes"
+								}
+							},
+							{
+								"oldTags": "barrier=kissing_gate\nbarrier=mtoisjinw",
+								"newTags": {
+									"amenity": "fast_food",
+									"payment:cash": "yes"
+								}
+							},
+							{
+								"oldTags": "man_made=wastewater_plant\nman_made=prbzohnyuxtdcwr",
+								"newTags": {
+									"barrier": "kissing_gate",
+									"horse": "no"
+								}
+							}
+						]
+					},
+					"new_empty_value_line": {
+						"total": 12,
+						"detected": 0,
+						"undetected": [
+							{
+								"oldTags": {
+									"place": "farm",
+									"source": "IBGE"
+								},
+								"newTags": "power="
+							},
+							{
+								"oldTags": {
+									"sport": "athletics",
+									"surface": "tartan"
+								},
+								"newTags": "barrier="
+							},
+							{
+								"oldTags": {
+									"tourism": "guest_house",
+									"wheelchair": "yes"
+								},
+								"newTags": "highway="
+							},
+							{
+								"oldTags": {
+									"natural": "cliff",
+									"source_ref": "http://www.linz.govt.nz/topography/topo-maps/"
+								},
+								"newTags": "aeroway="
+							},
+							{
+								"oldTags": {
+									"railway": "disused",
+									"tunnel": "yes"
+								},
+								"newTags": "amenity="
+							}
+						]
+					},
+					"old_json_array": {
+						"total": 13,
+						"detected": 13,
+						"undetected": []
+					},
+					"new_line_without_equals": {
+						"total": 13,
+						"detected": 13,
+						"undetected": []
+					},
+					"new_empty_string": {
+						"total": 12,
+						"detected": 0,
+						"undetected": [
+							{
+								"oldTags": {
+									"building": "bunker",
+									"location": "overground"
+								},
+								"newTags": ""
+							},
+							{
+								"oldTags": {
+									"route": "power",
+									"wires": "double"
+								},
+								"newTags": ""
+							},
+							{
+								"oldTags": {
+									"healthcare": "clinic",
+									"level": "1"
+								},
+								"newTags": ""
+							},
+							{
+								"oldTags": {
+									"natural": "stone",
+									"tourism": "attraction"
+								},
+								"newTags": ""
+							},
+							{
+								"oldTags": {
+									"sport": "multi",
+									"surface": "ground"
+								},
+								"newTags": ""
+							}
+						]
+					}
+				}
+			},
+			"valid": {
+				"total": 750,
+				"errors": 0,
+				"flagged": 0,
+				"errorExamples": []
+			},
+			"crashes": []
+		},
+		"flat_to_json": {
+			"total": 1000,
+			"invalid": {
+				"total": 250,
+				"detected": 171,
+				"rate": 0.684,
+				"byKind": {
+					"json_array": {
+						"total": 39,
+						"detected": 39,
+						"undetected": []
+					},
+					"line_without_equals": {
+						"total": 39,
+						"detected": 39,
+						"undetected": []
+					},
+					"broken_json": {
+						"total": 38,
+						"detected": 38,
+						"undetected": []
+					},
+					"duplicate_key": {
+						"total": 39,
+						"detected": 0,
+						"undetected": [
+							{
+								"tags": "sport=motor\nsport=dxnyqqfaley"
+							},
+							{
+								"tags": "place=farm\nplace=iiticehstyddq"
+							},
+							{
+								"tags": "railway=facility\nrailway=prqzbqyumfzfnt"
+							},
+							{
+								"tags": "building=school\nbuilding=sefoynhud"
+							},
+							{
+								"tags": "amenity=post_box\namenity=oiwlohjborcai"
+							}
+						]
+					},
+					"control_chars": {
+						"total": 38,
+						"detected": 0,
+						"undetected": [
+							{
+								"tags": "highway=cycleway\u0000\u0007"
+							},
+							{
+								"tags": "leisure=horse_riding\u0000\u0007"
+							},
+							{
+								"tags": "shop=clothes\u0000\u0007"
+							},
+							{
+								"tags": "boundary=protected_area\u0000\u0007"
+							},
+							{
+								"tags": "sport=futsal\u0000\u0007"
+							}
+						]
+					},
+					"empty_key": {
+						"total": 38,
+						"detected": 38,
+						"undetected": []
+					},
+					"whitespace_only": {
+						"total": 1,
+						"detected": 0,
+						"undetected": [
+							{
+								"tags": " \n\t "
+							}
+						]
+					},
+					"empty_string": {
+						"total": 1,
+						"detected": 0,
+						"undetected": [
+							{
+								"tags": ""
+							}
+						]
+					},
+					"empty_value_line": {
+						"total": 16,
+						"detected": 16,
+						"undetected": []
+					},
+					"only_equals": {
+						"total": 1,
+						"detected": 1,
+						"undetected": []
+					}
+				}
+			},
+			"valid": {
+				"total": 750,
+				"errors": 0,
+				"flagged": 0,
+				"errorExamples": []
+			},
+			"crashes": []
+		},
+		"get_preset_details": {
+			"total": 1000,
+			"invalid": {
+				"total": 250,
+				"detected": 250,
+				"rate": 1,
+				"byKind": {
+					"unknown_id": {
+						"total": 46,
+						"detected": 46,
+						"undetected": []
+					},
+					"mutated_record": {
+						"total": 45,
+						"detected": 45,
+						"undetected": []
+					},
+					"id_with_spaces": {
+						"total": 45,
+						"detected": 45,
+						"undetected": []
+					},
+					"trailing_slash": {
+						"total": 21,
+						"detected": 21,
+						"undetected": []
+					},
+					"typo_id": {
+						"total": 46,
+						"detected": 46,
+						"undetected": []
+					},
+					"uppercase_id": {
+						"total": 45,
+						"detected": 45,
+						"undetected": []
+					},
+					"empty_id": {
+						"total": 1,
+						"detected": 1,
+						"undetected": []
+					},
+					"empty_record": {
+						"total": 1,
+						"detected": 1,
+						"undetected": []
+					}
+				}
+			},
+			"valid": {
+				"total": 750,
+				"errors": 714,
+				"flagged": 0,
+				"errorExamples": [
+					{
+						"presetId": "tourism/terminal",
+						"invalid": false
+					},
+					{
+						"presetId": {
+							"route": "parade"
+						},
+						"invalid": false
+					},
+					{
+						"presetId": {
+							"boundary": "cenus"
+						},
+						"invalid": false
+					},
+					{
+						"presetId": {
+							"tourism": "zwembad_behorend_bij_Hakuna_Matata_Holidays"
+						},
+						"invalid": false
+					},
+					{
+						"presetId": "office/home",
+						"invalid": false
+					}
+				]
+			},
+			"crashes": []
+		},
+		"get_tag_values": {
+			"total": 1000,
+			"invalid": {
+				"total": 250,
+				"detected": 250,
+				"rate": 1,
+				"byKind": {
+					"key_typo": {
+						"total": 42,
+						"detected": 42,
+						"undetected": []
+					},
+					"uppercase_key": {
+						"total": 41,
+						"detected": 41,
+						"undetected": []
+					},
+					"limit_negative": {
+						"total": 41,
+						"detected": 41,
+						"undetected": []
+					},
+					"unknown_key": {
+						"total": 42,
+						"detected": 42,
+						"undetected": []
+					},
+					"limit_zero": {
+						"total": 41,
+						"detected": 41,
+						"undetected": []
+					},
+					"key_with_equals": {
+						"total": 41,
+						"detected": 41,
+						"undetected": []
+					},
+					"whitespace_key": {
+						"total": 1,
+						"detected": 1,
+						"undetected": []
+					},
+					"empty_key": {
+						"total": 1,
+						"detected": 1,
+						"undetected": []
+					}
+				}
+			},
+			"valid": {
+				"total": 750,
+				"errors": 0,
+				"flagged": 632,
+				"errorExamples": []
+			},
+			"crashes": []
+		},
+		"json_to_flat": {
+			"total": 1000,
+			"invalid": {
+				"total": 250,
+				"detected": 250,
+				"rate": 1,
+				"byKind": {
+					"broken_json": {
+						"total": 21,
+						"detected": 21,
+						"undetected": []
+					},
+					"nested_object": {
+						"total": 47,
+						"detected": 47,
+						"undetected": []
+					},
+					"json_array": {
+						"total": 48,
+						"detected": 48,
+						"undetected": []
+					},
+					"json_string": {
+						"total": 47,
+						"detected": 47,
+						"undetected": []
+					},
+					"number_values": {
+						"total": 38,
+						"detected": 38,
+						"undetected": []
+					},
+					"flat_text_not_json": {
+						"total": 47,
+						"detected": 47,
+						"undetected": []
+					},
+					"json_null": {
+						"total": 1,
+						"detected": 1,
+						"undetected": []
+					},
+					"empty_string": {
+						"total": 1,
+						"detected": 1,
+						"undetected": []
+					}
+				}
+			},
+			"valid": {
+				"total": 750,
+				"errors": 0,
+				"flagged": 0,
+				"errorExamples": []
+			},
+			"crashes": []
+		},
+		"search_presets": {
+			"total": 1000,
+			"invalid": {
+				"total": 250,
+				"detected": 219,
+				"rate": 0.876,
+				"byKind": {
+					"invalid_geometry": {
+						"total": 61,
+						"detected": 61,
+						"undetected": []
+					},
+					"limit_zero": {
+						"total": 62,
+						"detected": 45,
+						"undetected": [
+							{
+								"keyword": "moor",
+								"limit": 0
+							},
+							{
+								"keyword": "parking",
+								"limit": 0
+							},
+							{
+								"keyword": "cafe",
+								"limit": 0
+							},
+							{
+								"keyword": "furniture",
+								"limit": 0
+							},
+							{
+								"keyword": "MOT",
+								"limit": 0
+							}
+						]
+					},
+					"gibberish": {
+						"total": 62,
+						"detected": 62,
+						"undetected": []
+					},
+					"limit_negative": {
+						"total": 61,
+						"detected": 48,
+						"undetected": [
+							{
+								"keyword": "tomb",
+								"limit": -3
+							},
+							{
+								"keyword": "tree",
+								"limit": -3
+							},
+							{
+								"keyword": "hackerspace",
+								"limit": -3
+							},
+							{
+								"keyword": "luggage",
+								"limit": -3
+							},
+							{
+								"keyword": "geyser",
+								"limit": -3
+							}
+						]
+					},
+					"empty": {
+						"total": 1,
+						"detected": 0,
+						"undetected": [
+							{
+								"keyword": ""
+							}
+						]
+					},
+					"regex_chars": {
+						"total": 3,
+						"detected": 3,
+						"undetected": []
+					}
+				}
+			},
+			"valid": {
+				"total": 750,
+				"errors": 0,
+				"flagged": 630,
+				"errorExamples": []
+			},
+			"crashes": []
+		},
+		"search_tags": {
+			"total": 1000,
+			"invalid": {
+				"total": 250,
+				"detected": 227,
+				"rate": 0.908,
+				"byKind": {
+					"limit_zero": {
+						"total": 48,
+						"detected": 37,
+						"undetected": [
+							{
+								"keyword": "hunting_stand",
+								"limit": 0
+							},
+							{
+								"keyword": "stop_area_group",
+								"limit": 0
+							},
+							{
+								"keyword": "canoe",
+								"limit": 0
+							},
+							{
+								"keyword": "mine",
+								"limit": 0
+							},
+							{
+								"keyword": "alarm",
+								"limit": 0
+							}
+						]
+					},
+					"very_long": {
+						"total": 49,
+						"detected": 49,
+						"undetected": []
+					},
+					"gibberish": {
+						"total": 49,
+						"detected": 49,
+						"undetected": []
+					},
+					"non_latin_noise": {
+						"total": 48,
+						"detected": 48,
+						"undetected": []
+					},
+					"regex_chars": {
+						"total": 6,
+						"detected": 6,
+						"undetected": []
+					},
+					"limit_negative": {
+						"total": 48,
+						"detected": 38,
+						"undetected": [
+							{
+								"keyword": "pole",
+								"limit": -1
+							},
+							{
+								"keyword": "rescue_station",
+								"limit": -1
+							},
+							{
+								"keyword": "grassland",
+								"limit": -1
+							},
+							{
+								"keyword": "0",
+								"limit": -1
+							},
+							{
+								"keyword": "hedge",
+								"limit": -1
+							}
+						]
+					},
+					"empty": {
+						"total": 1,
+						"detected": 0,
+						"undetected": [
+							{
+								"keyword": ""
+							}
+						]
+					},
+					"whitespace": {
+						"total": 1,
+						"detected": 0,
+						"undetected": [
+							{
+								"keyword": "   "
+							}
+						]
+					}
+				}
+			},
+			"valid": {
+				"total": 750,
+				"errors": 0,
+				"flagged": 563,
+				"errorExamples": []
+			},
+			"crashes": []
+		},
+		"suggest_improvements": {
+			"total": 1000,
+			"invalid": {
+				"total": 250,
+				"detected": 112,
+				"rate": 0.448,
+				"byKind": {
+					"space_in_key": {
+						"total": 33,
+						"detected": 13,
+						"undetected": [
+							{
+								"tags": {
+									"leisure": "marina",
+									"seamark:type": "harbour",
+									"type x": "multipolygon"
+								}
+							},
+							{
+								"tags": {
+									"healthcare": "doctor",
+									"wheelchair": "no",
+									"operator:type x": "public"
+								}
+							},
+							{
+								"tags": {
+									"barrier": "turnstile",
+									"foot": "yes",
+									"bicycle x": "no"
+								}
+							},
+							{
+								"tags": {
+									"building": "religious",
+									"religion x": "christian"
+								}
+							},
+							{
+								"tags": {
+									"type": "boundary",
+									"source": "basemap.at",
+									"place x": "locality"
+								}
+							}
+						]
+					},
+					"foreign_value": {
+						"total": 54,
+						"detected": 17,
+						"undetected": [
+							{
+								"tags": {
+									"landuse": "waterfall",
+									"layer": "1",
+									"source": "Bing 2014"
+								}
+							},
+							{
+								"tags": {
+									"place": "city",
+									"type": "boundary",
+									"population:date": "hypnotherapist"
+								}
+							},
+							{
+								"tags": "building=window_construction;plumber\nsource=Bing"
+							},
+							{
+								"tags": {
+									"emergency": "defibrillator",
+									"indoor": "no",
+									"level": "musical_instrument:repair",
+									"wheelchair": "limited"
+								}
+							},
+							{
+								"tags": {
+									"emergency": "phone",
+									"indoor": "no",
+									"operator": "demand-responsive"
+								}
+							}
+						]
+					},
+					"value_typo": {
+						"total": 29,
+						"detected": 3,
+						"undetected": [
+							{
+								"tags": "building=religoius\nreligion=christian"
+							},
+							{
+								"tags": {
+									"barrier": "fnece",
+									"landuse": "residential"
+								}
+							},
+							{
+								"tags": "landuse=famryard\nleisure=horse_riding"
+							},
+							{
+								"tags": {
+									"highway": "primary_link",
+									"noname": "yes",
+									"placement": "trnasition"
+								}
+							},
+							{
+								"tags": "highway=milestone\ninformation=rout_emarker"
+							}
+						]
+					},
+					"key_typo": {
+						"total": 28,
+						"detected": 15,
+						"undetected": [
+							{
+								"tags": "amenity=restaurant\ncuiisne=mexican"
+							},
+							{
+								"tags": {
+									"leisure": "stadium",
+									"sprot": "multi"
+								}
+							},
+							{
+								"tags": {
+									"place": "village",
+									"source": "PRNG",
+									"population:date": "2010-10-14",
+									"teyrt:updated_by": "teryt2osm combine.py v. 43"
+								}
+							},
+							{
+								"tags": {
+									"tourism": "viewpoint",
+									"wehelchair": "yes"
+								}
+							},
+							{
+								"tags": {
+									"landuse": "brownfield",
+									"source": "Bing 2014",
+									"nautral": "scrub"
+								}
+							}
+						]
+					},
+					"empty_value": {
+						"total": 30,
+						"detected": 17,
+						"undetected": [
+							{
+								"tags": {
+									"barrier": "bollard",
+									"material": "concrete",
+									"colour": ""
+								}
+							},
+							{
+								"tags": "amenity=sanitary_dump_station\nfee="
+							},
+							{
+								"tags": {
+									"building": "house",
+									"roof:levels": "",
+									"source": "microsoft/BuildingFootprints"
+								}
+							},
+							{
+								"tags": {
+									"leisure": "playground",
+									"lit": "yes",
+									"surface": ""
+								}
+							},
+							{
+								"tags": {
+									"building": "cabin",
+									"roof:shape": "",
+									"roof:levels": "0"
+								}
+							}
+						]
+					},
+					"uppercase_key": {
+						"total": 30,
+						"detected": 16,
+						"undetected": [
+							{
+								"tags": {
+									"power": "circuit",
+									"type": "power",
+									"VOLTAGE": "110000"
+								}
+							},
+							{
+								"tags": "aeroway=terminal\nWHEELCHAIR=yes"
+							},
+							{
+								"tags": "shop=beverages\nWHEELCHAIR=yes"
+							},
+							{
+								"tags": "building=yes\nAMENITY=hunting_stand"
+							},
+							{
+								"tags": "man_made=clearcut\nNATURAL=grassland"
+							}
+						]
+					},
+					"empty_key": {
+						"total": 14,
+						"detected": 14,
+						"undetected": []
+					},
+					"key_value_swapped": {
+						"total": 5,
+						"detected": 1,
+						"undetected": [
+							{
+								"tags": {
+									"1945": "start_date",
+									"historic": "bomb_crater",
+									"natural": "water"
+								}
+							},
+							{
+								"tags": "highway=street_lamp\nCity of Ottawa=source"
+							},
+							{
+								"tags": "2018=source:date\nrailway=crossing"
+							},
+							{
+								"tags": {
+									"natural": "grassland",
+									"Union européenne - SOeS, CORINE Land Cover, 2006.": "source"
+								}
+							}
+						]
+					},
+					"broken_json": {
+						"total": 12,
+						"detected": 12,
+						"undetected": []
+					},
+					"control_chars": {
+						"total": 13,
+						"detected": 2,
+						"undetected": [
+							{
+								"tags": "office=lawyer\u0000\u0007"
+							},
+							{
+								"tags": "shop=kiosk\u0000\u0007"
+							},
+							{
+								"tags": "highway=stop\u0000\u0007"
+							},
+							{
+								"tags": "highway=traffic_signals\u0000\u0007"
+							},
+							{
+								"tags": "leisure=golf_course\u0000\u0007"
+							}
+						]
+					},
+					"only_equals": {
+						"total": 1,
+						"detected": 1,
+						"undetected": []
+					},
+					"whitespace_only": {
+						"total": 1,
+						"detected": 1,
+						"undetected": []
+					}
+				}
+			},
+			"valid": {
+				"total": 750,
+				"errors": 0,
+				"flagged": 136,
+				"errorExamples": []
+			},
+			"crashes": []
+		},
+		"validate_tag": {
+			"total": 1000,
+			"invalid": {
+				"total": 250,
+				"detected": 198,
+				"rate": 0.792,
+				"byKind": {
+					"key_value_swapped": {
+						"total": 2,
+						"detected": 2,
+						"undetected": []
+					},
+					"space_in_key": {
+						"total": 27,
+						"detected": 27,
+						"undetected": []
+					},
+					"key_typo": {
+						"total": 28,
+						"detected": 28,
+						"undetected": []
+					},
+					"uppercase_key": {
+						"total": 30,
+						"detected": 30,
+						"undetected": []
+					},
+					"very_long_key": {
+						"total": 15,
+						"detected": 15,
+						"undetected": []
+					},
+					"empty_value": {
+						"total": 19,
+						"detected": 19,
+						"undetected": []
+					},
+					"foreign_value": {
+						"total": 47,
+						"detected": 16,
+						"undetected": [
+							{
+								"key": "man_made",
+								"value": "baywaterfall"
+							},
+							{
+								"key": "waterway",
+								"value": "bungee"
+							},
+							{
+								"key": "emergency",
+								"value": "judo;aikido"
+							},
+							{
+								"key": "aeroway",
+								"value": "music"
+							},
+							{
+								"key": "highway",
+								"value": "fire_equipment"
+							}
+						]
+					},
+					"whitespace_key": {
+						"total": 15,
+						"detected": 15,
+						"undetected": []
+					},
+					"empty_key": {
+						"total": 16,
+						"detected": 16,
+						"undetected": []
+					},
+					"key_with_equals": {
+						"total": 16,
+						"detected": 16,
+						"undetected": []
+					},
+					"value_typo": {
+						"total": 25,
+						"detected": 9,
+						"undetected": [
+							{
+								"key": "boundary",
+								"value": "postal_cdoe"
+							},
+							{
+								"key": "landuse",
+								"value": "constrcution"
+							},
+							{
+								"key": "amenity",
+								"value": "taix"
+							},
+							{
+								"key": "leisure",
+								"value": "picnic_tbale"
+							},
+							{
+								"key": "leisure",
+								"value": "horse_riidng"
+							}
+						]
+					},
+					"very_long_value": {
+						"total": 10,
+						"detected": 5,
+						"undetected": [
+							{
+								"key": "natural",
+								"value": "vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv"
+							},
+							{
+								"key": "waterway",
+								"value": "vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv"
+							},
+							{
+								"key": "amenity",
+								"value": "vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv"
+							},
+							{
+								"key": "highway",
+								"value": "vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv"
+							},
+							{
+								"key": "power",
+								"value": "vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv"
+							}
+						]
+					}
+				}
+			},
+			"valid": {
+				"total": 750,
+				"errors": 0,
+				"flagged": 274,
+				"errorExamples": []
+			},
+			"crashes": []
+		},
+		"validate_tag_collection": {
+			"total": 1000,
+			"invalid": {
+				"total": 1000,
+				"detected": 821,
+				"rate": 0.821,
+				"byKind": {
+					"value_typo": {
+						"total": 110,
+						"detected": 71,
+						"undetected": [
+							{
+								"tags": "shop=car_aprts\nwheelchair=yes"
+							},
+							{
+								"tags": {
+									"place": "quartre",
+									"population:date": "2020-05-01",
+									"type": "boundary"
+								}
+							},
+							{
+								"tags": {
+									"tourism": "informatino",
+									"wheelchair": "limited"
+								}
+							},
+							{
+								"tags": "tourism=viewopint\nwheelchair=no"
+							},
+							{
+								"tags": "amenity=compresseda_ir\ncovered=no"
+							}
+						]
+					},
+					"control_chars": {
+						"total": 104,
+						"detected": 32,
+						"undetected": [
+							{
+								"tags": "leisure=slipway\u0000\u0007"
+							},
+							{
+								"tags": "natural=spring\u0000\u0007"
+							},
+							{
+								"tags": "place=allotments\u0000\u0007"
+							},
+							{
+								"tags": "boundary=health\u0000\u0007"
+							},
+							{
+								"tags": "highway=path\u0000\u0007"
+							}
+						]
+					},
+					"key_typo": {
+						"total": 140,
+						"detected": 140,
+						"undetected": []
+					},
+					"space_in_key": {
+						"total": 134,
+						"detected": 134,
+						"undetected": []
+					},
+					"uppercase_key": {
+						"total": 129,
+						"detected": 129,
+						"undetected": []
+					},
+					"foreign_value": {
+						"total": 215,
+						"detected": 147,
+						"undetected": [
+							{
+								"tags": {
+									"emergency": "smoke_lounge",
+									"indoor": "no"
+								}
+							},
+							{
+								"tags": {
+									"boundary": "place",
+									"place": "spring_park"
+								}
+							},
+							{
+								"tags": "amenity=bicycle_parking\nsupervised=wall"
+							},
+							{
+								"tags": {
+									"leisure": "green_inftrastructure_construction_company",
+									"tents": "yes",
+									"seasonal": "no"
+								}
+							},
+							{
+								"tags": "amenity=powerstation\nfee=no"
+							}
+						]
+					},
+					"key_value_swapped": {
+						"total": 20,
+						"detected": 20,
+						"undetected": []
+					},
+					"empty_value": {
+						"total": 124,
+						"detected": 124,
+						"undetected": []
+					},
+					"empty_value_line": {
+						"total": 24,
+						"detected": 24,
+						"undetected": []
+					}
+				}
+			},
+			"valid": {
+				"total": 0,
+				"errors": 0,
+				"flagged": 0,
+				"errorExamples": []
+			},
+			"crashes": []
+		}
+	}
+}
