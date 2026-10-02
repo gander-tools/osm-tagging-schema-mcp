@@ -25,6 +25,7 @@
 		"test": "node --import tsx --test tests/**/*.test.ts",
 		"test:unit": "node --import tsx --test tests/tools/**/*.test.ts tests/utils/**/*.test.ts tests/prompts/**/*.test.ts tests/index.test.ts",
 		"test:integration": "node --import tsx --test tests/integration/**/*.test.ts",
+		"test:taginfo": "LOG_LEVEL=error node --import tsx --test tests/taginfo/run.taginfo.ts",
 		"test:fuzz": "node --import tsx --test tests/fuzz/**/*.fuzz.test.ts",
 		"test:watch": "node --import tsx --test --watch tests/**/*.test.ts",
 		"test:coverage": "c8 --reporter=text --reporter=lcov --reporter=html npm run test",
