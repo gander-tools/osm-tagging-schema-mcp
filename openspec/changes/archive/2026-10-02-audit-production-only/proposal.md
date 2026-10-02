@@ -1,13 +1,13 @@
 ## Why
 
-The `NPM Audit` job runs two audits with muddled scopes: a full audit (`moderate`, non-blocking) and a production audit via the deprecated `--production` flag (`high`, blocking). Production dependencies are what ships to users, so they get the strictest threshold; dev dependencies only affect CI and get a looser one, but must still stop the build.
+The `NPM Audit` job runs two audits with muddled scopes: a full audit (`moderate`, non-blocking) and a production audit via the deprecated `--production` flag (`high`, blocking). Production dependencies ship to users and should gate PRs; dev dependencies only affect CI and should not block unrelated PRs, but must not go unnoticed as new advisories appear.
 
 ## What Changes
 
-- Production audit uses `npm audit --omit=dev --audit-level=moderate` (replaces deprecated `--production`, threshold tightened from `high` to `moderate`); it stays blocking.
-- The audit that also covers dev dependencies uses `--audit-level=moderate` (unchanged threshold) and becomes blocking (`continue-on-error` removed).
-- Steps are renamed so scope is clear: "production" vs "all dependencies (incl. dev)".
-- Applied identically in `security-pr.yml` and `security-main.yml`.
+- Production audit uses `npm audit --omit=dev --audit-level=high` (replaces deprecated `--production`); blocking.
+- The audit that also covers dev dependencies uses `--audit-level=moderate`; informational (`continue-on-error`) on PR, push and manual runs, and failing on the existing daily schedule in `security-main.yml` so new advisories surface as a failed run.
+- New `npm audit signatures` step verifies registry signatures and provenance; blocking.
+- Steps are renamed so scope is clear. Applied in `security-pr.yml` and `security-main.yml`.
 
 ## Capabilities
 
@@ -20,5 +20,5 @@ None.
 ## Impact
 
 - `.github/workflows/security-pr.yml`, `.github/workflows/security-main.yml` (the `npm-audit` job).
-- A moderate+ advisory in a production dependency now fails PR and `master` security checks (previously only high+); a moderate+ advisory in any dependency, dev included, now fails them too (previously informational for dev).
-- `npm audit` currently reports 0 vulnerabilities for both scopes, so no immediate CI breakage.
+- Dev-only advisories no longer block PRs; a failing daily scheduled run reports them instead.
+- `npm audit` and `npm audit signatures` currently report no findings, so no immediate CI breakage.
