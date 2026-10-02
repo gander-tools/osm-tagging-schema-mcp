@@ -18,9 +18,9 @@
 # =============================================================================
 # Use build platform to run build tools (npm, tsc) on host architecture
 # Pinned to manifest list digest for security and multi-platform compatibility
-# This digest references a manifest list supporting: linux/amd64, linux/arm64, linux/arm/v7, linux/arm/v6, linux/s390x
-# To update: curl -s https://hub.docker.com/v2/repositories/library/node/tags/24-alpine | jq -r '.digest'
-FROM --platform=$BUILDPLATFORM node:24-alpine@sha256:ebfe2f90462722a7a4de65e91990e97fe0d401c70e0e762c5b53302f905ec1c1 AS builder
+# This digest references a manifest list (includes linux/amd64; only linux/amd64 is built and published)
+# To update: curl -s https://hub.docker.com/v2/repositories/library/node/tags/26-alpine | jq -r '.digest'
+FROM --platform=$BUILDPLATFORM node:26-alpine@sha256:0b36e8c136b94cd4fcf02188228e76c31ad5872eef3fec8cbd2eee500cfd9e80 AS builder
 
 # Build arguments for multi-platform support
 ARG BUILDPLATFORM
@@ -49,10 +49,10 @@ RUN test -f dist/index.js || (echo "Build failed: dist/index.js not found" && ex
 # Stage 2: Runtime Base (shared configuration for both modes)
 # =============================================================================
 # Pinned to manifest list digest for security and multi-platform compatibility
-# This digest references a manifest list supporting: linux/amd64, linux/arm64, linux/arm/v7, linux/arm/v6, linux/s390x
+# This digest references a manifest list (includes linux/amd64; only linux/amd64 is built and published)
 # Docker BuildKit automatically uses the target platform (no need for --platform=$TARGETPLATFORM)
-# To update: curl -s https://hub.docker.com/v2/repositories/library/node/tags/24-alpine | jq -r '.digest'
-FROM node:24-alpine@sha256:ebfe2f90462722a7a4de65e91990e97fe0d401c70e0e762c5b53302f905ec1c1 AS runtime-base
+# To update: curl -s https://hub.docker.com/v2/repositories/library/node/tags/26-alpine | jq -r '.digest'
+FROM node:26-alpine@sha256:0b36e8c136b94cd4fcf02188228e76c31ad5872eef3fec8cbd2eee500cfd9e80 AS runtime-base
 
 # Set working directory
 WORKDIR /app
