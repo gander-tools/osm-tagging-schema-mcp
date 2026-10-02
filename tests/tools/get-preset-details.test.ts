@@ -129,12 +129,9 @@ describe("get_preset_details", () => {
 			assert.ok(Array.isArray(result.fields));
 			assert.ok(result.fields.length > 0);
 
-			// Fields should be expanded (no {field} or {@templates/X} references)
+			// Fields should not contain {field} references
 			for (const field of result.fields) {
-				assert.ok(
-					!field.startsWith("{"),
-					`Field "${field}" should not be a reference (should be expanded)`,
-				);
+				assert.ok(!field.startsWith("{"), `Field "${field}" should not be a reference`);
 			}
 		});
 
@@ -227,66 +224,28 @@ describe("get_preset_details", () => {
 		});
 	});
 
-	describe("Field Reference Expansion", () => {
-		it("should expand {preset_id} field references", async () => {
-			// v6 stored references like "{building}" here; v7 resolves them at build time,
-			// so expected fields come from presets.json (no hardcoded list)
-			const result = await getPresetDetails("building_point");
+	describe("Field References (v7 resolves them at build time)", () => {
+		it("should return fields and moreFields exactly as in presets.json, without {...} references, for ALL presets", async () => {
+			for (const presetId of Object.keys(presets)) {
+				const result = await getPresetDetails(presetId);
+				const expected = presets[presetId];
 
-			assert.ok(result.fields);
-			assert.ok(result.fields.length > 0);
-			assert.ok(!result.fields.some((f) => f.startsWith("{")));
+				assert.deepStrictEqual(
+					result.fields ?? [],
+					expected.fields ?? [],
+					`fields should match JSON for ${presetId}`,
+				);
+				assert.deepStrictEqual(
+					result.moreFields ?? [],
+					expected.moreFields ?? [],
+					`moreFields should match JSON for ${presetId}`,
+				);
 
-			// Every field listed in the schema for this preset must be returned
-			for (const field of presets.building_point.fields || []) {
-				if (field.startsWith("{")) continue; // v6 data: reference, expanded elsewhere
-				assert.ok(result.fields.includes(field), `Field "${field}" should be returned`);
-			}
-		});
-
-		it("should expand {@templates/X} template references", async () => {
-			// Find a preset with template references
-			// shop preset has {@templates/internet_access} and {@templates/poi} in moreFields
-			const result = await getPresetDetails("shop");
-
-			assert.ok(result.moreFields);
-
-			// Templates should be expanded in moreFields
-			assert.ok(!result.moreFields.some((f) => f.startsWith("{@templates/")));
-
-			// Check if template fields are included
-			// @templates/internet_access → ["internet_access", "internet_access/fee", "internet_access/ssid"]
-			// @templates/poi → ["name", "address"]
-			assert.ok(result.moreFields.includes("internet_access"));
-
-			// name is in fields, not moreFields
-			assert.ok(result.fields?.includes("name"));
-		});
-
-		it("should handle presets without field references", async () => {
-			const result = await getPresetDetails("amenity/restaurant");
-
-			assert.ok(result.fields);
-			// Restaurant preset doesn't have field references, so fields are already expanded
-			assert.ok(result.fields.length > 0);
-		});
-
-		it("should handle recursive field references safely", async () => {
-			// Test that recursive references don't cause infinite loop
-			const result = await getPresetDetails("building_point");
-
-			assert.ok(result.fields);
-			assert.ok(result.fields.length > 0);
-			// Should complete without hanging
-		});
-
-		it("should expand moreFields in addition to fields", async () => {
-			const result = await getPresetDetails("amenity/restaurant");
-
-			if (result.moreFields) {
-				// moreFields should also be expanded
-				for (const field of result.moreFields) {
-					assert.ok(!field.startsWith("{"), `moreField "${field}" should not be a reference`);
+				for (const field of [...(result.fields ?? []), ...(result.moreFields ?? [])]) {
+					assert.ok(
+						!field.startsWith("{"),
+						`Field "${field}" in ${presetId} should not be a reference`,
+					);
 				}
 			}
 		});
@@ -413,220 +372,6 @@ describe("get_preset_details", () => {
 					assert.strictEqual(result.tags[tagDetail.key], tagDetail.value);
 				}
 			}
-		});
-	});
-
-	describe("Template System (Phase 8.10)", () => {
-		describe("Template Expansion", () => {
-			it("should expand {@templates/contact} to email, phone, website, fax", async () => {
-				// Find a preset using @templates/contact (e.g., polling_station)
-				const result = await getPresetDetails("polling_station");
-
-				// Contact template should be expanded in moreFields
-				assert.ok(result.moreFields);
-				const moreFields = result.moreFields;
-
-				// Template reference should be removed
-				assert.ok(
-					!moreFields.includes("{@templates/contact}"),
-					"Template reference should be expanded",
-				);
-
-				// All contact fields should be present
-				const contactFields = ["email", "phone", "website", "fax"];
-				for (const field of contactFields) {
-					assert.ok(
-						moreFields.includes(field) || result.fields?.includes(field),
-						`Contact field "${field}" should be present after template expansion`,
-					);
-				}
-			});
-
-			it("should expand {@templates/internet_access} to internet_access fields", async () => {
-				const result = await getPresetDetails("shop");
-
-				assert.ok(result.moreFields);
-				const moreFields = result.moreFields;
-
-				// Template reference should be removed
-				assert.ok(!moreFields.includes("{@templates/internet_access}"));
-
-				// Internet access template fields
-				const internetAccessFields = [
-					"internet_access",
-					"internet_access/fee",
-					"internet_access/ssid",
-				];
-				for (const field of internetAccessFields) {
-					assert.ok(
-						moreFields.includes(field),
-						`Internet access field "${field}" should be present`,
-					);
-				}
-			});
-
-			it("should expand {@templates/poi} to name and address", async () => {
-				const result = await getPresetDetails("shop");
-
-				// POI template: name, address
-				// name should be in fields or moreFields
-				assert.ok(
-					result.fields?.includes("name") || result.moreFields?.includes("name"),
-					"POI field 'name' should be present",
-				);
-				// address should be in fields or moreFields
-				assert.ok(
-					result.fields?.includes("address") || result.moreFields?.includes("address"),
-					"POI field 'address' should be present",
-				);
-			});
-
-			it("should expand crossing templates correctly", async () => {
-				// Find a preset with crossing templates
-				// highway/crossing uses crossing templates
-				const result = await getPresetDetails("highway/crossing");
-
-				const allFields = [...(result.fields || []), ...(result.moreFields || [])];
-
-				// No template references should remain
-				for (const field of allFields) {
-					assert.ok(
-						!field.startsWith("{@templates/"),
-						`Field "${field}" should not be a template reference`,
-					);
-				}
-
-				// At least some crossing fields should be present
-				const hasCrossingFields = allFields.some((f) => f.startsWith("crossing"));
-				assert.ok(hasCrossingFields, "Should have crossing fields after expansion");
-			});
-
-			it("should handle empty templates gracefully", async () => {
-				// crossing/bicycle_more is an empty template
-				// Find a preset that might use it and verify it doesn't break
-				const result = await getPresetDetails("highway/crossing");
-
-				// Should not throw error
-				assert.ok(result);
-				assert.ok(result.fields || result.moreFields);
-			});
-		});
-
-		describe("Template Definitions Validation", () => {
-			it("should have all expected templates defined", async () => {
-				// Get a preset with various templates to verify they're all recognized
-				const presetIds = [
-					"polling_station", // uses contact, internet_access
-					"shop", // uses internet_access, poi
-					"highway/crossing", // uses crossing templates
-				];
-
-				for (const presetId of presetIds) {
-					const result = await getPresetDetails(presetId);
-
-					// Should not have any unexpanded template references
-					const allFields = [...(result.fields || []), ...(result.moreFields || [])];
-					for (const field of allFields) {
-						assert.ok(
-							!field.startsWith("{@templates/"),
-							`Field "${field}" in preset "${presetId}" should not remain as template reference`,
-						);
-					}
-				}
-			});
-
-			it("should preserve non-template fields during expansion", async () => {
-				const result = await getPresetDetails("amenity/restaurant");
-
-				// Regular fields should still be present
-				assert.ok(result.fields);
-				assert.ok(result.fields.includes("name"));
-				assert.ok(result.fields.includes("cuisine"));
-			});
-
-			it("should expand templates in both fields and moreFields", async () => {
-				const result = await getPresetDetails("office");
-
-				// Office preset has templates in moreFields
-				if (result.moreFields) {
-					// No template references should remain
-					for (const field of result.moreFields) {
-						assert.ok(!field.startsWith("{@templates/"));
-					}
-				}
-
-				// Fields should also be expanded
-				if (result.fields) {
-					for (const field of result.fields) {
-						assert.ok(!field.startsWith("{@templates/"));
-					}
-				}
-			});
-		});
-
-		describe("Real Schema Data Integration", () => {
-			it("should correctly expand templates for all presets using {@templates/contact}", async () => {
-				// Find all presets that use contact template
-				const presetsWithContactTemplate = Object.entries(presets).filter(([_, preset]) => {
-					const allFields = [...(preset.fields || []), ...(preset.moreFields || [])];
-					return allFields.includes("{@templates/contact}");
-				});
-
-				// v7 resolves templates at build time, so this may be empty; the loop then has nothing to check
-
-				// CRITICAL: Test ALL presets with contact template, not just a sample
-				for (const [presetId, _] of presetsWithContactTemplate) {
-					const result = await getPresetDetails(presetId);
-					const allFields = [...(result.fields || []), ...(result.moreFields || [])];
-
-					// Template should be expanded
-					assert.ok(
-						!allFields.includes("{@templates/contact}"),
-						`Preset ${presetId} should have expanded contact template`,
-					);
-
-					// At least some contact fields should be present
-					const hasContactFields = allFields.some((f) =>
-						["email", "phone", "website", "fax"].includes(f),
-					);
-					assert.ok(
-						hasContactFields,
-						`Preset ${presetId} should have contact fields after expansion`,
-					);
-				}
-			});
-
-			it("should correctly expand templates for all presets using {@templates/internet_access}", async () => {
-				const presetsWithInternetTemplate = Object.entries(presets).filter(([_, preset]) => {
-					const allFields = [...(preset.fields || []), ...(preset.moreFields || [])];
-					return allFields.includes("{@templates/internet_access}");
-				});
-
-				// v7 resolves templates at build time, so this may be empty; the loop then has nothing to check
-
-				// CRITICAL: Test ALL presets with internet_access template, not just a sample
-				for (const [presetId, _] of presetsWithInternetTemplate) {
-					const result = await getPresetDetails(presetId);
-					const allFields = [...(result.fields || []), ...(result.moreFields || [])];
-
-					// Template should be expanded
-					assert.ok(!allFields.includes("{@templates/internet_access}"));
-
-					// Internet access fields should be present
-					assert.ok(allFields.includes("internet_access"));
-				}
-			});
-
-			it("should handle unknown templates by keeping them as-is", async () => {
-				// This test verifies fallback behavior for unknown templates
-				// If a template is not in TEMPLATES constant, it should be kept as-is
-				// (This is defensive coding - shouldn't happen with real schema data)
-
-				// We can't easily test this with real data, but we can verify
-				// that the tool doesn't crash on unexpected input
-				const result = await getPresetDetails("amenity/restaurant");
-				assert.ok(result);
-			});
 		});
 	});
 });

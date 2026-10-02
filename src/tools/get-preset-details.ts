@@ -5,30 +5,6 @@ import { schemaLoader } from "../utils/schema-loader.js";
 import type { PresetDetails, TagDetailed } from "./types.js";
 
 /**
- * Template definitions for field expansion
- * Based on iD editor conventions
- * Only includes field IDs that exist in @openstreetmap/id-tagging-schema fields.json
- *
- * Templates allow presets to reference commonly used field groups using
- * {@templates/name} syntax. When expanded, they become regular field IDs.
- *
- * Note: Some templates may be empty if the referenced fields don't exist
- * in the current schema version.
- */
-const TEMPLATES: Record<string, string[]> = {
-	contact: ["email", "phone", "website", "fax"],
-	internet_access: ["internet_access", "internet_access/fee", "internet_access/ssid"],
-	poi: ["name", "address"],
-	"crossing/markings": ["crossing/markings"],
-	"crossing/defaults": ["crossing", "crossing/markings"],
-	"crossing/geometry_way_more": ["crossing/island"],
-	"crossing/bicycle_more": [], // Empty - referenced fields don't exist in schema
-	"crossing/markings_yes": ["crossing/markings_yes"],
-	"crossing/traffic_signal": ["crossing/light", "button_operated"],
-	"crossing/traffic_signal_more": ["traffic_signals/sound", "traffic_signals/vibration"],
-};
-
-/**
  * Find preset by tag key-value pair
  * @param schema - The loaded schema data
  * @param tagNotation - Tag in "key=value" format
@@ -139,69 +115,6 @@ function findPresetByTags(schema: SchemaData, tags: Record<string, string>): str
 }
 
 /**
- * Expand field references in a field list
- * Supports:
- * - {preset_id}: Inherit fields from another preset
- * - {@templates/name}: Expand template to field list
- *
- * @param schema - The loaded schema data
- * @param fields - Array of field names with possible references
- * @param visited - Set of visited presets to prevent infinite recursion
- * @returns Expanded array of field names
- */
-function expandFieldReferences(
-	schema: SchemaData,
-	fields: string[] | undefined,
-	visited: Set<string> = new Set(),
-): string[] {
-	if (!fields || fields.length === 0) {
-		return [];
-	}
-
-	const expanded: string[] = [];
-
-	for (const field of fields) {
-		// Template reference: {@templates/contact}
-		if (field.startsWith("{@templates/")) {
-			const templateName = field.slice("{@templates/".length, -1); // Remove prefix and }
-			const templateFields = TEMPLATES[templateName];
-			if (templateFields) {
-				expanded.push(...templateFields);
-			} else {
-				// Unknown template, keep as-is
-				expanded.push(field);
-			}
-		}
-		// Preset field reference: {building}
-		else if (field.startsWith("{") && field.endsWith("}")) {
-			const presetId = field.slice(1, -1); // Remove { and }
-
-			// Prevent infinite recursion
-			if (visited.has(presetId)) {
-				continue;
-			}
-			visited.add(presetId);
-
-			// Look up the preset and expand its fields recursively
-			const referencedPreset = schema.presets[presetId];
-			if (referencedPreset) {
-				const inheritedFields = expandFieldReferences(schema, referencedPreset.fields, visited);
-				expanded.push(...inheritedFields);
-			} else {
-				// Unknown preset reference, keep as-is
-				expanded.push(field);
-			}
-		}
-		// Regular field name
-		else {
-			expanded.push(field);
-		}
-	}
-
-	return expanded;
-}
-
-/**
  * Build tagsDetailed array with localized names
  * @param tags - The tags object
  * @returns Array of detailed tag information
@@ -279,10 +192,6 @@ export async function getPresetDetails(
 	// Build tagsDetailed with translations
 	const tagsDetailed = buildTagsDetailed(preset.tags);
 
-	// Expand field references
-	const expandedFields = expandFieldReferences(schema, preset.fields);
-	const expandedMoreFields = expandFieldReferences(schema, preset.moreFields);
-
 	// Build the result with all available properties
 	const result: PresetDetails = {
 		id: presetId,
@@ -292,13 +201,13 @@ export async function getPresetDetails(
 		geometry: preset.geometry,
 	};
 
-	// Add optional properties if they exist (after expansion)
-	if (expandedFields.length > 0) {
-		result.fields = expandedFields;
+	// Add optional properties if they exist
+	if (preset.fields?.length) {
+		result.fields = preset.fields;
 	}
 
-	if (expandedMoreFields.length > 0) {
-		result.moreFields = expandedMoreFields;
+	if (preset.moreFields?.length) {
+		result.moreFields = preset.moreFields;
 	}
 
 	return result;

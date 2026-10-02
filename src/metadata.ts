@@ -165,7 +165,7 @@ export const toolsMetadata: Record<string, ToolMetadata> = {
 		name: "get_preset_details",
 		title: "Get Preset Details",
 		description:
-			"Get complete detailed information about a specific OpenStreetMap preset. Presets are feature templates that define standard tagging patterns (e.g., the 'Restaurant' preset defines amenity=restaurant and lists fields like cuisine, outdoor_seating, etc.). Returns comprehensive preset information including: display name, all required and suggested tags, supported geometry types, complete list of fields (with template expansion), field types and options, and parent/child preset relationships. Use this to understand exactly how to tag a specific feature type, learn what fields are available for a preset, or get example values for proper tagging.",
+			"Get complete detailed information about a specific OpenStreetMap preset. Presets are feature templates that define standard tagging patterns (e.g., the 'Restaurant' preset defines amenity=restaurant and lists fields like cuisine, outdoor_seating, etc.). Returns comprehensive preset information including: display name, all required and suggested tags, supported geometry types, complete list of fields, field types and options, and parent/child preset relationships. Use this to understand exactly how to tag a specific feature type, learn what fields are available for a preset, or get example values for proper tagging.",
 		parameters: {
 			presetId: {
 				description:
