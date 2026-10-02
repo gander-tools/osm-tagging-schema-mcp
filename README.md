@@ -18,7 +18,7 @@
 <!-- Code Quality & Security -->
 [![Code Quality](https://img.shields.io/badge/code%20quality-BiomeJS-60a5fa?logo=biome)](https://biomejs.dev/)
 [![NPM Provenance](https://img.shields.io/badge/provenance-npm-CB3837?logo=npm)](https://www.npmjs.com/package/@gander-tools/osm-tagging-schema-mcp)
-[![SLSA 3](https://img.shields.io/badge/SLSA-Level%203-green?logo=github)](docs/deployment/security.md#slsa-build-provenance)
+[![SLSA 3](https://img.shields.io/badge/SLSA-Level%203-green?logo=github)](https://slsa.dev/spec/v1.0/levels)
 
 <!-- Project Information -->
 [![License: GPL-3.0](https://img.shields.io/github/license/gander-tools/osm-tagging-schema-mcp?logo=gnu)](https://www.gnu.org/licenses/gpl-3.0)
@@ -45,82 +45,24 @@ The server runs over stdio (default) or HTTP and exposes the tagging schema as M
 
 Validation checks a tag against the schema: known key, value allowed by the matching field, deprecated key/value with a suggested replacement.
 
-## Test results
+## What works and what doesn't
 
-Tested through the MCP stdio protocol against the `edge` Docker image with schema v7. Test data came from local taginfo databases: 265 popular key=value pairs from 18 feature keys (15 most popular wiki-described values per key), the 200 most popular keys, and 325 tags marked `deprecated`/`obsolete` on the OSM wiki.
+The tool has limitations. Know what to expect before relying on it: it answers from the schema data only, and a part of the tags that exist in the wild or on the OSM wiki is not covered.
 
-| Tool                            | Check                                      | Result          |
-|---------------------------------|--------------------------------------------|-----------------|
-| `validate_tag`                  | popular tags accepted as valid             | 265/265 (100%)  |
-| `validate_tag`                  | no false `deprecated` on popular tags      | 263/265 (99.2%) |
-| `validate_tag`                  | wiki-deprecated/obsolete tags detected     | 66/325 (20.3%)  |
-| `validate_tag_collection`       | consistent with `validate_tag`             | 80/80 (100%)    |
-| `search_tags`                   | key found by name                          | 119/200 (59.5%) |
-| `search_tags`                   | key found despite a typo                   | 0/97 (0%)       |
-| `search_presets`                | `key/value` preset in results              | 182/265 (68.7%) |
-| `search_presets`                | `key/value` preset in top 3                | 148/265 (55.8%) |
-| `get_tag_values`                | taginfo values present in the list         | 222/229 (96.9%) |
-| `get_preset_details`            | preset for popular tag exists              | 246/265 (92.8%) |
-| `suggest_improvements`          | preset matched for popular tag             | 244/265 (92.1%) |
-| `compare_tags`                  | stats match local computation              | 150/150 (100%)  |
-| `flat_to_json` / `json_to_flat` | special characters preserved               | 173/173 (100%)  |
-| `json_to_flat`                  | JSON → flat → JSON round-trip              | 60/60 (100%)    |
-| `json_to_flat`                  | keys sorted alphabetically (as documented) | 0/60 (0%)       |
+| Tool                      | Works                                                                                   | Limitations                                                                                                          |
+|---------------------------|-----------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------|
+| `validate_tag`            | Popular tags accepted (100%), almost no false `deprecated` alarms (99.2%)               | Detects only ~20% of wiki-deprecated tags; typos and foreign values are accepted as valid (custom tags are allowed); `railway=platform` and `railway=station` are wrongly flagged as deprecated |
+| `validate_tag_collection` | Consistent with `validate_tag` (100%)                                                   | Same gaps as `validate_tag`; control characters are not reported                                                      |
+| `suggest_improvements`    | Preset matched for 92% of popular tags                                                  | Typos and foreign values usually yield suggestions, not a problem report                                              |
+| `get_tag_values`          | 97% of taginfo values present; bad keys and limits rejected                             | A few taginfo values are missing from the lists                                                                       |
+| `search_tags`             | Finds 60% of keys by name                                                               | No typo tolerance despite the fuzzy-matching description; keys with a colon (`addr:street`) are often missed; `limit` of 0 or negative not always rejected; `access` returns a `keyMatches` item without `key` |
+| `search_presets`          | Preset found for 69% of popular tags (56% in top 3)                                     | Multi-word queries (`bicycle parking`) can return nothing; weak ranking; `limit` of 0 or negative not always rejected |
+| `get_preset_details`      | Preset exists for 93% of popular tags; unknown ids always rejected                      | Some popular tags (e.g. `historic=*`, `craft=grinding_mill`, `railway=stop`) have no preset                           |
+| `compare_tags`            | Matches local computation (100%); text and JSON input give identical output             | Compares any tag sets, so it never says a tag is wrong; only malformed input is rejected                              |
+| `flat_to_json`            | Lossless, including `;`, spaces, `=`, Unicode, `:` and `/`                              | Duplicate keys and control characters are accepted silently                                                           |
+| `json_to_flat`            | Lossless round-trip (100%); bad input rejected                                          | Keys are not sorted alphabetically, input order is kept                                                               |
 
-### What works
-
-- **`compare_tags`**: results match local computation; text and JSON input give identical output.
-- **`flat_to_json` / `json_to_flat`**: lossless conversion, including `;`, spaces, `=`, Unicode, `:` and `/`.
-- **`validate_tag_collection`**: consistent with `validate_tag`.
-- **`validate_tag`** on popular tags: no errors and almost no false alarms.
-- **Selected deprecated tags** are detected with a replacement, e.g. `amenity=gym` → `leisure=fitness_centre`, `amenity=nursery` → `amenity=kindergarten`.
-- **`get_tag_values`, `get_preset_details`, `suggest_improvements`**: cover over 92% of popular tags.
-- **Bad input** gives readable errors (empty key, malformed text with line number, unknown preset) or empty lists instead of crashes.
-
-### What does not work or works poorly
-
-- **Deprecated tag detection**: only 20.3% of wiki-deprecated tags are flagged; 79.7% pass as valid. The wiki and the schema do not always agree, so part of the gap may be a source difference.
-- **Typo tolerance in `search_tags`**: none (0/97), despite the tool description mentioning fuzzy matching.
-- **Key search in `search_tags`**: 59.5% hit rate; keys with a colon (`addr:street`, `addr:housenumber`, `source:date`) are often not found.
-- **Multi-word `search_presets` queries**: `"bicycle parking"` returns an empty list although the preset exists.
-- **`search_presets` ranking**: the popular preset is in the top 3 only 55.8% of the time.
-- **Broken `search_tags` entry**: for key `access`, one `keyMatches` item has no `key` field and empty names.
-- **`json_to_flat` sorting**: documented as alphabetical, but input order is kept.
-- **Lenient validation**: a mistyped value (`highway=residental`), a value outside the field options (`wheelchair=maybe`) and an unknown key all return `valid: true`. The problem appears only in `message`; `errorCount` stays 0.
-- **Missing presets/values**: 19 of 265 popular tags (e.g. `historic=*`, `craft=grinding_mill`, `railway=stop`) have no preset; 7 taginfo values are missing from `get_tag_values`. Probably schema scope; not verified directly.
-- **False `deprecated` alarms**: `railway=platform` and `railway=station`, both still in use.
-
-### Limits of these tests
-
-- 18 keys × 15 values is not representative of the whole schema.
-- The wiki is a reference, not an oracle: wiki `deprecated` does not always mean deprecated in the schema.
-- Only English wiki pages and only the wiki → tool direction were checked.
-- The typo test removes one character at position 3 and covers no other error types.
-- Results come from a single run of the `edge` image with schema v7.
-
-### Validity coverage (taginfo snapshot 2026-10-01)
-
-A second, repeatable test checks how well each tool recognises **invalid** input. Each of the 10 tools gets 1000 generated cases (`tests/fixtures/taginfo/<date>/`): valid ones drawn from the taginfo database, and deliberately invalid ones (typos in keys and values, swapped key/value, foreign values, uppercase or spaced keys, empty or malformed input, bad limits and geometries). The data is a point-in-time snapshot for the `edge` build (git commit), not a fixed suite: regenerate it from a fresh taginfo database with `scripts/generate-taginfo-cases.ts` and run `npm run test:taginfo`, which writes `report.json` tagged with the tested commit. Only crashes fail the run; everything else is statistics.
-
-| Tool                      | Invalid cases detected | Notes                                                                          |
-|---------------------------|------------------------|--------------------------------------------------------------------------------|
-| `get_preset_details`      | 250/250 (100%)         | all bad ids rejected                                                           |
-| `get_tag_values`          | 250/250 (100%)         | bad keys and limits rejected                                                   |
-| `json_to_flat`            | 250/250 (100%)         | all bad input rejected                                                         |
-| `validate_tag_collection` | 821/1000 (82.1%)       | 71/110 value typos, 147/215 foreign values, 32/104 control characters          |
-| `search_tags`             | 227/250 (90.8%)        | `limit` of 0 or negative not always rejected                                   |
-| `search_presets`          | 219/250 (87.6%)        | same `limit` gap                                                               |
-| `validate_tag`            | 198/250 (79.2%)        | 9/25 value typos, 16/47 foreign values                                         |
-| `flat_to_json`            | 171/250 (68.4%)        | duplicate keys (0/39) and control characters (0/38) accepted silently          |
-| `suggest_improvements`    | 112/250 (44.8%)        | typos and foreign values mostly yield suggestions, not a problem report        |
-| `compare_tags`            | 50/250 (20%)           | by design it compares any tag sets; only malformed text/JSON is rejected       |
-
-"Detected" means an error response, a `valid: false` / `deprecated` result, or an empty result, depending on the tool.
-
-- **No crashes** in any of the 10,000 cases.
-- **False alarms:** valid cases never returned an error, except `get_preset_details` (714 of 750 popular taginfo tags have no preset, which is expected).
-- **Main gaps:** misspelled or foreign *values* are accepted as valid because custom tags are allowed (same finding as *Lenient validation* above); duplicate keys and control characters are not reported.
-- **Limits:** the generator only produces the error kinds listed above, and the taginfo database defines what counts as a valid tag, so rare but legitimate tags can look "invalid".
+Across all tools, invalid input never crashed the server: errors are readable or the result is an empty list.
 
 ## Summary
 
@@ -135,163 +77,35 @@ Useful where deterministic logic is enough: format conversion, comparing tag set
 
 If you're looking for a user-facing OSM tagging tool, consider [iD editor](https://github.com/openstreetmap/iD) or [JOSM](https://josm.openstreetmap.de/) instead.
 
-## Features
-
-**10 MCP Tools** organized into 5 categories:
-
-- **Tag Query** (2): `get_tag_values`, `search_tags`
-- **Preset Discovery** (2): `search_presets`, `get_preset_details`
-- **Validation** (3): `validate_tag`, `validate_tag_collection`, `suggest_improvements`
-- **Comparison** (1): `compare_tags`
-- **Format Conversion** (2): `flat_to_json`, `json_to_flat`
-
-📖 **Full tool reference**: [docs/api/](./docs/api/README.md)
-
 ## Installation
 
-### Using npx (Recommended)
+Add the server to Claude Code (stdio):
 
 ```bash
-# No installation needed - run directly
-npx @gander-tools/osm-tagging-schema-mcp
-```
-
-### Using Docker
-
-```bash
-# Run with stdio transport
-docker run -i ghcr.io/gander-tools/osm-tagging-schema-mcp:latest
-```
-
-📖 **More options**: [docs/user/installation.md](./docs/user/installation.md) (source installation, verification, troubleshooting)
-
-## Quick Start
-
-### With Claude Code CLI
-
-```bash
-# Add to Claude Code
+# npx
 claude mcp add --transport stdio osm-tagging-schema -- npx -y @gander-tools/osm-tagging-schema-mcp
 
-# Use in conversations
-# Ask Claude: "What OSM tags are available for restaurants?"
-# Ask Claude: "Validate these tags: amenity=parking, capacity=50"
+# Docker
+claude mcp add --transport stdio osm-tagging-schema -- docker run -i --rm ghcr.io/gander-tools/osm-tagging-schema-mcp:latest
 ```
 
-### With Claude Desktop
+## HTTP transport
 
-Add to your Claude Desktop configuration:
+stdio is the default. Set `TRANSPORT=http` to serve over HTTP (streamable, port 3000 in the Docker image):
 
-```json
-{
-  "mcpServers": {
-    "osm-tagging-schema": {
-      "command": "npx",
-      "args": [
-        "@gander-tools/osm-tagging-schema-mcp"
-      ]
-    }
-  }
-}
-```
-
-📖 **Next steps**:
-
-- [Configuration Guide](./docs/user/configuration.md) - Setup for Claude Code/Desktop and custom clients
-- [Usage Guide](./docs/user/usage.md) - Tool examples and workflows
-- [API Reference](./docs/api/README.md) - Complete tool documentation
-- [Deployment Guide](./docs/deployment/deployment.md) - Production HTTP/Docker deployment
-
-### Testing with MCP Inspector
-
-Test and debug the server using the official [MCP Inspector](https://github.com/modelcontextprotocol/inspector):
+| Variable       | Default                                            | Meaning                              |
+|----------------|----------------------------------------------------|--------------------------------------|
+| `TRANSPORT`    | `stdio`                                            | `stdio` or `http`                    |
+| `PORT`         | `3000`                                             | HTTP port                            |
+| `HOST`         | `0.0.0.0`                                          | HTTP bind address                    |
+| `CORS_ORIGINS` | `http://localhost:6274,https://mcp.ziziyi.com`     | Comma-separated allowed CORS origins |
+| `LOG_LEVEL`    | `INFO`                                             | `SILENT`, `ERROR`, `WARN`, `INFO`, `DEBUG` |
 
 ```bash
-# Test published package (quickest)
-npx @modelcontextprotocol/inspector npx @gander-tools/osm-tagging-schema-mcp
-
-# Test Docker image
-npx @modelcontextprotocol/inspector docker run --rm -i ghcr.io/gander-tools/osm-tagging-schema-mcp
+docker run --rm -p 3000:3000 -e TRANSPORT=http ghcr.io/gander-tools/osm-tagging-schema-mcp:latest
 ```
 
-The Inspector provides an interactive web UI to test all tools, inspect responses, and debug issues.
-
-📖 **Complete inspection guide**: [docs/development/inspection.md](./docs/development/inspection.md) (includes HTTP transport testing)
-
-## Development
-
-Built with **Test-Driven Development (TDD)** and **Property-Based Fuzzing**:
-
-- Comprehensive test suite (unit + integration) with 100% pass rate
-- Property-based fuzz tests with fast-check for edge case discovery
-- Continuous fuzzing in CI/CD (weekly schedule + on every push/PR)
-
-```bash
-npm install      # Install dependencies
-npm test         # Run all tests
-npm run test:fuzz # Run fuzz tests
-npm run test:taginfo # Replay taginfo snapshot cases, write report.json
-npm run build    # Build for production
-```
-
-📖 **Development guides**: [docs/development/development.md](./docs/development/development.md) | [docs/development/fuzzing.md](./docs/development/fuzzing.md)
-
-## Contributing
-
-Contributions welcome! This project follows **Test-Driven Development (TDD)**.
-
-1. Fork and clone the repository
-2. Install dependencies: `npm install`
-3. Create a feature branch
-4. Write tests first, then implement
-5. Ensure all tests pass: `npm test`
-6. Submit a pull request
-
-📖 **Guidelines**: [docs/development/contributing.md](./docs/development/contributing.md)
-
-## Documentation
-
-### Quick Navigation
-
-**Choose your path:**
-
-| I want to...                           | Go to                                                                       |
-|----------------------------------------|-----------------------------------------------------------------------------|
-| **Install and run the server**         | [Installation Guide](./docs/user/installation.md)                           |
-| **Configure with Claude Code/Desktop** | [Configuration Guide](./docs/user/configuration.md)                         |
-| **Learn how to use the tools**         | [Usage Guide](./docs/user/usage.md) → [API Reference](./docs/api/README.md) |
-| **Test and debug the server**          | [Inspection Guide](./docs/development/inspection.md)                        |
-| **Deploy in production (HTTP/Docker)** | [Deployment Guide](./docs/deployment/deployment.md)                         |
-| **Fix issues or errors**               | [Troubleshooting Guide](./docs/user/troubleshooting.md)                     |
-| **Contribute to the project**          | [Contributing Guide](./docs/development/contributing.md)                    |
-
-### Complete Documentation
-
-**User Guides:**
-
-- [Installation](./docs/user/installation.md) - Setup guide (npx, Docker, source)
-- [Configuration](./docs/user/configuration.md) - Claude Code/Desktop configuration
-- [Usage](./docs/user/usage.md) - Tool examples and workflows
-- [API Reference](./docs/api/README.md) - Complete tool documentation
-- [Troubleshooting](./docs/user/troubleshooting.md) - Common issues and solutions
-
-**Developer Docs:**
-
-- [Contributing](./docs/development/contributing.md) - Contribution guidelines (TDD workflow)
-- [Development](./docs/development/development.md) - Development setup and debugging
-- [Inspection](./docs/development/inspection.md) - MCP Inspector testing guide
-- [Fuzzing](./docs/development/fuzzing.md) - Security fuzzing and property testing
-- [Roadmap](./docs/development/roadmap.md) - Project roadmap and future features
-- [Release Process](./docs/development/release-process.md) - Release and publishing workflow
-
-**Deployment Docs:**
-
-- [Deployment](./docs/deployment/deployment.md) - HTTP/Docker production deployment
-- [Security](./docs/deployment/security.md) - Security features, provenance, and SLSA
-
-**Project Info:**
-
-- [CHANGELOG.md](./CHANGELOG.md) - Version history
+Endpoints: `GET /health` (liveness), `GET /ready` (schema loaded), `GET /version`.
 
 ## License
 
