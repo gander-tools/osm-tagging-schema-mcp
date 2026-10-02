@@ -238,7 +238,6 @@ jobs:
           allowUpdates: true
           draft: false
           omitBodyDuringUpdate: true
-          omitArtifactsDuringUpdate: true
           omitNameDuringUpdate: true
           token: ${{ secrets.GITHUB_TOKEN }}
 

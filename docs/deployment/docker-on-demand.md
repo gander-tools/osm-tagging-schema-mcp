@@ -414,7 +414,7 @@ The `publish-docker.yml` workflow handles two types of builds:
 | **Build Target** | `--target release` | Default (development) |
 | **Platforms** | linux/amd64, linux/arm64 | linux/amd64, linux/arm64 |
 | **Security** | Trivy, Cosign | Trivy, Cosign |
-| **Post-Build** | Webhook notification | PR comment |
+| **Post-Build** | None | PR comment |
 
 ### Workflow Design
 
@@ -463,7 +463,7 @@ The `publish-docker.yml` workflow handles two types of builds:
 │ • Sign (Cosign)      │
 │                      │
 │ Post-build:          │
-│ • Release: webhook   │
+│ • Release: none      │
 │ • On-demand: PR comment│
 └──────────────────────┘
 ```
