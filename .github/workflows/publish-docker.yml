@@ -222,11 +222,11 @@ jobs:
         if: needs.extract-version.outputs.is-release == 'false'
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          node-version: '24'
+          node-version: '26'
 
-      - name: Install npm 11.12.1 (non-release builds)
+      - name: Install npm 11.19.1 (non-release builds)
         if: needs.extract-version.outputs.is-release == 'false'
-        run: npm install -g npm@11.12.1
+        run: npm install -g npm@11.19.1
 
       - name: Install dependencies (non-release builds)
         if: needs.extract-version.outputs.is-release == 'false'
@@ -249,7 +249,7 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64
 
       - name: Build and push Docker image (development builds from source)
         if: needs.extract-version.outputs.is-release == 'false'
@@ -263,7 +263,7 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64
 
       - name: Set digest output
         id: digest
@@ -359,7 +359,7 @@ jobs:
           | **Registry** | \`${{ env.REGISTRY }}\` |
           | **Image** | \`${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}\` |
           | **Digest** | \`$DIGEST\` |
-          | **Platforms** | \`linux/amd64\`, \`linux/arm64\` |
+          | **Platforms** | \`linux/amd64\` |
 
           ### Image Tags
 
