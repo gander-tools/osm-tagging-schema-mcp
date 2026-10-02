@@ -4,7 +4,7 @@ schema: spec-driven
 context: |
   Project: @gander-tools/osm-tagging-schema-mcp - MCP server exposing the OpenStreetMap
   tagging schema (@openstreetmap/id-tagging-schema) to AI assistants. Production-ready.
-  Tech stack: TypeScript 5, Node.js 22/24, @modelcontextprotocol/sdk, Zod, BiomeJS,
+  Tech stack: TypeScript 5, Node.js 24/26, @modelcontextprotocol/sdk, Zod, BiomeJS,
   Node native test runner, fast-check (fuzzing). Transports: stdio (default), HTTP streamable.
   Layout: one tool per file in src/tools/, tests in tests/{tools,integration,e2e,fuzz};
   all user-facing text centralized in src/metadata.ts; tools registered alphabetically.
@@ -16,7 +16,7 @@ context: |
   - Tests read expected values dynamically from schema JSON (no hardcoded values, no sampling;
     validate every value individually, bidirectionally)
   - Dependencies use tilde (~) ranges only - never ^ or exact
-  - GitHub Actions: pin actions by commit SHA, Node 24 + npm 11.6.4, npm only, no cache: npm
+  - GitHub Actions: pin actions by commit SHA, Node 26 (explicit node-version) + npm 11.19.1, test matrix 26/24, npm only, no cache: npm
   - Conventional commits; update docs/ and CHANGELOG [Unreleased] with behavior changes
   - Pre-push: npm run test:unit, test:integration, typecheck, lint, build must pass
   Details: see CLAUDE.md

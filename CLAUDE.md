@@ -61,9 +61,10 @@ The MCP server exposes OpenStreetMap's tagging schema as a set of queryable tool
 
 ## Technical Stack
 
-- **Runtime**: Node.js 22+ or 24+ (both versions supported and tested)
-  - **CI/CD & Production**: Node.js 24 (preferred for stability)
-  - **Development**: Node.js 22 or 24 (both work, see `.nvmrc` for preferred)
+- **Runtime**: Node.js 24 or 26 (`engines`: `^24.0.0 || ^26.0.0`)
+  - **CI/CD & Production**: Node.js 26 (every `setup-node` step sets `node-version: '26'` explicitly)
+  - **Compatibility**: Node.js 24 verified by the `test` job matrix `[26, 24]`
+  - **Development**: Node.js 24 or 26 (see `.nvmrc` for preferred)
   - **npm**: 10+ or 11+ (npm 11.6.4+ required for publishing workflow only)
 - **Language**: TypeScript 5.x
 - **Package**: @gander-tools/osm-tagging-schema-mcp
@@ -233,9 +234,9 @@ Every feature implementation MUST follow this workflow:
 
 1. **Version Pinning**: Pin ALL action versions with commit SHA (no floating versions)
 2. **Package Manager**: Always use `npm` and `npx` (not yarn/pnpm)
-3. **Node.js Version**: Always use Node.js 24 with npm 11.6.4 explicitly installed
+3. **Node.js Version**: Always set `node-version: '26'` explicitly (even if it is the default) with npm 11.19.1 explicitly installed; the only exception is the `test` job matrix `[26, 24]`
    - Note: npm 11.6.4+ is required for `npm publish --provenance` (SLSA attestations)
-   - End users can use Node.js 22+ with npm 10+ (engines allows both)
+   - End users can use Node.js 24 or 26 with npm 10+ (engines allows both)
 4. **No npm cache**: Forbidden to use `cache: npm` in setup-node (causes PR issues)
 
 ### Security Testing
@@ -575,7 +576,7 @@ for (const tool of tools) {
 - ✅ **Docker Support**: Dual Dockerfile strategy (release vs development builds)
   - Release builds use shared `dist/` artifact from NPM publish
   - Development builds use multi-stage TypeScript compilation
-  - Multi-arch support (amd64/arm64), image signing (Cosign)
+  - Single-arch image (amd64), image signing (Cosign)
 - ✅ **Shared Build Artifact**: NPM and Docker use identical compiled code
   - `dist.tar.gz` attached to GitHub Releases
   - Complete provenance chain: Docker → dist.tar.gz → NPM (SLSA Level 3)
@@ -621,7 +622,7 @@ for (const tool of tools) {
 
 **Status**: Full implementation with security scanning and image signing
 
-- **GitHub Container Registry (ghcr.io)**: Multi-arch support (amd64/arm64)
+- **GitHub Container Registry (ghcr.io)**: Single-arch image (amd64)
 - **Image Scanning**: Automated vulnerability scanning with Trivy
 - **Image Signing**: Cosign keyless signatures for verification
 - **Versioning Strategy**: Semantic versions, latest stable, development edge
