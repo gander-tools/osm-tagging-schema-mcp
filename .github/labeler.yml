@@ -12,7 +12,6 @@ labels:
   # Documentation changes
   - label: "documentation"
     files:
-      - "docs/.*"
       - "README.md"
       - "CHANGELOG.md"
       - "CLAUDE.md"
@@ -97,7 +96,6 @@ labels:
     files:
       - ".github/workflows/security-.*"
       - "tests/fuzz/.*"
-      - "docs/deployment/security.md"
 
   # Release-related changes
   - label: "release"

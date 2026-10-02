@@ -67,11 +67,9 @@
 	"homepage": "https://github.com/gander-tools/osm-tagging-schema-mcp#readme",
 	"files": [
 		"dist/**/*",
-		"docs/**/*",
 		"LICENSE",
 		"README.md",
 		"CHANGELOG.md",
-		"CONTRIBUTING.md",
 		"SECURITY.md"
 	],
 	"dependencies": {

@@ -65,7 +65,6 @@ When security issues are discovered:
 
 **References**:
 - Issue: https://github.com/modelcontextprotocol/typescript-sdk/issues/965
-- Detailed analysis: See [docs/deployment/security.md](docs/deployment/security.md#known-vulnerabilities--mitigation)
 
 **Future considerations**: If implementing MCP resources, avoid exploded array patterns until SDK is patched.
 
@@ -78,8 +77,6 @@ This project implements comprehensive security measures:
 - ✅ **Image Signing**: Docker images signed with Cosign
 - ✅ **Vulnerability Scanning**: Automated Trivy scanning
 - ✅ **Dependency Management**: Automated security updates via Renovate
-
-For detailed information, see [Security & Supply Chain Documentation](docs/deployment/security.md).
 
 ## Security Best Practices
 
@@ -101,7 +98,6 @@ For detailed information, see [Security & Supply Chain Documentation](docs/deplo
 
 ## Additional Resources
 
-- [Security & Supply Chain Documentation](docs/deployment/security.md)
 - [NPM Provenance](https://docs.npmjs.com/generating-provenance-statements)
 - [SLSA Framework](https://slsa.dev/)
 - [Sigstore Cosign](https://docs.sigstore.dev/)

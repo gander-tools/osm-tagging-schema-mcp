@@ -264,7 +264,7 @@ Every feature implementation MUST follow this workflow:
 - **Vulnerability**: ReDoS in `@modelcontextprotocol/sdk` affecting resource handlers with exploded URI templates (`{/path*}`, `{?query*}`)
 - **This project**: Does NOT use resource handlers (only Tools and Prompts)
 - **Affected code path**: Never executed in this codebase
-- **Documentation**: See `SECURITY.md` and `docs/deployment/security.md`
+- **Documentation**: See `SECURITY.md`
 
 **Developer Guidelines**:
 - **Current work**: No action needed - continue development normally
@@ -508,7 +508,6 @@ for (const tool of tools) {
 3. **Implement OsmToolDefinition interface** using `getToolMetadata()` in config()
 4. **Export tool**: Add to `src/tools/index.ts`
 5. **Write tests**: Unit and integration tests
-6. **Document**: Add API documentation in `docs/api/`
 
 ## Data Sources and Usage
 
@@ -668,86 +667,6 @@ Based on analysis of [schema-builder](https://github.com/ideditor/schema-builder
 - Phase 5+: Field inheritance, conditional analysis, quality scoring
 
 **Compatibility**: All enhancements are additive - existing tools remain unchanged, no breaking changes.
-
-## Documentation Structure
-
-The project maintains comprehensive documentation organized by user type for clear navigation and maintenance.
-
-### Documentation Organization
-
-**User Documentation (docs/user/):**
-- `docs/user/README.md` - User documentation overview and navigation
-- `docs/user/installation.md` - Installation instructions for all methods (npx, Docker, source)
-- `docs/user/configuration.md` - Configuration for Claude Code/Desktop and custom clients
-- `docs/user/usage.md` - Usage examples, workflows, and best practices
-- `docs/user/examples.md` - Comprehensive examples for all tools
-- `docs/user/troubleshooting.md` - Common issues and solutions
-
-**API Documentation (docs/api/):**
-- `docs/api/README.md` - API overview and quick reference
-- `docs/api/{tool_name}.md` - Detailed documentation per tool (7 tools)
-- `docs/api/NOTE.md` - Documentation pattern guide
-
-**Development Documentation (docs/development/):**
-- `docs/development/README.md` - Developer overview and navigation
-- `docs/development/contributing.md` - Contribution guidelines (TDD workflow)
-- `docs/development/development.md` - Development setup, commands, debugging
-- `docs/development/dependency-management.md` - Renovate setup and Dependabot migration guide
-- `docs/development/release-process.md` - Release and publishing process
-- `docs/development/fuzzing.md` - Fuzzing infrastructure and security testing
-- `docs/development/roadmap.md` - Development plan and future features
-
-**Deployment Documentation (docs/deployment/):**
-- `docs/deployment/README.md` - Deployment overview and navigation
-- `docs/deployment/deployment.md` - Docker container deployment guide
-- `docs/deployment/docker-on-demand.md` - On-demand Docker builds for Pull Requests
-- `docs/deployment/security.md` - Security features, provenance, SLSA, and SBOM
-
-**Root Documentation:**
-- `README.md` - Compact overview with links to detailed docs
-- `CHANGELOG.md` - Project history (Keep a Changelog format)
-- `CLAUDE.md` - Technical implementation notes (this file)
-
-### Documentation Update Workflow
-
-When completing a phase or major feature:
-
-1. **Update docs/user/** (if user-facing changes):
-   - Installation changes → `docs/user/installation.md`
-   - Configuration changes → `docs/user/configuration.md`
-   - New usage patterns → `docs/user/usage.md` and `docs/user/examples.md`
-   - New issues/solutions → `docs/user/troubleshooting.md`
-
-2. **Update docs/api/** (if API changes):
-   - New tools/features → `docs/api/{tool_name}.md`
-   - API overview updates → `docs/api/README.md`
-
-3. **Update docs/development/** (if development process changes):
-   - Contribution process → `docs/development/contributing.md`
-   - Development setup → `docs/development/development.md`
-   - Dependency automation → `docs/development/dependency-management.md`
-   - Release process → `docs/development/release-process.md`
-   - Roadmap progress → `docs/development/roadmap.md`
-
-4. **Update docs/deployment/** (if deployment changes):
-   - Deployment options → `docs/deployment/deployment.md`
-   - On-demand Docker builds → `docs/deployment/docker-on-demand.md`
-   - Security features → `docs/deployment/security.md`
-
-5. **Update root documentation**:
-   - README.md → Update "Project Status" section
-   - CHANGELOG.md → Add entry in [Unreleased] section
-   - CLAUDE.md → Update "Development Status" section
-
-### Documentation Maintenance
-
-- Keep README.md compact - link to detailed docs in appropriate categories
-- Update all documentation together to maintain consistency
-- Follow established patterns for new documentation
-- Use markdown features: tables, code blocks, links, details/summary
-- Include practical examples with real OSM data
-- Cross-link related documentation within appropriate categories
-- **CRITICAL**: When syntax or tool behavior changes, update ALL documentation where that syntax is explained
 
 ## Development Workflow
 
