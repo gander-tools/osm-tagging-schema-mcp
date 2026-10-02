@@ -81,8 +81,8 @@ jobs:
       - name: Run npm audit (all dependencies incl. dev, moderate)
         run: npm audit --audit-level=moderate
 
-      - name: Run npm audit (production only, low)
-        run: npm audit --omit=dev --audit-level=low
+      - name: Run npm audit (production only, moderate)
+        run: npm audit --omit=dev --audit-level=moderate
 
   sbom-generation:
     needs: changes

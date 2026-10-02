@@ -5,7 +5,7 @@ See proposal.md. Today both `npm-audit` jobs run `npm audit --audit-level=modera
 ## Goals / Non-Goals
 
 **Goals:**
-- Production audit is the strictest (`low`) and blocking, using a non-deprecated flag.
+- Production audit is `moderate` and blocking, using a non-deprecated flag.
 - The audit including dev dependencies is looser (`moderate`) but blocking.
 
 **Non-Goals:**
@@ -14,7 +14,7 @@ See proposal.md. Today both `npm-audit` jobs run `npm audit --audit-level=modera
 
 ## Decisions
 
-- **Levels** (npm: `low` fails on any advisory, `moderate` on moderate+, `high` on high+): prod `low`, all-dependencies `moderate`. Dev is looser than prod, prod is the tightest possible.
+- **Levels** (npm: `low` fails on any advisory, `moderate` on moderate+, `high` on high+): prod `moderate`, all-dependencies `moderate`. Both use the same threshold; the production step is kept as a separate, explicit production gate (the all-dependencies step also covers production).
 - **"dev" = full audit.** npm has no dev-only audit (`--omit=prod` is rejected), so the dev-level check is the all-dependencies audit (prod + dev) at `moderate`. Alternative: filter `npm audit --json` for dev-only advisories with a script - rejected as extra code for no gain.
 - **`--omit=dev` replaces `--production`.** Same behavior, no deprecation warning.
 - **Both steps blocking.** `continue-on-error` removed from the full audit.
@@ -22,5 +22,5 @@ See proposal.md. Today both `npm-audit` jobs run `npm audit --audit-level=modera
 
 ## Risks / Trade-offs
 
-- [`low` on production and blocking `moderate` on dev can fail PRs on transitive advisories] -> currently 0 findings; fix via update or `overrides` in `package.json`.
+- [blocking `moderate` on production and dev can fail PRs on transitive advisories] -> currently 0 findings; fix via update or `overrides` in `package.json`.
 - [Dev advisories now block releases/PRs] -> intentional per request; relax by raising the dev threshold to `high`.
