@@ -15,7 +15,7 @@ checks:
       - path: .github/workflows/publish-npm.yml
         step: "Create tarball for attestation"
         line: 112
-        reason: "npm pack uses npm bundled with Node.js 24, which is pinned via setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af (v6.1.0). npm version is deterministic per Node.js version. There is no npm@hash syntax for built-in commands."
+        reason: "npm pack uses npm bundled with Node.js 26, which is pinned via setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af (v6.1.0). npm version is deterministic per Node.js version. There is no npm@hash syntax for built-in commands."
         reviewer: "@gander"
 
       - path: .github/workflows/publish-npm.yml
