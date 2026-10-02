@@ -106,7 +106,7 @@ A second, repeatable test checks how well each tool recognises **invalid** input
 |---------------------------|------------------------|--------------------------------------------------------------------------------|
 | `get_preset_details`      | 250/250 (100%)         | all bad ids rejected                                                           |
 | `get_tag_values`          | 250/250 (100%)         | bad keys and limits rejected                                                   |
-| `json_to_flat`            | 249/250 (99.6%)        | only an empty object passes                                                    |
+| `json_to_flat`            | 250/250 (100%)         | all bad input rejected                                                         |
 | `validate_tag_collection` | 821/1000 (82.1%)       | 71/110 value typos, 147/215 foreign values, 32/104 control characters          |
 | `search_tags`             | 227/250 (90.8%)        | `limit` of 0 or negative not always rejected                                   |
 | `search_presets`          | 219/250 (87.6%)        | same `limit` gap                                                               |

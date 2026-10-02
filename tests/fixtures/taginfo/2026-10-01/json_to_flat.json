@@ -4,294 +4,33 @@
 	"tool": "json_to_flat",
 	"count": 1000,
 	"cases": [
-		{ "tags": "{\"highway\":\"turning_circle\",\"source\":\"yahoo\"}", "invalid": false },
-		{ "tags": { "shop": "sports", "wheelchair": "yes" }, "invalid": false },
-		{ "tags": { "shop": "doityourself", "wheelchair": "yes" }, "invalid": false },
-		{ "tags": { "highway": "motorway_junction", "ref": "8" }, "invalid": false },
-		{ "tags": { "amenity": "bbq", "covered": "no" }, "invalid": false },
 		{
-			"tags": { "shop": "car_parts", "wheelchair": "yes", "source": "Kaart Ground Survey 2017" },
+			"tags": { "railway": "tram", "usage": "main", "voltage": "600", "tracks": "1" },
 			"invalid": false
 		},
-		{ "tags": "{\"cuisine\":\"coffee_shop\",\"internet_access\":\"wlan\"}", "invalid": false },
+		{ "tags": { "landuse": "farmyard" }, "invalid": false },
 		{
-			"tags": { "cuisine": "chicken", "delivery": "yes", "outdoor_seating": "no", "level": "0" },
+			"tags": { "sport": "swimming", "supervised": "no", "swimming_pool": "inground" },
 			"invalid": false
 		},
-		{ "tags": { "place": "municipality" }, "invalid": false },
-		{ "tags": "\"amenity=waste_basket\\ncolour=green\"", "kind": "json_string", "invalid": true },
-		{ "tags": { "aeroway": "gate", "level": "1" }, "invalid": false },
+		{ "tags": { "highway": "secondary_link", "source": "bing" }, "invalid": false },
 		{
-			"tags": "[[\"place\",\"suburb\"],[\"type\",\"multipolygon\"]]",
-			"kind": "json_array",
-			"invalid": true
-		},
-		{ "tags": { "historic": "yes" }, "invalid": false },
-		{
-			"tags": { "railway": "disused", "usage": "branch", "tunnel": "building_passage" },
+			"tags": { "historic": "archaeological_site", "source": "bing", "type": "multipolygon" },
 			"invalid": false
 		},
-		{ "tags": "\"route=power\\nvoltage=220000\"", "kind": "json_string", "invalid": true },
-		{
-			"tags": "{power=catenary_mast\nsource=BD Ortho IGN}",
-			"kind": "flat_text_not_json",
-			"invalid": true
-		},
-		{
-			"tags": { "aeroway": "helipad", "surface": "concrete", "location": "roof" },
-			"invalid": false
-		},
-		{ "tags": { "shop": "furniture" }, "invalid": false },
-		{ "tags": { "highway": "primary", "tiger:cfcc": "A41" }, "invalid": false },
-		{
-			"tags": "{boundary=administrative\nname:prefix:ru=деревня}",
-			"kind": "flat_text_not_json",
-			"invalid": true
-		},
-		{ "tags": "{\"waterway\":\"drain\"}", "invalid": false },
-		{
-			"tags": { "tourism": "viewpoint", "wheelchair": "yes", "tower:type": "observation" },
-			"invalid": false
-		},
-		{ "tags": "{railway=proposed\ntunnel=yes}", "kind": "flat_text_not_json", "invalid": true },
-		{ "tags": "", "kind": "empty_string", "invalid": true },
-		{
-			"tags": "{\"amenity\":\"hunting_stand\",\"ladder\":\"yes\",\"building\":\"yes\",\"material\":\"wood\"}",
-			"invalid": false
-		},
-		{ "tags": { "leisure": "sports_centre", "operator:type": "private" }, "invalid": false },
+		{ "tags": "{\"craft\": \"x\"", "kind": "broken_json", "invalid": true },
+		{ "tags": { "shop": "clothes", "source": "KG Ground Survey 2016" }, "invalid": false },
 		{
 			"tags": {
-				"place": "city",
-				"population:date": "2022",
-				"source": "TIGER/Line® 2008 Place Shapefiles (http://www.census.gov/geo/www/tiger/)",
-				"type": "boundary"
-			},
-			"invalid": false
-		},
-		{ "tags": { "boundary": "cadastral", "source": "cuzk:ruian" }, "invalid": false },
-		{
-			"tags": { "man_made": "survey_point", "material": "concrete", "place": "locality" },
-			"invalid": false
-		},
-		{
-			"tags": "{historic=archaeological_site\nsource=bing}",
-			"kind": "flat_text_not_json",
-			"invalid": true
-		},
-		{ "tags": { "leisure": "pitch" }, "invalid": false },
-		{ "tags": { "natural": "rock", "tourism": "attraction" }, "invalid": false },
-		{ "tags": { "route": "mtb", "type": "route" }, "invalid": false },
-		{
-			"tags": "{amenity=waste_disposal\nbuilding:levels=1}",
-			"kind": "flat_text_not_json",
-			"invalid": true
-		},
-		{ "tags": { "place": "island", "source": "PGS" }, "invalid": false },
-		{
-			"tags": { "railway": "signal", "ref": "B", "source": "estimate; extrapolate; survey" },
-			"invalid": false
-		},
-		{ "tags": { "barrier": "wicket_gate" }, "invalid": false },
-		{ "tags": "{shop=sports\nwheelchair=yes}", "kind": "flat_text_not_json", "invalid": true },
-		{ "tags": { "highway": "emergency_access_point", "source": "survey" }, "invalid": false },
-		{ "tags": { "man_made": "pipeline" }, "invalid": false },
-		{ "tags": "\"sport=equestrian\\nsurface=dirt\"", "kind": "json_string", "invalid": true },
-		{
-			"tags": { "natural": "scree", "source": "nls.fi database import", "type": "multipolygon" },
-			"invalid": false
-		},
-		{ "tags": "{\"amenity\":\"pharmacy\",\"building:levels\":\"1\"}", "invalid": false },
-		{ "tags": { "shop": "car_repair", "source": "survey" }, "invalid": false },
-		{ "tags": "{\"cuisine\":1,\"outdoor_seating\":1}", "kind": "number_values", "invalid": true },
-		{
-			"tags": {
-				"building": "slurry_tank",
-				"content": "slurry",
-				"man_made": "storage_tank",
-				"covered": "yes"
+				"cuisine": "chinese",
+				"payment:cash": "yes",
+				"wheelchair": "no",
+				"source": "survey"
 			},
 			"invalid": false
 		},
 		{
-			"tags": "{\"landuse\":\"aquaculture\",\"source\":\"Maxar\",\"natural\":\"water\"}",
-			"invalid": false
-		},
-		{ "tags": { "emergency": "defibrillator", "level": "1" }, "invalid": false },
-		{
-			"tags": "{shop=hearing_aids\nwheelchair=yes}",
-			"kind": "flat_text_not_json",
-			"invalid": true
-		},
-		{
-			"tags": {
-				"craft": "grinding_mill",
-				"flour_fortified": "no",
-				"operator:type": "private",
-				"source": "nigeriase4all.gov.ng"
-			},
-			"invalid": false
-		},
-		{ "tags": "{\"natural\":\"cape\"}", "invalid": false },
-		{
-			"tags": { "cuisine": "bubble_tea", "outdoor_seating": "no", "takeaway": "yes" },
-			"invalid": false
-		},
-		{ "tags": "{\"cuisine\":\"korean\"}", "invalid": false },
-		{
-			"tags": "{\"tags\":{\"route\":\"mtb\",\"type\":\"route\"}}",
-			"kind": "nested_object",
-			"invalid": true
-		},
-		{ "tags": "{\"amenity\":\"shelter\",\"lit\":\"no\",\"network\":\"M réso\"}", "invalid": false },
-		{
-			"tags": { "landuse": "construction", "residential": "apartments", "type": "multipolygon" },
-			"invalid": false
-		},
-		{ "tags": { "building": "slurry_tank" }, "invalid": false },
-		{
-			"tags": { "office": "association", "opening_hours:signed": "no", "wheelchair": "yes" },
-			"invalid": false
-		},
-		{
-			"tags": { "tourism": "attraction", "wheelchair": "no", "waterway": "waterfall" },
-			"invalid": false
-		},
-		{ "tags": { "railway": "proposed", "tunnel": "yes" }, "invalid": false },
-		{ "tags": "{\"amenity\":\"bench\",\"covered\":\"no\",\"seats\":\"8\"}", "invalid": false },
-		{
-			"tags": "{\"tags\":{\"highway\":\"residential\",\"lanes\":\"1\"}}",
-			"kind": "nested_object",
-			"invalid": true
-		},
-		{ "tags": { "leisure": "beach_resort", "natural": "beach" }, "invalid": false },
-		{ "tags": { "natural": "cape", "source": "NRCan-CanVec-8.0" }, "invalid": false },
-		{ "tags": "{\"historic\":\"charcoal_pile\"}", "invalid": false },
-		{ "tags": "{\"man_made\":\"mast\"}", "invalid": false },
-		{
-			"tags": "{\"tags\":{\"highway\":\"proposed\",\"lanes\":\"3\"}}",
-			"kind": "nested_object",
-			"invalid": true
-		},
-		{ "tags": { "highway": "cycleway" }, "invalid": false },
-		{ "tags": { "boundary": "political", "type": "boundary" }, "invalid": false },
-		{ "tags": { "amenity": "pharmacy", "payment:maestro": "yes" }, "invalid": false },
-		{
-			"tags": {
-				"railway": "tram_crossing",
-				"traffic_signals:sound": "yes",
-				"tactile_paving": "no",
-				"traffic_signals:vibration": "no"
-			},
-			"invalid": false
-		},
-		{
-			"tags": { "cuisine": "regional", "indoor_seating": "yes", "source": "survey" },
-			"invalid": false
-		},
-		{
-			"tags": "{\"amenity\":\"nursing_home\",\"note\":\"National-Land Numerical Information (Public Facility) 2006, MLIT Japan\",\"note:ja\":\"国土数値情報（公共施設データ）平成19年　国土交通省\"}",
-			"invalid": false
-		},
-		{
-			"tags": "[[\"railway\",\"subway\"],[\"service\",\"crossover\"]]",
-			"kind": "json_array",
-			"invalid": true
-		},
-		{ "tags": { "amenity": "compressed_air", "fee": "no" }, "invalid": false },
-		{
-			"tags": "{\"tags\":{\"shop\":\"confectionery\",\"wheelchair\":\"no\"}}",
-			"kind": "nested_object",
-			"invalid": true
-		},
-		{ "tags": "{sport=futsal\nsurface=concrete}", "kind": "flat_text_not_json", "invalid": true },
-		{ "tags": { "shop": "mobile_phone" }, "invalid": false },
-		{ "tags": "{\"shop\":\"doityourself\",\"wheelchair\":\"yes\"}", "invalid": false },
-		{
-			"tags": "{\"tags\":{\"highway\":\"trailhead\",\"network:type\":\"node_network\"}}",
-			"kind": "nested_object",
-			"invalid": true
-		},
-		{ "tags": "{\"highway\": \"x\"", "kind": "broken_json", "invalid": true },
-		{ "tags": { "highway": "service" }, "invalid": false },
-		{
-			"tags": {
-				"historic": "railway",
-				"railway": "disused",
-				"service": "spur",
-				"railway:preserved": "yes"
-			},
-			"invalid": false
-		},
-		{ "tags": "{\"power\":1,\"wires\":1}", "kind": "number_values", "invalid": true },
-		{ "tags": { "highway": "elevator", "indoor": "yes" }, "invalid": false },
-		{ "tags": "{\"boundary\": \"x\"", "kind": "broken_json", "invalid": true },
-		{
-			"tags": {
-				"barrier": "fence",
-				"leisure": "playground",
-				"landuse": "recreation_ground",
-				"layer": "1"
-			},
-			"invalid": false
-		},
-		{ "tags": "{\"office\": \"x\"", "kind": "broken_json", "invalid": true },
-		{ "tags": "{\"shop\":\"beverages\",\"wheelchair\":\"yes\"}", "invalid": false },
-		{
-			"tags": { "place": "village", "type": "boundary", "teryt:stan_na": "2009-01-01" },
-			"invalid": false
-		},
-		{
-			"tags": { "shop": "mobile_phone", "source": "Kaart Ground Survey 2017", "wheelchair": "no" },
-			"invalid": false
-		},
-		{ "tags": "{\"healthcare\": \"x\"", "kind": "broken_json", "invalid": true },
-		{
-			"tags": { "leisure": "sports_centre", "wheelchair": "yes", "payment:cash": "yes" },
-			"invalid": false
-		},
-		{ "tags": "{\"healthcare\":1,\"operator:type\":1}", "kind": "number_values", "invalid": true },
-		{ "tags": "{\"amenity\":\"recycling\"}", "invalid": false },
-		{
-			"tags": { "natural": "shingle", "type": "multipolygon", "source": "Japan GSI KIBAN 2500" },
-			"invalid": false
-		},
-		{
-			"tags": {
-				"landuse": "vineyard",
-				"source:date": "2018-02-28",
-				"source": "Ortofotomozaika SR"
-			},
-			"invalid": false
-		},
-		{ "tags": "{\"aeroway\": \"x\"", "kind": "broken_json", "invalid": true },
-		{ "tags": { "man_made": "wastewater_plant", "natural": "water" }, "invalid": false },
-		{ "tags": { "barrier": "ditch", "waterway": "ditch" }, "invalid": false },
-		{
-			"tags": { "railway": "platform", "shelter": "yes", "wheelchair": "no", "ref": "3" },
-			"invalid": false
-		},
-		{
-			"tags": "{\"tags\":{\"power\":\"catenary_mast\",\"source\":\"PCRS Raster - République française\"}}",
-			"kind": "nested_object",
-			"invalid": true
-		},
-		{ "tags": { "cuisine": "chicken", "outdoor_seating": "no" }, "invalid": false },
-		{ "tags": "{\"place\":\"city_block\",\"residential\":\"urban\"}", "invalid": false },
-		{ "tags": { "boundary": "place", "place": "quarter" }, "invalid": false },
-		{ "tags": "{\"natural\":\"sand\",\"sport\":\"golf\",\"source\":\"Bing\"}", "invalid": false },
-		{ "tags": { "building": "warehouse", "height": "3.7" }, "invalid": false },
-		{ "tags": "{\"highway\":1,\"source\":1}", "kind": "number_values", "invalid": true },
-		{ "tags": "{man_made=water_tap\nseasonal=no}", "kind": "flat_text_not_json", "invalid": true },
-		{ "tags": { "sport": "bowls", "surface": "grass" }, "invalid": false },
-		{ "tags": { "building": "sports_hall", "leisure": "sports_hall" }, "invalid": false },
-		{
-			"tags": "{\"building\":\"hut\",\"source\":\"NextView\",\"roof:material\":\"plastic\"}",
-			"invalid": false
-		},
-		{ "tags": { "railway": "proposed", "tunnel": "yes", "usage": "main" }, "invalid": false },
-		{
-			"tags": "{\"tags\":{\"natural\":\"shingle\",\"source\":\"Maxar Premium-Luftbilder (Beta)\"}}",
+			"tags": "{\"tags\":{\"highway\":\"traffic_signals\",\"traffic_signals\":\"pedestrian_crossing\"}}",
 			"kind": "nested_object",
 			"invalid": true
 		},
@@ -305,420 +44,42 @@
 			"invalid": false
 		},
 		{
-			"tags": "{\"barrier\":\"kerb\",\"surface\":\"asphalt\",\"source\":\"Plan polyvalent Douala\",\"tactile_paving\":\"contrasted\"}",
-			"invalid": false
-		},
-		{ "tags": { "cuisine": "sushi", "wheelchair": "yes", "level": "0" }, "invalid": false },
-		{ "tags": "{\"route\":\"road\"}", "invalid": false },
-		{
-			"tags": "[[\"healthcare\",\"pharmacy\"],[\"source\",\"Kaart Ground Survey 2017\"]]",
+			"tags": "[[\"highway\",\"secondary_link\"],[\"lit\",\"no\"]]",
 			"kind": "json_array",
 			"invalid": true
 		},
-		{ "tags": { "leisure": "outdoor_seating" }, "invalid": false },
-		{ "tags": { "man_made": "mast" }, "invalid": false },
-		{ "tags": { "shop": "mall" }, "invalid": false },
+		{ "tags": "{\"barrier\":\"chain\",\"bicycle\":\"yes\"}", "invalid": false },
 		{
-			"tags": {
-				"amenity": "nursing_home",
-				"note:ja": "国土数値情報（公共施設データ）平成19年　国土交通省"
-			},
+			"tags": { "craft": "metal_construction", "wheelchair": "yes", "operational_status": "open" },
 			"invalid": false
 		},
-		{
-			"tags": "{\"amenity\":\"nursing_home\",\"note\":\"National-Land Numerical Information (Public Facility) 2006, MLIT Japan\"}",
-			"invalid": false
-		},
-		{ "tags": "{\"barrier\": \"x\"", "kind": "broken_json", "invalid": true },
-		{
-			"tags": "{historic=wayside_cross\nmaterial=metal}",
-			"kind": "flat_text_not_json",
-			"invalid": true
-		},
-		{ "tags": { "sport": "swimming", "wheelchair": "yes" }, "invalid": false },
-		{ "tags": { "boundary": "postal_code" }, "invalid": false },
-		{ "tags": { "barrier": "fence", "height": "1.8" }, "invalid": false },
-		{ "tags": { "highway": "service", "source": "bing" }, "invalid": false },
-		{
-			"tags": { "railway": "platform_edge", "tactile_paving": "yes", "ref": "2" },
-			"invalid": false
-		},
-		{ "tags": { "tourism": "hotel", "wheelchair": "limited" }, "invalid": false },
-		{
-			"tags": "{\"boundary\":\"health\",\"type\":\"boundary\",\"source:date\":\"2017\"}",
-			"invalid": false
-		},
-		{
-			"tags": { "cuisine": "german", "wheelchair": "yes", "indoor_seating": "yes" },
-			"invalid": false
-		},
-		{ "tags": { "highway": "cycleway", "traffic_sign": "NL:G12a" }, "invalid": false },
-		{ "tags": "{\"club\": \"x\"", "kind": "broken_json", "invalid": true },
-		{ "tags": { "service": "parking_aisle", "vehicle": "private" }, "invalid": false },
-		{ "tags": { "natural": "rock" }, "invalid": false },
-		{ "tags": "{\"landuse\":\"railway\",\"type\":\"multipolygon\"}", "invalid": false },
-		{
-			"tags": "{natural=glacier\ntype=multipolygon}",
-			"kind": "flat_text_not_json",
-			"invalid": true
-		},
-		{ "tags": { "sport": "boules", "surface": "gravel" }, "invalid": false },
-		{ "tags": "{\"tourism\":\"museum\"}", "invalid": false },
-		{ "tags": { "leisure": "garden" }, "invalid": false },
-		{
-			"tags": { "amenity": "vending_machine", "vending": "drinks", "bin": "no" },
-			"invalid": false
-		},
-		{
-			"tags": { "place": "cadastral_community", "source": "cuzk:ruian", "type": "boundary" },
-			"invalid": false
-		},
-		{
-			"tags": "{\"leisure\":\"firepit\",\"tents\":\"yes\",\"tourism\":\"camp_site\",\"seasonal\":\"no\"}",
-			"invalid": false
-		},
-		{
-			"tags": {
-				"railway": "crossing",
-				"source": "BDOrtho IGN",
-				"tactile_paving": "yes",
-				"supervised": "no"
-			},
-			"invalid": false
-		},
-		{ "tags": { "man_made": "embankment", "source": "ÚGKK SR DMR5.0" }, "invalid": false },
-		{ "tags": "{\"public_transport\":1,\"railway\":1}", "kind": "number_values", "invalid": true },
-		{
-			"tags": "{\"barrier\":\"kissing_gate\",\"foot\":\"designated\",\"material\":\"wood\"}",
-			"invalid": false
-		},
-		{
-			"tags": {
-				"man_made": "water_tower",
-				"source": "cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2010"
-			},
-			"invalid": false
-		},
-		{ "tags": { "shop": "florist", "wheelchair": "limited" }, "invalid": false },
-		{
-			"tags": {
-				"building": "apartments",
-				"source:date": "2014-05-07",
-				"source": "HiRes aerial imagery"
-			},
-			"invalid": false
-		},
-		{ "tags": { "leisure": "stadium", "sport": "soccer" }, "invalid": false },
-		{ "tags": "{\"leisure\":\"picnic_table\"}", "invalid": false },
-		{ "tags": { "aeroway": "aerodrome" }, "invalid": false },
-		{ "tags": { "barrier": "wicket_gate", "foot": "yes" }, "invalid": false },
-		{ "tags": "{\"boundary\":1,\"type\":1}", "kind": "number_values", "invalid": true },
-		{ "tags": { "sport": "motor", "surface": "asphalt" }, "invalid": false },
-		{
-			"tags": {
-				"natural": "peak",
-				"source": "Thunderforest Landschaft",
-				"source:imagery": "BingSat, ESRI, and other open satellite imagery available to OSM as of 2025"
-			},
-			"invalid": false
-		},
-		{ "tags": "{\"barrier\":\"turnstile\",\"level\":\"0\",\"fee\":\"yes\"}", "invalid": false },
-		{ "tags": { "natural": "beach", "surface": "grass" }, "invalid": false },
-		{ "tags": "{\"landuse\":\"vineyard\"}", "invalid": false },
-		{
-			"tags": "{\"tags\":{\"amenity\":\"post_box\",\"operator\":\"Royal Mail\"}}",
-			"kind": "nested_object",
-			"invalid": true
-		},
-		{ "tags": { "power": "circuit" }, "invalid": false },
-		{ "tags": "{\"natural\":\"shrubbery\",\"shrubbery:density\":\"medium\"}", "invalid": false },
-		{
-			"tags": {
-				"cuisine": "mexican",
-				"takeaway": "yes",
-				"drive_through": "no",
-				"outdoor_seating": "yes"
-			},
-			"invalid": false
-		},
-		{
-			"tags": {
-				"emergency": "defibrillator",
-				"opening_hours": "24/7",
-				"indoor": "yes",
-				"wheelchair": "yes"
-			},
-			"invalid": false
-		},
-		{ "tags": { "emergency": "phone", "indoor": "no", "source": "survey" }, "invalid": false },
-		{ "tags": "{\"power\":1,\"source\":1}", "kind": "number_values", "invalid": true },
-		{
-			"tags": {
-				"healthcare": "hospital",
-				"note:ja": "国土数値情報（公共施設データ）平成19年　国土交通省"
-			},
-			"invalid": false
-		},
-		{ "tags": "{emergency=designated\nlit=yes}", "kind": "flat_text_not_json", "invalid": true },
-		{ "tags": "{\"sport\": \"x\"", "kind": "broken_json", "invalid": true },
-		{ "tags": { "cuisine": "italian" }, "invalid": false },
-		{
-			"tags": "{\"man_made\":\"water_tap\",\"seasonal\":\"no\",\"operational_status\":\"operational\",\"wheelchair\":\"yes\"}",
-			"invalid": false
-		},
-		{ "tags": "{\"aeroway\":\"helipad\"}", "invalid": false },
-		{ "tags": "{barrier=stile\nhorse=no}", "kind": "flat_text_not_json", "invalid": true },
-		{
-			"tags": {
-				"historic": "castle",
-				"source": "cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2012",
-				"source:heritage": "data.gouv.fr, Ministère de la Culture - 2016"
-			},
-			"invalid": false
-		},
-		{ "tags": "{\"railway\":\"stop\"}", "invalid": false },
-		{ "tags": "{\"building\":1,\"roof:colour\":1}", "kind": "number_values", "invalid": true },
-		{ "tags": { "natural": "saddle" }, "invalid": false },
-		{ "tags": "{\"route\": \"x\"", "kind": "broken_json", "invalid": true },
-		{ "tags": "{\"natural\":1,\"source\":1}", "kind": "number_values", "invalid": true },
-		{
-			"tags": "{service=irrigation\ntunnel=culvert}",
-			"kind": "flat_text_not_json",
-			"invalid": true
-		},
-		{ "tags": { "building": "yes" }, "invalid": false },
-		{ "tags": { "cuisine": "greek" }, "invalid": false },
-		{
-			"tags": {
-				"amenity": "post_box",
-				"brand:wikipedia": "en:Royal Mail",
-				"royal_cypher": "GR",
-				"post_box:type": "wall"
-			},
-			"invalid": false
-		},
-		{ "tags": { "barrier": "retaining_wall" }, "invalid": false },
-		{ "tags": { "power": "cable", "voltage": "15000" }, "invalid": false },
-		{ "tags": { "shop": "alcohol", "wheelchair": "no" }, "invalid": false },
-		{ "tags": "{\"leisure\":\"pitch\",\"sport\":\"padel\"}", "invalid": false },
-		{
-			"tags": "{\"tags\":{\"landuse\":\"grass\",\"source:ro\":\"Agenţia Europeană de Mediu, CORINE Land Cover, 2006\"}}",
-			"kind": "nested_object",
-			"invalid": true
-		},
-		{ "tags": { "leisure": "picnic_table", "material": "metal" }, "invalid": false },
-		{ "tags": { "waterway": "river", "width": "6" }, "invalid": false },
-		{ "tags": "{\"historic\": \"x\"", "kind": "broken_json", "invalid": true },
-		{
-			"tags": "{\"tags\":{\"power\":\"tower\",\"source\":\"BING\"}}",
-			"kind": "nested_object",
-			"invalid": true
-		},
-		{
-			"tags": { "natural": "tree_stump", "ownership": "public", "object:city": "Badalona" },
-			"invalid": false
-		},
-		{ "tags": "{\"place\":\"city_block\",\"type\":\"multipolygon\"}", "invalid": false },
-		{ "tags": { "natural": "bare_rock" }, "invalid": false },
-		{ "tags": "{\"highway\":\"elevator\",\"level\":\"0;1\"}", "invalid": false },
-		{ "tags": "{\"aeroway\":\"apron\"}", "invalid": false },
 		{ "tags": { "landuse": "industrial", "source": "survey" }, "invalid": false },
 		{
-			"tags": { "historic": "bomb_crater", "natural": "water", "start_date": "1945" },
+			"tags": { "barrier": "stile", "material": "metal", "bicycle": "yes", "foot": "designated" },
 			"invalid": false
 		},
-		{ "tags": { "landuse": "greenery", "source": "KRT Tilburg" }, "invalid": false },
+		{ "tags": { "highway": "bridleway", "smoothness": "horrible" }, "invalid": false },
 		{
-			"tags": "{\"barrier\":\"chain\",\"motor_vehicle\":\"no\",\"material\":\"metal\",\"locked\":\"yes\"}",
+			"tags": "{\"amenity\":\"kindergarten\",\"building:walls\":\"brick\",\"building\":\"yes\",\"wheelchair\":\"limited\"}",
 			"invalid": false
 		},
-		{ "tags": { "man_made": "pier" }, "invalid": false },
+		{ "tags": "{\"landuse\":\"flowerbed\",\"leisure\":\"garden\"}", "invalid": false },
+		{ "tags": { "office": "government" }, "invalid": false },
+		{ "tags": "\"historic=yes\\ntype=boundary\"", "kind": "json_string", "invalid": true },
+		{ "tags": { "emergency": "no" }, "invalid": false },
+		{ "tags": "{\"service\":\"irrigation\",\"waterway\":\"drain\"}", "invalid": false },
 		{
-			"tags": {
-				"building": "construction",
-				"source": "Imagerie Standard DigitalGlobe",
-				"roof:shape": "gabled"
-			},
-			"invalid": false
-		},
-		{
-			"tags": "{building=semidetached_house\ndataset=buildings}",
-			"kind": "flat_text_not_json",
-			"invalid": true
-		},
-		{
-			"tags": "\"building=barn\\nsource:date=2014-03-24\"",
+			"tags": "\"shop=hairdresser\\nsource:date=2014-03-24\"",
 			"kind": "json_string",
 			"invalid": true
 		},
-		{ "tags": { "landuse": "farmyard" }, "invalid": false },
-		{ "tags": { "power": "catenary_portal", "source": "BDOrtho IGN" }, "invalid": false },
-		{ "tags": { "aeroway": "parking_position", "ref": "2" }, "invalid": false },
-		{ "tags": "{\"building\":1,\"roof:shape\":1}", "kind": "number_values", "invalid": true },
+		{ "tags": "{\"sport\": \"x\"", "kind": "broken_json", "invalid": true },
 		{
-			"tags": "{amenity=waste_disposal\nbuilding=roof}",
-			"kind": "flat_text_not_json",
+			"tags": "\"office=association\\nopening_hours:signed=no\"",
+			"kind": "json_string",
 			"invalid": true
 		},
-		{ "tags": { "place": "island" }, "invalid": false },
-		{ "tags": { "historic": "bomb_crater" }, "invalid": false },
-		{ "tags": { "natural": "glacier", "source": "Bing" }, "invalid": false },
-		{ "tags": "\"route=train\\nwheelchair=limited\"", "kind": "json_string", "invalid": true },
-		{
-			"tags": { "leisure": "fitness_station", "wheelchair": "no", "sport": "fitness" },
-			"invalid": false
-		},
-		{ "tags": { "cuisine": "indian" }, "invalid": false },
-		{ "tags": { "man_made": "chimney", "material": "metal" }, "invalid": false },
-		{
-			"tags": {
-				"natural": "sand",
-				"type": "multipolygon",
-				"source_ref": "http://www.linz.govt.nz/topography/topo-maps/",
-				"source": "bing"
-			},
-			"invalid": false
-		},
-		{ "tags": { "shop": "car_parts" }, "invalid": false },
-		{ "tags": "null", "kind": "json_null", "invalid": true },
-		{ "tags": { "waterway": "ditch" }, "invalid": false },
-		{ "tags": { "natural": "ridge" }, "invalid": false },
-		{
-			"tags": { "sport": "swimming", "wheelchair": "yes", "swimming_pool": "inground" },
-			"invalid": false
-		},
-		{ "tags": { "natural": "beach", "sport": "swimming", "surface": "gravel" }, "invalid": false },
-		{
-			"tags": "[[\"historic\",\"bomb_crater\"],[\"start_date\",\"1945\"]]",
-			"kind": "json_array",
-			"invalid": true
-		},
-		{
-			"tags": {
-				"place": "city",
-				"source": "TIGER/Line® 2008 Place Shapefiles (http://www.census.gov/geo/www/tiger/)",
-				"type": "boundary",
-				"population:date": "2022"
-			},
-			"invalid": false
-		},
-		{ "tags": { "service": "slipway", "surface": "concrete" }, "invalid": false },
-		{ "tags": { "building": "slurry_tank", "covered": "yes" }, "invalid": false },
-		{
-			"tags": { "leisure": "firepit", "tents": "yes", "tourism": "camp_site", "seasonal": "no" },
-			"invalid": false
-		},
-		{
-			"tags": "[[\"shop\",\"furniture\"],[\"source\",\"Kaart Ground Survey 2017\"]]",
-			"kind": "json_array",
-			"invalid": true
-		},
-		{ "tags": { "route": "ferry" }, "invalid": false },
-		{
-			"tags": {
-				"barrier": "retaining_wall",
-				"source": "bing",
-				"material": "concrete",
-				"landuse": "grass"
-			},
-			"invalid": false
-		},
-		{ "tags": { "man_made": "gasometer", "source": "Bing" }, "invalid": false },
-		{ "tags": { "healthcare": "hospital", "operator:type": "private" }, "invalid": false },
-		{ "tags": { "highway": "secondary_link", "source": "bing" }, "invalid": false },
-		{
-			"tags": {
-				"man_made": "wastewater_plant",
-				"type": "multipolygon",
-				"source": "NHD",
-				"water": "reservoir"
-			},
-			"invalid": false
-		},
-		{ "tags": { "natural": "hill", "source": "GNS", "place": "locality" }, "invalid": false },
-		{ "tags": { "tourism": "camp_site", "type": "multipolygon" }, "invalid": false },
-		{
-			"tags": "{\"amenity\":\"waste_basket\",\"indoor\":\"no\",\"vending\":\"excrement_bags\"}",
-			"invalid": false
-		},
-		{
-			"tags": { "highway": "road", "source": "Bing", "layer": "1", "surface": "unpaved" },
-			"invalid": false
-		},
-		{ "tags": { "cuisine": "barbecue", "takeaway": "yes" }, "invalid": false },
-		{
-			"tags": "{\"tags\":{\"waterway\":\"drain\",\"width\":\"2\"}}",
-			"kind": "nested_object",
-			"invalid": true
-		},
-		{
-			"tags": "{\"tags\":{\"building\":\"service\",\"substation\":\"minor_distribution\"}}",
-			"kind": "nested_object",
-			"invalid": true
-		},
-		{ "tags": "{office=insurance\nwheelchair=no}", "kind": "flat_text_not_json", "invalid": true },
-		{ "tags": { "man_made": "water_well" }, "invalid": false },
-		{ "tags": { "cuisine": "kebab" }, "invalid": false },
-		{ "tags": { "highway": "trunk", "shoulder": "no" }, "invalid": false },
-		{
-			"tags": "[[\"building\",\"residential\"],[\"type\",\"multipolygon\"]]",
-			"kind": "json_array",
-			"invalid": true
-		},
-		{
-			"tags": "[[\"natural\",\"tree\"],[\"source\",\"bcc_dec_2016\"]]",
-			"kind": "json_array",
-			"invalid": true
-		},
-		{ "tags": { "service": "driveway" }, "invalid": false },
-		{ "tags": "{\"natural\":\"shrub\",\"source\":\"bing\"}", "invalid": false },
-		{ "tags": { "natural": "scree", "source": "bgmountains" }, "invalid": false },
-		{
-			"tags": { "power": "generator", "type": "multipolygon", "roof:height": "5" },
-			"invalid": false
-		},
-		{ "tags": { "highway": "elevator", "level": "-1;0", "indoor": "yes" }, "invalid": false },
-		{
-			"tags": { "railway": "crossing", "supervised": "no", "source:date": "2018" },
-			"invalid": false
-		},
-		{
-			"tags": { "natural": "bay", "source": "NRCan-CanVec-8.0", "type": "multipolygon" },
-			"invalid": false
-		},
-		{
-			"tags": {
-				"place": "farm",
-				"source:imagery": "BingSat, ESRI, and other open satellite imagery available to OSM as of 2025"
-			},
-			"invalid": false
-		},
-		{ "tags": { "route": "power", "voltage": "220000", "wires": "single" }, "invalid": false },
-		{
-			"tags": "{\"amenity\":\"bicycle_parking\",\"capacity\":\"14\",\"bicycle_parking\":\"shed\"}",
-			"invalid": false
-		},
-		{ "tags": { "service": "utility" }, "invalid": false },
-		{ "tags": { "cuisine": "chinese" }, "invalid": false },
-		{ "tags": "{\"waterway\":\"river\",\"width\":\"7\"}", "invalid": false },
-		{ "tags": { "natural": "shrubbery", "shrubbery:density": "dense" }, "invalid": false },
-		{
-			"tags": { "barrier": "fence", "landuse": "meadow", "location": "outdoor", "source": "bing" },
-			"invalid": false
-		},
-		{ "tags": { "emergency": "yes", "healthcare": "hospital", "psv": "yes" }, "invalid": false },
-		{ "tags": { "leisure": "fishing", "natural": "water" }, "invalid": false },
-		{
-			"tags": "{\"cuisine\":\"sandwich\",\"payment:credit_cards\":\"yes\",\"outdoor_seating\":\"no\"}",
-			"invalid": false
-		},
-		{ "tags": { "waterway": "canal", "width": "4" }, "invalid": false },
-		{ "tags": { "barrier": "handrail", "material": "metal" }, "invalid": false },
-		{ "tags": { "public_transport": "stop_area", "tram": "yes" }, "invalid": false },
-		{ "tags": "\"route=bicycle\\nsurface=asphalt\"", "kind": "json_string", "invalid": true },
-		{ "tags": "{\"service\":\"irrigation\"}", "invalid": false },
-		{ "tags": { "sport": "swimming" }, "invalid": false },
-		{ "tags": "{\"landuse\":1,\"residential\":1}", "kind": "number_values", "invalid": true },
+		{ "tags": { "highway": "give_way" }, "invalid": false },
 		{
 			"tags": {
 				"cuisine": "thai",
@@ -728,356 +89,54 @@
 			},
 			"invalid": false
 		},
-		{ "tags": { "railway": "signal", "ref": "A", "source": "BDOrtho IGN" }, "invalid": false },
-		{ "tags": "{\"aeroway\":\"navigationaid\",\"light:colour\":\"blue\"}", "invalid": false },
-		{ "tags": { "sport": "cricket", "surface": "grass" }, "invalid": false },
-		{ "tags": "{\"amenity\":\"place_of_worship\"}", "invalid": false },
+		{ "tags": { "building": "mosque", "religion": "muslim" }, "invalid": false },
 		{
-			"tags": "\"building=construction\\nconstruction=industrial\"",
-			"kind": "json_string",
-			"invalid": true
-		},
-		{ "tags": "\"shop=hardware\\nwheelchair=yes\"", "kind": "json_string", "invalid": true },
-		{ "tags": { "shop": "butcher" }, "invalid": false },
-		{ "tags": { "place": "cadastral_community" }, "invalid": false },
-		{ "tags": { "barrier": "cycle_barrier", "source": "survey" }, "invalid": false },
-		{ "tags": { "man_made": "surveillance", "surveillance:type": "ALPR" }, "invalid": false },
-		{ "tags": "{\"barrier\":\"gate\",\"foot\":\"permissive\"}", "invalid": false },
-		{
-			"tags": {
-				"boundary": "administrative",
-				"natural": "coastline",
-				"source": "BDLL25, EGRN, Instituto Geográfico Nacional",
-				"population:date": "2025"
-			},
+			"tags": "{\"man_made\":\"surveillance\",\"surveillance:zone\":\"entrance\",\"surveillance\":\"outdoor\"}",
 			"invalid": false
 		},
-		{
-			"tags": { "amenity": "cafe", "cuisine": "coffee_shop", "payment:cash": "yes" },
-			"invalid": false
-		},
-		{ "tags": { "historic": "yes", "ruins": "yes" }, "invalid": false },
-		{ "tags": { "natural": "hill", "place": "locality" }, "invalid": false },
-		{ "tags": { "barrier": "bollard", "foot": "designated" }, "invalid": false },
-		{
-			"tags": {
-				"railway": "crossing",
-				"source:ref": "#ŻółtaNaklejkaPLK",
-				"tactile_paving": "yes",
-				"source": "BDOrtho IGN"
-			},
-			"invalid": false
-		},
-		{ "tags": "{\"sport\":\"tennis\",\"surface\":\"paved\"}", "invalid": false },
-		{ "tags": { "highway": "milestone", "side": "left" }, "invalid": false },
-		{
-			"tags": "[[\"natural\",\"grassland\"],[\"source\",\"bgmountains\"]]",
-			"kind": "json_array",
-			"invalid": true
-		},
-		{
-			"tags": "{\"tags\":{\"highway\":\"construction\",\"maxspeed\":\"50\"}}",
-			"kind": "nested_object",
-			"invalid": true
-		},
-		{ "tags": { "railway": "buffer_stop", "source": "Bing" }, "invalid": false },
-		{
-			"tags": "{\"tags\":{\"building\":\"farm_auxiliary\",\"roof:shape\":\"skillion\"}}",
-			"kind": "nested_object",
-			"invalid": true
-		},
-		{ "tags": "{\"place\":\"suburb\"}", "invalid": false },
-		{ "tags": { "barrier": "block", "motorcycle": "yes" }, "invalid": false },
-		{ "tags": "{\"cuisine\":\"asian\",\"wheelchair\":\"no\"}", "invalid": false },
-		{
-			"tags": "{\"military\":\"bunker\",\"tourism\":\"attraction\",\"ruins\":\"yes\"}",
-			"invalid": false
-		},
-		{ "tags": "{\"highway\":1,\"wheelchair\":1}", "kind": "number_values", "invalid": true },
-		{ "tags": "\"railway=switch\\nref=4\"", "kind": "json_string", "invalid": true },
-		{ "tags": "{\"highway\":1,\"zone:traffic\":1}", "kind": "number_values", "invalid": true },
-		{
-			"tags": "[[\"natural\",\"tree_stump\"],[\"ownership\",\"public\"]]",
-			"kind": "json_array",
-			"invalid": true
-		},
-		{ "tags": { "leisure": "fitness_station", "wheelchair": "yes" }, "invalid": false },
-		{
-			"tags": "{\"man_made\":\"storage_tank\",\"source_ref\":\"http://www.linz.govt.nz/topography/topo-maps/\",\"source\":\"CanVec 6.0 - NRCan\"}",
-			"invalid": false
-		},
-		{
-			"tags": {
-				"public_transport": "stop_position",
-				"ref": "C",
-				"service": "regional",
-				"source": "Maxar Premium-Luftbilder (Beta)"
-			},
-			"invalid": false
-		},
-		{ "tags": "{craft=winery\nshop=wine}", "kind": "flat_text_not_json", "invalid": true },
-		{ "tags": { "building": "hut" }, "invalid": false },
-		{
-			"tags": { "emergency": "access_point", "hiking": "yes", "highway": "emergency_access_point" },
-			"invalid": false
-		},
-		{
-			"tags": "{\"landuse\":\"retail\",\"self_service\":\"yes\",\"source\":\"Bing\",\"smoking\":\"no\"}",
-			"invalid": false
-		},
-		{
-			"tags": "{landuse=forest\nsource_ref=http://www.linz.govt.nz/topography/topo-maps/}",
-			"kind": "flat_text_not_json",
-			"invalid": true
-		},
-		{ "tags": { "highway": "platform" }, "invalid": false },
-		{
-			"tags": { "highway": "residential", "sidewalk": "both", "maxspeed": "30 mph" },
-			"invalid": false
-		},
-		{ "tags": "{\"highway\":\"trailhead\",\"network:type\":\"node_network\"}", "invalid": false },
-		{ "tags": "{\"place\":1,\"type\":1}", "kind": "number_values", "invalid": true },
-		{
-			"tags": "{\"amenity\":\"bench\",\"colour\":\"yellow\",\"source\":\"survey\"}",
-			"invalid": false
-		},
-		{ "tags": { "aeroway": "gate", "level": "2" }, "invalid": false },
-		{ "tags": { "boundary": "census" }, "invalid": false },
-		{
-			"tags": { "cuisine": "korean", "source": "공공데이터포털", "reservation": "yes" },
-			"invalid": false
-		},
-		{
-			"tags": "{\"landuse\":\"construction\",\"type\":\"multipolygon\",\"residential\":\"apartments\"}",
-			"invalid": false
-		},
-		{ "tags": "{\"boundary\":\"local_authority\"}", "invalid": false },
-		{
-			"tags": {
-				"landuse": "orchard",
-				"source:date": "2015-03-31",
-				"trees": "tea_plants",
-				"orchard": "meadow_orchard"
-			},
-			"invalid": false
-		},
-		{
-			"tags": "{\"tags\":{\"highway\":\"traffic_signals\",\"traffic_signals\":\"pedestrian_crossing\"}}",
-			"kind": "nested_object",
-			"invalid": true
-		},
-		{ "tags": "\"service=drive-through\\nsurface=paved\"", "kind": "json_string", "invalid": true },
-		{ "tags": { "landuse": "basin", "water": "wastewater" }, "invalid": false },
-		{ "tags": { "leisure": "ice_rink" }, "invalid": false },
-		{ "tags": { "railway": "abandoned", "smoothness": "intermediate" }, "invalid": false },
-		{ "tags": { "craft": "sawmill", "landuse": "industrial" }, "invalid": false },
-		{ "tags": { "sport": "tennis", "surface": "asphalt" }, "invalid": false },
-		{
-			"tags": {
-				"building": "warehouse",
-				"roof:material": "metal",
-				"source": "microsoft/BuildingFootprints"
-			},
-			"invalid": false
-		},
-		{ "tags": { "building": "school", "leisure": "sports_centre" }, "invalid": false },
-		{ "tags": "{\"highway\":\"corridor\",\"level\":\"-1\"}", "invalid": false },
-		{ "tags": { "shop": "mobile_phone", "source": "Kaart Ground Survey 2017" }, "invalid": false },
-		{ "tags": { "landuse": "cemetery", "source": "NRCan-CanVec-7.0" }, "invalid": false },
-		{ "tags": { "tourism": "guest_house" }, "invalid": false },
-		{ "tags": { "man_made": "street_cabinet" }, "invalid": false },
-		{ "tags": "{\"tourism\":\"viewpoint\"}", "invalid": false },
-		{ "tags": { "building": "retail", "layer": "1", "internet_access": "wlan" }, "invalid": false },
-		{ "tags": { "highway": "motorway", "lanes": "4", "horse": "no" }, "invalid": false },
-		{
-			"tags": "{amenity=sanitary_dump_station\nfee=no}",
-			"kind": "flat_text_not_json",
-			"invalid": true
-		},
-		{ "tags": { "amenity": "compressed_air", "covered": "no", "fee": "yes" }, "invalid": false },
-		{ "tags": "{\"highway\":\"trunk\"}", "invalid": false },
-		{ "tags": { "boundary": "place" }, "invalid": false },
-		{ "tags": "{\"building\":1,\"source\":1}", "kind": "number_values", "invalid": true },
-		{
-			"tags": "{\"building\":\"house\",\"survey:date\":\"2022\",\"start_date\":\"1970\"}",
-			"invalid": false
-		},
-		{ "tags": { "emergency": "no" }, "invalid": false },
-		{ "tags": { "shop": "outpost", "wheelchair": "no" }, "invalid": false },
-		{ "tags": "{\"tourism\":\"hotel\",\"wheelchair\":\"no\"}", "invalid": false },
-		{ "tags": "{natural=sand\nsport=golf}", "kind": "flat_text_not_json", "invalid": true },
-		{ "tags": { "historic": "heritage", "roof:shape": "flat" }, "invalid": false },
-		{ "tags": { "landuse": "reservoir", "source": "NRCan-CanVec-7.0" }, "invalid": false },
-		{ "tags": "{\"barrier\":1,\"source\":1}", "kind": "number_values", "invalid": true },
-		{
-			"tags": "[[\"historic\",\"archaeological_site\"],[\"source_ref\",\"http://www.linz.govt.nz/topography/topo-maps/\"]]",
-			"kind": "json_array",
-			"invalid": true
-		},
-		{ "tags": { "building": "cabin" }, "invalid": false },
-		{ "tags": "{\"railway\": \"x\"", "kind": "broken_json", "invalid": true },
-		{ "tags": { "shop": "florist", "source": "BAG" }, "invalid": false },
-		{ "tags": { "tourism": "chalet", "wheelchair": "no" }, "invalid": false },
-		{
-			"tags": { "highway": "rest_area", "picnic_table": "yes", "toilets": "yes" },
-			"invalid": false
-		},
-		{
-			"tags": "{office=educational_institution\nwheelchair=yes}",
-			"kind": "flat_text_not_json",
-			"invalid": true
-		},
-		{ "tags": { "tourism": "viewpoint" }, "invalid": false },
-		{ "tags": "{\"landuse\":\"commercial\",\"office\":\"government\"}", "invalid": false },
-		{
-			"tags": "{\"natural\":\"water\",\"water\":\"ditch\",\"source\":\"National Hydrography Dataset (http://nhd.usgs.gov/)\"}",
-			"invalid": false
-		},
-		{ "tags": "{\"boundary\":\"postal_code\",\"landuse\":\"residential\"}", "invalid": false },
-		{ "tags": "{\"highway\":\"primary\"}", "invalid": false },
-		{ "tags": { "emergency": "suction_point", "source": "GPS(APK:StrazakOSM)" }, "invalid": false },
-		{ "tags": { "natural": "spring" }, "invalid": false },
-		{ "tags": "{\"tourism\":\"chalet\"}", "invalid": false },
-		{ "tags": "{\"shop\":\"hairdresser\",\"source:date\":\"2014-03-24\"}", "invalid": false },
-		{ "tags": { "man_made": "pipeline", "operator": "Village of Minooka" }, "invalid": false },
-		{
-			"tags": { "shop": "yes", "source": "Reconocimiento cartográfico de campo 2016 por KG." },
-			"invalid": false
-		},
-		{ "tags": "{\"place\":\"islet\",\"seamark:type\":\"rock\"}", "invalid": false },
-		{ "tags": { "sport": "karting", "surface": "asphalt" }, "invalid": false },
-		{ "tags": { "highway": "trunk_link", "layer": "2" }, "invalid": false },
-		{
-			"tags": { "cuisine": "mexican", "payment:cash": "yes", "diet:vegetarian": "yes" },
-			"invalid": false
-		},
-		{ "tags": "{\"waterway\":\"stream\",\"width\":\"0.5\"}", "invalid": false },
-		{ "tags": { "barrier": "hedge", "source": "View from path;Bing" }, "invalid": false },
-		{ "tags": { "power": "line", "voltage": "46000", "source": "Bing" }, "invalid": false },
-		{ "tags": { "leisure": "nature_reserve", "operator:type": "government" }, "invalid": false },
-		{
-			"tags": { "cuisine": "greek", "indoor_seating": "yes", "takeaway": "yes" },
-			"invalid": false
-		},
-		{ "tags": "\"amenity=bench\\nseats=4\"", "kind": "json_string", "invalid": true },
-		{
-			"tags": { "leisure": "sports_centre", "sport": "soccer", "wheelchair": "limited" },
-			"invalid": false
-		},
-		{
-			"tags": "{\"amenity\":\"kindergarten\",\"building:walls\":\"brick\",\"building\":\"yes\",\"wheelchair\":\"limited\"}",
-			"invalid": false
-		},
-		{ "tags": "{\"tourism\":\"apartment\",\"wheelchair\":\"no\"}", "invalid": false },
 		{ "tags": { "office": "insurance", "opening_hours": "Mo-Fr 09:00-17:00" }, "invalid": false },
+		{ "tags": { "healthcare": "laboratory", "wheelchair": "yes" }, "invalid": false },
+		{ "tags": "{\"amenity\":1,\"building\":1}", "kind": "number_values", "invalid": true },
+		{ "tags": { "historic": "monument" }, "invalid": false },
+		{ "tags": "{\"power\":1,\"transformer\":1}", "kind": "number_values", "invalid": true },
+		{ "tags": "{\"amenity\":\"shelter\",\"lit\":\"no\",\"network\":\"M réso\"}", "invalid": false },
 		{
-			"tags": "[[\"tourism\",\"museum\"],[\"wheelchair\",\"no\"]]",
+			"tags": "[[\"historic\",\"church\"],[\"tourism\",\"attraction\"]]",
 			"kind": "json_array",
 			"invalid": true
 		},
-		{ "tags": { "tourism": "motel" }, "invalid": false },
+		{ "tags": { "service": "slipway", "surface": "concrete" }, "invalid": false },
+		{ "tags": "{\"highway\":1,\"side\":1}", "kind": "number_values", "invalid": true },
+		{ "tags": { "cuisine": "thai", "diet:vegetarian": "yes" }, "invalid": false },
+		{ "tags": { "building": "service", "source": "Powiat mikołowski" }, "invalid": false },
 		{
-			"tags": "\"boundary=local_authority\\ntype=boundary\"",
-			"kind": "json_string",
-			"invalid": true
-		},
-		{ "tags": { "landuse": "aquaculture", "source": "Maxar", "water": "pond" }, "invalid": false },
-		{
-			"tags": { "craft": "metal_construction", "wheelchair": "yes", "operational_status": "open" },
+			"tags": { "service": "parking_aisle", "smoothness": "excellent", "source": "USGS Ortho" },
 			"invalid": false
 		},
+		{
+			"tags": "{\"building\":\"outbuilding\",\"source:building\":\"EGiB\",\"source:addr\":\"emuia.gugik.gov.pl\",\"roof:shape\":\"gabled\"}",
+			"invalid": false
+		},
+		{ "tags": "\"aeroway=parking_position\\nref=2\"", "kind": "json_string", "invalid": true },
 		{
 			"tags": "{\"building\":\"slurry_tank\",\"man_made\":\"storage_tank\",\"content\":\"slurry\"}",
 			"invalid": false
 		},
-		{ "tags": { "shop": "supermarket", "source": "survey", "toilets": "yes" }, "invalid": false },
+		{ "tags": "{\"sport\":\"multi\",\"type\":\"multipolygon\"}", "invalid": false },
+		{ "tags": { "military": "bunker", "tourism": "attraction", "ruins": "yes" }, "invalid": false },
+		{ "tags": { "building": "school", "leisure": "sports_centre" }, "invalid": false },
+		{ "tags": { "amenity": "veterinary", "opening_hours": "24/7" }, "invalid": false },
 		{
-			"tags": { "service": "emergency_access", "surface": "asphalt", "smoothness": "good" },
-			"invalid": false
-		},
-		{ "tags": "{\"service\":1,\"source\":1}", "kind": "number_values", "invalid": true },
-		{
-			"tags": "\"service=utility\\nsource=cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2012\"",
-			"kind": "json_string",
-			"invalid": true
-		},
-		{ "tags": { "sport": "american_football", "surface": "artificial_turf" }, "invalid": false },
-		{ "tags": "{\"office\":\"association\"}", "invalid": false },
-		{ "tags": { "leisure": "dog_park", "wheelchair": "yes" }, "invalid": false },
-		{ "tags": "\"landuse=flowerbed\\nleisure=garden\"", "kind": "json_string", "invalid": true },
-		{ "tags": "{\"historic\":\"monument\"}", "invalid": false },
-		{
-			"tags": "{\"tags\":{\"barrier\":\"height_restrictor\",\"maxheight\":\"2\"}}",
-			"kind": "nested_object",
-			"invalid": true
-		},
-		{
-			"tags": "[[\"amenity\",\"watering_place\"],[\"natural\",\"water\"]]",
-			"kind": "json_array",
-			"invalid": true
-		},
-		{
-			"tags": { "railway": "narrow_gauge", "usage": "main", "voltage": "11000" },
-			"invalid": false
-		},
-		{ "tags": { "man_made": "mast", "material": "metal" }, "invalid": false },
-		{ "tags": "{\"office\":\"association\",\"wheelchair\":\"yes\"}", "invalid": false },
-		{
-			"tags": "[[\"landuse\",\"basin\"],[\"type\",\"multipolygon\"]]",
-			"kind": "json_array",
-			"invalid": true
-		},
-		{
-			"tags": "[[\"historic\",\"charcoal_pile\"],[\"source\",\"survey\"]]",
-			"kind": "json_array",
-			"invalid": true
-		},
-		{ "tags": { "barrier": "height_restrictor" }, "invalid": false },
-		{
-			"tags": {
-				"barrier": "cattle_grid",
-				"source": "survey",
-				"foot": "yes",
-				"motor_vehicle": "yes"
-			},
+			"tags": { "highway": "tertiary", "sidewalk": "both", "tiger:name_type": "Rd", "lit": "yes" },
 			"invalid": false
 		},
 		{
-			"tags": "{\"power\":\"substation\",\"street_cabinet\":\"power\",\"voltage\":\"11000;400\"}",
+			"tags": { "man_made": "manhole", "operator": "Orange", "material": "concrete" },
 			"invalid": false
 		},
-		{ "tags": { "route": "power", "voltage": "132000", "wires": "double" }, "invalid": false },
-		{ "tags": { "landuse": "garages" }, "invalid": false },
-		{
-			"tags": {
-				"leisure": "garden",
-				"surface": "dirt",
-				"operator:type": "private",
-				"source": "bing_imagery"
-			},
-			"invalid": false
-		},
-		{
-			"tags": "{\"amenity\":\"compressed_air\",\"fee\":\"no\",\"covered\":\"no\"}",
-			"invalid": false
-		},
-		{ "tags": "{\"historic\":1,\"source\":1}", "kind": "number_values", "invalid": true },
-		{ "tags": { "public_transport": "station" }, "invalid": false },
-		{
-			"tags": "[[\"amenity\",\"shelter\"],[\"lit\",\"no\"]]",
-			"kind": "json_array",
-			"invalid": true
-		},
-		{ "tags": { "place": "hamlet", "source:population": "pmgsy" }, "invalid": false },
-		{ "tags": "{\"barrier\":\"chain\",\"bicycle\":\"yes\"}", "invalid": false },
-		{ "tags": "{\"amenity\":1,\"building\":1}", "kind": "number_values", "invalid": true },
-		{ "tags": { "shop": "mobile_phone", "wheelchair": "no" }, "invalid": false },
-		{ "tags": "{\"route\":\"mtb\",\"surface\":\"dirt\"}", "invalid": false },
-		{ "tags": "{\"service\":\"irrigation\",\"waterway\":\"drain\"}", "invalid": false },
-		{ "tags": { "tourism": "viewpoint", "wheelchair": "limited" }, "invalid": false },
-		{ "tags": { "office": "insurance" }, "invalid": false },
-		{ "tags": "{\"barrier\":1,\"landuse\":1}", "kind": "number_values", "invalid": true },
-		{ "tags": { "sport": "basketball", "surface": "asphalt" }, "invalid": false },
+		{ "tags": { "sport": "multi" }, "invalid": false },
+		{ "tags": { "building": "sports_hall", "leisure": "sports_hall" }, "invalid": false },
+		{ "tags": "{\"route\":1,\"type\":1}", "kind": "number_values", "invalid": true },
 		{
 			"tags": {
 				"railway": "crossing",
@@ -1087,41 +146,102 @@
 			},
 			"invalid": false
 		},
+		{ "tags": { "leisure": "dog_park" }, "invalid": false },
 		{
-			"tags": "[[\"natural\",\"valley\"],[\"place\",\"locality\"]]",
+			"tags": "[[\"shop\",\"telecommunication\"],[\"wheelchair\",\"yes\"]]",
 			"kind": "json_array",
 			"invalid": true
 		},
-		{ "tags": "{\"route\":\"railway\",\"type\":\"route\"}", "invalid": false },
 		{
-			"tags": { "barrier": "jersey_barrier", "layer": "1", "motor_vehicle": "no" },
+			"tags": { "natural": "scree", "source": "nls.fi database import", "type": "multipolygon" },
 			"invalid": false
 		},
-		{ "tags": { "natural": "shrub", "source": "bing" }, "invalid": false },
-		{ "tags": { "barrier": "turnstile", "foot": "yes", "level": "0" }, "invalid": false },
+		{ "tags": { "sport": "swimming", "wheelchair": "yes" }, "invalid": false },
 		{
-			"tags": { "historic": "wayside_cross", "material": "stone", "source": "turistautak.hu" },
+			"tags": { "man_made": "survey_point", "material": "concrete", "place": "locality" },
 			"invalid": false
 		},
+		{ "tags": "{\"historic\":1,\"source_ref\":1}", "kind": "number_values", "invalid": true },
 		{
-			"tags": "[[\"building\",\"house\"],[\"roof:shape\",\"hipped\"]]",
-			"kind": "json_array",
-			"invalid": true
+			"tags": { "boundary": "marker", "format": "squared_stone", "material": "stone" },
+			"invalid": false
 		},
-		{ "tags": { "office": "estate_agent", "wheelchair": "no" }, "invalid": false },
-		{ "tags": { "power": "switch", "voltage": "161000" }, "invalid": false },
+		{ "tags": { "man_made": "mast" }, "invalid": false },
+		{ "tags": { "highway": "motorway_junction", "ref": "17" }, "invalid": false },
+		{ "tags": { "amenity": "nursing_home" }, "invalid": false },
+		{ "tags": { "man_made": "water_well" }, "invalid": false },
 		{
 			"tags": {
-				"place": "isolated_dwelling",
-				"source": "cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2012",
-				"type": "multipolygon"
+				"man_made": "street_cabinet",
+				"operator": "Enedis",
+				"operator:wikidata": "Q7988183"
+			},
+			"invalid": false
+		},
+		{ "tags": { "cuisine": "asian", "takeaway": "yes", "wheelchair": "no" }, "invalid": false },
+		{ "tags": { "natural": "spring", "source": "survey, GPS" }, "invalid": false },
+		{
+			"tags": {
+				"service": "utility",
+				"source:power": "Enedis",
+				"source": "cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2011"
+			},
+			"invalid": false
+		},
+		{ "tags": { "place": "municipality" }, "invalid": false },
+		{ "tags": "{\"emergency\":\"assembly_point\",\"grades\":\"1-6\"}", "invalid": false },
+		{ "tags": { "railway": "buffer_stop" }, "invalid": false },
+		{ "tags": { "route": "road", "type": "route", "surface": "asphalt" }, "invalid": false },
+		{
+			"tags": { "building": "house", "roof:shape": "hipped", "height": "3", "house": "terraced" },
+			"invalid": false
+		},
+		{ "tags": "{power=transformer\nvoltage=20000}", "kind": "flat_text_not_json", "invalid": true },
+		{ "tags": { "cuisine": "kebab" }, "invalid": false },
+		{
+			"tags": { "leisure": "sports_centre", "wheelchair": "yes", "payment:cash": "yes" },
+			"invalid": false
+		},
+		{
+			"tags": {
+				"amenity": "nursing_home",
+				"note:ja": "国土数値情報（公共施設データ）平成19年　国土交通省"
 			},
 			"invalid": false
 		},
 		{
-			"tags": "{\"boundary\":\"administrative\",\"source:postal_code\":\"La Poste - 12/2014\",\"name:prefix:ru\":\"деревня\",\"source\":\"cuzk:ruian\"}",
+			"tags": "{\"tags\":{\"route\":\"train\",\"type\":\"route\"}}",
+			"kind": "nested_object",
+			"invalid": true
+		},
+		{ "tags": { "railway": "proposed", "tunnel": "yes" }, "invalid": false },
+		{
+			"tags": "{\"tags\":{\"man_made\":\"water_tap\",\"seasonal\":\"no\"}}",
+			"kind": "nested_object",
+			"invalid": true
+		},
+		{ "tags": { "man_made": "pipeline", "operator": "Village of Minooka" }, "invalid": false },
+		{
+			"tags": { "cuisine": "french", "indoor_seating": "yes", "wheelchair": "yes" },
 			"invalid": false
 		},
+		{
+			"tags": "{building=residential\ntype=multipolygon}",
+			"kind": "flat_text_not_json",
+			"invalid": true
+		},
+		{
+			"tags": { "service": "alley", "surface": "sett", "source": "DigitalGlobe Premium Imagery" },
+			"invalid": false
+		},
+		{ "tags": "{\"amenity\":1,\"fee\":1}", "kind": "number_values", "invalid": true },
+		{ "tags": "{shop=furniture\nwheelchair=no}", "kind": "flat_text_not_json", "invalid": true },
+		{
+			"tags": "{\"tags\":{\"highway\":\"residential\",\"tiger:cfcc\":\"A41\"}}",
+			"kind": "nested_object",
+			"invalid": true
+		},
+		{ "tags": { "landuse": "allotments", "source": "Bing" }, "invalid": false },
 		{
 			"tags": {
 				"railway": "subway",
@@ -1132,1111 +252,27 @@
 			"invalid": false
 		},
 		{
-			"tags": {
-				"aeroway": "holding_position",
-				"direction": "backward",
-				"holding_position:type": "runway"
-			},
-			"invalid": false
-		},
-		{ "tags": "\"barrier=stile\\nfoot=yes\"", "kind": "json_string", "invalid": true },
-		{
-			"tags": "[[\"building\",\"shed\"],[\"source\",\"Bing\"]]",
+			"tags": "[[\"highway\",\"primary_link\"],[\"sidewalk\",\"right\"]]",
 			"kind": "json_array",
 			"invalid": true
 		},
 		{
-			"tags": { "amenity": "compressed_air", "covered": "no", "lit": "yes", "fee": "yes" },
+			"tags": "{\"amenity\":\"nursing_home\",\"note\":\"National-Land Numerical Information (Public Facility) 2006, MLIT Japan\",\"note:ja\":\"国土数値情報（公共施設データ）平成19年　国土交通省\"}",
 			"invalid": false
 		},
-		{ "tags": { "man_made": "utility_pole", "utility": "telecom;power" }, "invalid": false },
-		{ "tags": { "aeroway": "jet_bridge", "highway": "footway" }, "invalid": false },
-		{ "tags": "{\"barrier\":\"cycle_barrier\"}", "invalid": false },
-		{ "tags": { "healthcare": "physiotherapist", "wheelchair": "yes" }, "invalid": false },
-		{ "tags": { "route": "mtb", "surface": "ground" }, "invalid": false },
-		{ "tags": "{\"landuse\":\"religious\",\"type\":\"multipolygon\"}", "invalid": false },
-		{ "tags": { "highway": "pedestrian", "motor_vehicle": "permit" }, "invalid": false },
+		{ "tags": { "tourism": "viewpoint" }, "invalid": false },
+		{ "tags": "{\"landuse\":\"commercial\",\"office\":\"government\"}", "invalid": false },
 		{
-			"tags": "{\"highway\":\"busway\",\"layer\":\"1\",\"zone:traffic\":\"NL:urban\"}",
+			"tags": "{\"place\":\"city\",\"population:date\":\"2022\",\"source\":\"TIGER/Line® 2008 Place Shapefiles (http://www.census.gov/geo/www/tiger/)\"}",
 			"invalid": false
 		},
-		{ "tags": { "historic": "wayside_shrine", "source": "survey" }, "invalid": false },
-		{
-			"tags": "{\"tags\":{\"highway\":\"raceway\",\"lit\":\"yes\"}}",
-			"kind": "nested_object",
-			"invalid": true
-		},
-		{
-			"tags": "{railway=tram_stop\ntactile_paving=yes}",
-			"kind": "flat_text_not_json",
-			"invalid": true
-		},
-		{ "tags": { "man_made": "wastewater_plant" }, "invalid": false },
-		{
-			"tags": { "place": "town", "source": "GNS", "type": "boundary", "population:date": "2006" },
-			"invalid": false
-		},
-		{
-			"tags": "{\"tags\":{\"landuse\":\"construction\",\"type\":\"multipolygon\"}}",
-			"kind": "nested_object",
-			"invalid": true
-		},
-		{
-			"tags": {
-				"barrier": "yes",
-				"landuse": "residential",
-				"residential": "single_family",
-				"place": "plot"
-			},
-			"invalid": false
-		},
-		{
-			"tags": {
-				"emergency": "yes",
-				"smoothness": "good",
-				"surface": "paving_stones",
-				"foot": "yes"
-			},
-			"invalid": false
-		},
-		{
-			"tags": "{\"natural\":\"bay\",\"type\":\"multipolygon\",\"source\":\"Nunat Aqqi\"}",
-			"invalid": false
-		},
-		{ "tags": { "highway": "give_way" }, "invalid": false },
-		{ "tags": { "man_made": "breakwater" }, "invalid": false },
-		{ "tags": { "man_made": "surveillance" }, "invalid": false },
-		{ "tags": "{\"natural\": \"x\"", "kind": "broken_json", "invalid": true },
-		{ "tags": { "man_made": "utility_pole", "operator:wikidata": "Q6817918" }, "invalid": false },
-		{ "tags": { "aeroway": "parking_position", "surface": "concrete" }, "invalid": false },
-		{
-			"tags": { "historic": "railway", "railway": "abandoned", "service": "spur" },
-			"invalid": false
-		},
-		{ "tags": { "military": "bunker" }, "invalid": false },
-		{ "tags": { "natural": "fell" }, "invalid": false },
-		{
-			"tags": "\"office=association\\nopening_hours:signed=no\"",
-			"kind": "json_string",
-			"invalid": true
-		},
-		{ "tags": "\"route=bicycle\\ntype=route\"", "kind": "json_string", "invalid": true },
-		{
-			"tags": { "public_transport": "stop_position", "source:name:br": "proper translation" },
-			"invalid": false
-		},
-		{
-			"tags": "\"craft=metal_construction\\nwheelchair=yes\"",
-			"kind": "json_string",
-			"invalid": true
-		},
-		{
-			"tags": {
-				"historic": "archaeological_site",
-				"tourism": "attraction",
-				"tumulus": "round_tomb",
-				"protected": "yes"
-			},
-			"invalid": false
-		},
-		{ "tags": { "aeroway": "terminal" }, "invalid": false },
-		{
-			"tags": { "landuse": "industrial", "source": "NJ2002LULC", "plant:source": "hydro" },
-			"invalid": false
-		},
-		{ "tags": "{\"highway\":1,\"kerb\":1}", "kind": "number_values", "invalid": true },
-		{
-			"tags": { "cuisine": "sandwich", "payment:debit_cards": "yes", "smoking": "no" },
-			"invalid": false
-		},
-		{ "tags": { "service": "siding", "voltage": "3000" }, "invalid": false },
-		{
-			"tags": "{\"tags\":{\"man_made\":\"pipeline\",\"waterway\":\"pressurised\"}}",
-			"kind": "nested_object",
-			"invalid": true
-		},
-		{ "tags": "{\"building\":1,\"man_made\":1}", "kind": "number_values", "invalid": true },
-		{
-			"tags": {
-				"building": "construction",
-				"start_date": "2020",
-				"source": "Plan polyvalent Maroua"
-			},
-			"invalid": false
-		},
-		{
-			"tags": { "landuse": "railway", "layer": "1", "man_made": "bridge", "type": "multipolygon" },
-			"invalid": false
-		},
-		{ "tags": "{\"craft\":\"grinding_mill\"}", "invalid": false },
-		{
-			"tags": {
-				"building": "static_caravan",
-				"source": "microsoft/BuildingFootprints;esri/USA_NAD_Addresses"
-			},
-			"invalid": false
-		},
-		{
-			"tags": { "service": "alley", "surface": "sett", "source": "DigitalGlobe Premium Imagery" },
-			"invalid": false
-		},
-		{
-			"tags": "{\"leisure\":\"firepit\",\"tourism\":\"camp_site\",\"seasonal\":\"no\",\"tents\":\"yes\"}",
-			"invalid": false
-		},
-		{
-			"tags": { "service": "parking_aisle", "smoothness": "excellent", "source": "USGS Ortho" },
-			"invalid": false
-		},
-		{ "tags": "{\"amenity\": \"x\"", "kind": "broken_json", "invalid": true },
-		{
-			"tags": "{\"shop\":\"butcher\",\"wheelchair\":\"yes\",\"source\":\"survey\"}",
-			"invalid": false
-		},
-		{ "tags": { "amenity": "restaurant" }, "invalid": false },
-		{ "tags": { "cuisine": "burger", "toilets:wheelchair": "yes" }, "invalid": false },
-		{ "tags": { "sport": "running", "surface": "asphalt" }, "invalid": false },
-		{ "tags": "{\"natural\":1,\"note\":1}", "kind": "number_values", "invalid": true },
-		{ "tags": { "route": "road" }, "invalid": false },
-		{
-			"tags": { "natural": "shingle", "source": "Maxar Premium-Luftbilder (Beta)" },
-			"invalid": false
-		},
-		{
-			"tags": "[[\"railway\",\"milestone\"],[\"source\",\"interpolation\"]]",
-			"kind": "json_array",
-			"invalid": true
-		},
+		{ "tags": "{cuisine=korean\ntakeaway=yes}", "kind": "flat_text_not_json", "invalid": true },
 		{
 			"tags": {
 				"landuse": "industrial",
 				"substation": "distribution",
 				"source": "Union européenne - SOeS, CORINE Land Cover, 2006.",
 				"power": "generator"
-			},
-			"invalid": false
-		},
-		{ "tags": { "natural": "reef" }, "invalid": false },
-		{ "tags": "{\"healthcare\":\"doctor\",\"level\":\"1\"}", "invalid": false },
-		{ "tags": { "barrier": "chain", "locked": "yes" }, "invalid": false },
-		{ "tags": "{\"leisure\":\"garden\"}", "invalid": false },
-		{
-			"tags": {
-				"highway": "elevator",
-				"indoor": "yes",
-				"operator": "DB InfraGO AG",
-				"level": "-1;0"
-			},
-			"invalid": false
-		},
-		{
-			"tags": "{\"tags\":{\"waterway\":\"canal\",\"width\":\"10\"}}",
-			"kind": "nested_object",
-			"invalid": true
-		},
-		{ "tags": { "tourism": "chalet" }, "invalid": false },
-		{
-			"tags": "{service=driveway\nsmoothness=good}",
-			"kind": "flat_text_not_json",
-			"invalid": true
-		},
-		{
-			"tags": { "office": "company", "wheelchair": "no", "source": "Kaart Ground Survey 2017" },
-			"invalid": false
-		},
-		{ "tags": { "shop": "clothes", "source": "KG Ground Survey 2016" }, "invalid": false },
-		{ "tags": { "route": "bicycle", "surface": "asphalt", "state": "proposed" }, "invalid": false },
-		{ "tags": { "leisure": "horse_riding" }, "invalid": false },
-		{ "tags": { "highway": "motorway_junction", "ref": "18" }, "invalid": false },
-		{ "tags": { "cuisine": "indian", "outdoor_seating": "no" }, "invalid": false },
-		{
-			"tags": { "barrier": "jersey_barrier", "foot": "yes", "material": "plastic" },
-			"invalid": false
-		},
-		{ "tags": { "highway": "cycleway", "surface": "paving_stones" }, "invalid": false },
-		{ "tags": { "sport": "equestrian" }, "invalid": false },
-		{ "tags": { "highway": "busway" }, "invalid": false },
-		{
-			"tags": "{\"man_made\":\"works\",\"type\":\"multipolygon\",\"operator:type\":\"private\"}",
-			"invalid": false
-		},
-		{ "tags": { "highway": "footway" }, "invalid": false },
-		{
-			"tags": "[[\"power\",\"transformer\"],[\"utility\",\"power\"]]",
-			"kind": "json_array",
-			"invalid": true
-		},
-		{
-			"tags": { "building": "cabin", "roof:levels": "0", "source": "cuzk:ruian" },
-			"invalid": false
-		},
-		{ "tags": { "highway": "speed_camera" }, "invalid": false },
-		{ "tags": "{\"sport\":\"climbing\",\"type\":\"site\"}", "invalid": false },
-		{ "tags": { "service": "irrigation", "waterway": "drain" }, "invalid": false },
-		{
-			"tags": { "historic": "wayside_shrine", "religion": "shinto", "locked": "yes" },
-			"invalid": false
-		},
-		{
-			"tags": { "highway": "trunk", "maxspeed": "45 mph", "lanes": "1", "shoulder": "no" },
-			"invalid": false
-		},
-		{ "tags": { "place": "square", "surface": "paved", "type": "multipolygon" }, "invalid": false },
-		{
-			"tags": { "cuisine": "japanese", "takeaway": "yes", "wheelchair": "no", "level": "0" },
-			"invalid": false
-		},
-		{ "tags": { "natural": "cliff", "source": "knowledge" }, "invalid": false },
-		{ "tags": { "waterway": "drain" }, "invalid": false },
-		{ "tags": { "route": "piste", "type": "route" }, "invalid": false },
-		{ "tags": { "historic": "railway", "railway": "abandoned", "layer": "1" }, "invalid": false },
-		{ "tags": { "amenity": "post_box" }, "invalid": false },
-		{
-			"tags": { "landuse": "flowerbed", "type": "multipolygon", "leisure": "garden" },
-			"invalid": false
-		},
-		{
-			"tags": { "highway": "elevator", "operator": "DB InfraGO AG", "level": "0;-1" },
-			"invalid": false
-		},
-		{ "tags": { "cuisine": "asian", "takeaway": "yes", "wheelchair": "no" }, "invalid": false },
-		{ "tags": { "barrier": "wicket_gate", "motor_vehicle": "no" }, "invalid": false },
-		{ "tags": { "historic": "monument" }, "invalid": false },
-		{
-			"tags": { "shop": "yes", "source": "Reconocimiento cortográfico de campo 2016 por KG" },
-			"invalid": false
-		},
-		{ "tags": { "shop": "vacant", "source": "survey", "wheelchair": "yes" }, "invalid": false },
-		{ "tags": { "service": "regional", "shelter": "yes" }, "invalid": false },
-		{ "tags": "{\"sport\":\"karting\",\"surface\":\"asphalt\"}", "invalid": false },
-		{
-			"tags": {
-				"historic": "yes",
-				"source": "www.geoportal.gov.pl",
-				"place": "locality",
-				"location": "underground"
-			},
-			"invalid": false
-		},
-		{
-			"tags": { "boundary": "marker", "format": "squared_stone", "material": "stone" },
-			"invalid": false
-		},
-		{ "tags": "{\"man_made\": \"x\"", "kind": "broken_json", "invalid": true },
-		{ "tags": { "place": "square" }, "invalid": false },
-		{ "tags": "{shop=vacant\nwheelchair=no}", "kind": "flat_text_not_json", "invalid": true },
-		{ "tags": { "railway": "platform", "tunnel": "yes", "shelter": "no" }, "invalid": false },
-		{ "tags": "{\"highway\":\"primary_link\",\"turn:lanes\":\"right\"}", "invalid": false },
-		{ "tags": "{natural=bare_rock\nsource=Bing}", "kind": "flat_text_not_json", "invalid": true },
-		{ "tags": { "highway": "trunk", "maxspeed": "70", "surface": "concrete" }, "invalid": false },
-		{ "tags": { "tourism": "caravan_site" }, "invalid": false },
-		{ "tags": { "railway": "miniature", "usage": "tourism", "service": "yard" }, "invalid": false },
-		{
-			"tags": { "emergency": "siren", "tower:construction": "freestanding", "location": "roof" },
-			"invalid": false
-		},
-		{ "tags": "{\"cuisine\":1,\"level\":1}", "kind": "number_values", "invalid": true },
-		{ "tags": "{\"leisure\":\"horse_riding\",\"sport\":\"equestrian\"}", "invalid": false },
-		{ "tags": { "amenity": "veterinary", "opening_hours": "24/7" }, "invalid": false },
-		{ "tags": "{\"office\":1,\"opening_hours\":1}", "kind": "number_values", "invalid": true },
-		{ "tags": { "barrier": "hedge" }, "invalid": false },
-		{
-			"tags": {
-				"shop": "supermarket",
-				"source": "cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2011",
-				"stroller": "yes"
-			},
-			"invalid": false
-		},
-		{
-			"tags": "[[\"barrier\",\"city_wall\"],[\"material\",\"soil\"]]",
-			"kind": "json_array",
-			"invalid": true
-		},
-		{ "tags": { "tourism": "apartment", "wheelchair": "no" }, "invalid": false },
-		{
-			"tags": "{\"emergency\":1,\"fire_hydrant:diameter\":1}",
-			"kind": "number_values",
-			"invalid": true
-		},
-		{
-			"tags": "{\"tags\":{\"amenity\":\"drinking_water\",\"wheelchair\":\"no\"}}",
-			"kind": "nested_object",
-			"invalid": true
-		},
-		{ "tags": { "healthcare": "doctor" }, "invalid": false },
-		{ "tags": { "amenity": "kindergarten", "operator:type": "religious" }, "invalid": false },
-		{ "tags": "{\"natural\":1,\"ownership\":1}", "kind": "number_values", "invalid": true },
-		{ "tags": "{\"sport\":\"boules\",\"surface\":\"sand\"}", "invalid": false },
-		{ "tags": { "natural": "heath", "source": "AHN" }, "invalid": false },
-		{ "tags": "{landuse=railway\nlayer=1}", "kind": "flat_text_not_json", "invalid": true },
-		{ "tags": { "barrier": "cattle_grid", "bicycle": "yes", "motorcar": "yes" }, "invalid": false },
-		{ "tags": "\"waterway=drain\\nwidth=2\"", "kind": "json_string", "invalid": true },
-		{ "tags": { "emergency": "designated" }, "invalid": false },
-		{ "tags": { "route": "piste" }, "invalid": false },
-		{ "tags": { "amenity": "waste_disposal", "building": "yes", "fee": "no" }, "invalid": false },
-		{
-			"tags": {
-				"cuisine": "asian",
-				"wheelchair": "yes",
-				"indoor_seating": "yes",
-				"takeaway": "yes"
-			},
-			"invalid": false
-		},
-		{ "tags": { "office": "government" }, "invalid": false },
-		{
-			"tags": {
-				"boundary": "administrative",
-				"waterway": "river",
-				"source": "Municipal Demarcation Board"
-			},
-			"invalid": false
-		},
-		{ "tags": "{sport=athletics\nsurface=asphalt}", "kind": "flat_text_not_json", "invalid": true },
-		{ "tags": { "landuse": "basin", "source": "bing" }, "invalid": false },
-		{ "tags": { "power": "minor_line", "voltage": "400" }, "invalid": false },
-		{
-			"tags": { "shop": "mobile_phone", "wheelchair": "yes", "source": "Kaart Ground Survey 2017" },
-			"invalid": false
-		},
-		{ "tags": { "natural": "sand" }, "invalid": false },
-		{
-			"tags": "[[\"healthcare\",\"dentist\"],[\"source\",\"Local Knowledge\"]]",
-			"kind": "json_array",
-			"invalid": true
-		},
-		{ "tags": { "natural": "cape", "source": "NRCan-CanVec-10.0" }, "invalid": false },
-		{ "tags": "{\"man_made\":\"breakwater\",\"source\":\"Bing\"}", "invalid": false },
-		{ "tags": "{\"route\":1,\"surface\":1}", "kind": "number_values", "invalid": true },
-		{ "tags": "{\"natural\":\"beach\"}", "invalid": false },
-		{ "tags": "{\"barrier\":1,\"material\":1}", "kind": "number_values", "invalid": true },
-		{
-			"tags": {
-				"leisure": "park",
-				"surface": "grass",
-				"massgis:EOEAINVOLV": "0",
-				"ownership": "municipal"
-			},
-			"invalid": false
-		},
-		{
-			"tags": "\"landuse=vineyard\\nsource=European Environment Agency (EEA), CORINE Land Cover, 2006\"",
-			"kind": "json_string",
-			"invalid": true
-		},
-		{
-			"tags": "{\"building\":\"mosque\",\"denomination\":\"sunni\",\"capacity:persons\":\"<50\",\"source\":\"HOT_InAWARESurvey_2017\"}",
-			"invalid": false
-		},
-		{
-			"tags": {
-				"place": "municipality",
-				"source:population": "IBGE, DOU de 31/08/2023",
-				"source": "IBGE",
-				"type": "boundary"
-			},
-			"invalid": false
-		},
-		{ "tags": { "barrier": "wall" }, "invalid": false },
-		{ "tags": { "railway": "platform_edge", "ref": "3" }, "invalid": false },
-		{ "tags": "\"natural=shrub\\nsource=bing\"", "kind": "json_string", "invalid": true },
-		{ "tags": { "tourism": "artwork", "wheelchair": "yes" }, "invalid": false },
-		{ "tags": { "boundary": "health" }, "invalid": false },
-		{
-			"tags": "{\"tags\":{\"man_made\":\"pipeline\",\"tunnel\":\"yes\"}}",
-			"kind": "nested_object",
-			"invalid": true
-		},
-		{ "tags": { "railway": "signal", "source": "BDOrtho IGN" }, "invalid": false },
-		{ "tags": { "leisure": "pitch", "sport": "basketball" }, "invalid": false },
-		{ "tags": "{\"service\":\"drive-through\",\"tunnel\":\"building_passage\"}", "invalid": false },
-		{ "tags": { "railway": "miniature", "service": "yard" }, "invalid": false },
-		{
-			"tags": "{\"tags\":{\"place\":\"island\",\"source\":\"Bing\"}}",
-			"kind": "nested_object",
-			"invalid": true
-		},
-		{ "tags": "{\"route\":\"piste\",\"type\":\"route\"}", "invalid": false },
-		{ "tags": "{\"boundary\":1,\"source\":1}", "kind": "number_values", "invalid": true },
-		{
-			"tags": "{\"building\":\"residential\",\"source\":\"esri_USDOT_RiverCom911_WA;microsoft/BuildingFootprints\",\"type\":\"multipolygon\"}",
-			"invalid": false
-		},
-		{ "tags": "{\"route\":\"bus\"}", "invalid": false },
-		{
-			"tags": "{\"emergency\":\"no\",\"healthcare\":\"clinic\",\"psv\":\"no\",\"maxspeed\":\"20\"}",
-			"invalid": false
-		},
-		{ "tags": { "railway": "platform", "ref": "1", "source": "Bing" }, "invalid": false },
-		{
-			"tags": "{\"tags\":{\"route\":\"power\",\"voltage\":\"110000\"}}",
-			"kind": "nested_object",
-			"invalid": true
-		},
-		{
-			"tags": "{\"tags\":{\"place\":\"farm\",\"source:url\":\"https://maps.lib.utexas.edu/maps/topo/nicaragua/\"}}",
-			"kind": "nested_object",
-			"invalid": true
-		},
-		{ "tags": { "historic": "tomb", "religion": "christian" }, "invalid": false },
-		{ "tags": { "cuisine": "burger", "source": "survey" }, "invalid": false },
-		{
-			"tags": { "building": "retail", "source:addr": "FHRS Open Data", "roof:levels": "1" },
-			"invalid": false
-		},
-		{ "tags": { "amenity": "bench", "lit": "no", "seats": "3" }, "invalid": false },
-		{ "tags": { "shop": "mobile_phone", "wheelchair": "yes" }, "invalid": false },
-		{
-			"tags": { "natural": "reef", "type": "multipolygon", "source": "NRCan-CanVec-10.0" },
-			"invalid": false
-		},
-		{ "tags": { "railway": "platform", "train": "yes" }, "invalid": false },
-		{
-			"tags": "{cuisine=coffee_shop\nwheelchair=limited}",
-			"kind": "flat_text_not_json",
-			"invalid": true
-		},
-		{ "tags": { "amenity": "parking", "parking": "lane" }, "invalid": false },
-		{
-			"tags": {
-				"cuisine": "coffee_shop",
-				"diet:vegan": "yes",
-				"outdoor_seating": "yes",
-				"smoking": "no"
-			},
-			"invalid": false
-		},
-		{
-			"tags": {
-				"amenity": "hunting_stand",
-				"seasonal": "no",
-				"source": "aerial imagery",
-				"height": "4"
-			},
-			"invalid": false
-		},
-		{ "tags": { "highway": "proposed" }, "invalid": false },
-		{ "tags": { "highway": "primary_link" }, "invalid": false },
-		{ "tags": "\"man_made=cutline\\nsurface=grass\"", "kind": "json_string", "invalid": true },
-		{ "tags": { "historic": "railway" }, "invalid": false },
-		{ "tags": { "sport": "skateboard", "surface": "concrete" }, "invalid": false },
-		{ "tags": { "natural": "rock", "source": "NRCan-CanVec-7.0" }, "invalid": false },
-		{ "tags": { "barrier": "bollard" }, "invalid": false },
-		{ "tags": { "leisure": "ice_rink", "seasonal": "yes" }, "invalid": false },
-		{
-			"tags": { "natural": "spring", "ownership": "private", "source": "survey" },
-			"invalid": false
-		},
-		{ "tags": { "highway": "primary" }, "invalid": false },
-		{ "tags": "{\"historic\":1,\"tourism\":1}", "kind": "number_values", "invalid": true },
-		{
-			"tags": "{\"tags\":{\"sport\":\"climbing\",\"type\":\"site\"}}",
-			"kind": "nested_object",
-			"invalid": true
-		},
-		{
-			"tags": { "man_made": "manhole", "operator": "Orange", "material": "concrete" },
-			"invalid": false
-		},
-		{ "tags": "{\"natural\":\"sand\",\"source\":\"bing\"}", "invalid": false },
-		{ "tags": "{\"leisure\":\"dog_park\",\"wheelchair\":\"no\"}", "invalid": false },
-		{ "tags": "\"highway=motorway_link\\ntoll:hgv=yes\"", "kind": "json_string", "invalid": true },
-		{ "tags": { "route": "power", "type": "route", "voltage": "132000" }, "invalid": false },
-		{ "tags": { "man_made": "bridge" }, "invalid": false },
-		{
-			"tags": {
-				"building": "garages",
-				"capacity": "3",
-				"source:outline": "ALKIS NRW",
-				"source": "kapor2"
-			},
-			"invalid": false
-		},
-		{
-			"tags": { "highway": "tertiary", "sidewalk": "both", "tiger:name_type": "Rd", "lit": "yes" },
-			"invalid": false
-		},
-		{ "tags": "{\"highway\":\"footway\"}", "invalid": false },
-		{ "tags": { "power": "line" }, "invalid": false },
-		{ "tags": { "building": "mosque", "source": "HOT_InAWARESurvey_2018" }, "invalid": false },
-		{
-			"tags": "{\"tags\":{\"shop\":\"car\",\"wheelchair\":\"yes\"}}",
-			"kind": "nested_object",
-			"invalid": true
-		},
-		{ "tags": { "service": "crossover", "source": "bing" }, "invalid": false },
-		{ "tags": { "route": "hiking" }, "invalid": false },
-		{ "tags": "{\"office\":\"religion\",\"religion\":\"christian\"}", "invalid": false },
-		{ "tags": { "building": "greenhouse", "source": "Bing" }, "invalid": false },
-		{ "tags": "{\"amenity\":\"recycling\",\"recycling:glass_bottles\":\"yes\"}", "invalid": false },
-		{
-			"tags": { "highway": "road", "surface": "unpaved", "source": "Bing", "layer": "1" },
-			"invalid": false
-		},
-		{ "tags": "{sport=climbing\ntype=site}", "kind": "flat_text_not_json", "invalid": true },
-		{
-			"tags": "\"landuse=greenhouse_horticulture\\nsource=RABA-KGZ\"",
-			"kind": "json_string",
-			"invalid": true
-		},
-		{ "tags": "\"route=hiking\\nsac_scale=hiking\"", "kind": "json_string", "invalid": true },
-		{ "tags": { "landuse": "greenhouse_horticulture", "source": "RABA-KGZ" }, "invalid": false },
-		{ "tags": { "highway": "motorway_junction", "ref": "17" }, "invalid": false },
-		{
-			"tags": "[[\"service\",\"parking_aisle\"],[\"vehicle\",\"private\"]]",
-			"kind": "json_array",
-			"invalid": true
-		},
-		{ "tags": { "landuse": "cemetery", "religion": "none" }, "invalid": false },
-		{ "tags": "\"amenity=parking_space\\nsite=parking\"", "kind": "json_string", "invalid": true },
-		{
-			"tags": { "natural": "cave_entrance", "tourism": "attraction", "wheelchair": "no" },
-			"invalid": false
-		},
-		{ "tags": { "healthcare": "laboratory" }, "invalid": false },
-		{ "tags": { "healthcare": "laboratory", "wheelchair": "yes" }, "invalid": false },
-		{ "tags": "{shop=supermarket\ntoilets=yes}", "kind": "flat_text_not_json", "invalid": true },
-		{ "tags": { "cuisine": "korean", "source": "공공데이터포털" }, "invalid": false },
-		{
-			"tags": "{\"tags\":{\"man_made\":\"works\",\"product\":\"food\"}}",
-			"kind": "nested_object",
-			"invalid": true
-		},
-		{ "tags": "{\"highway\":\"crossing\"}", "invalid": false },
-		{ "tags": { "building": "religious" }, "invalid": false },
-		{
-			"tags": "{\"tags\":{\"highway\":\"bridleway\",\"mtb:scale\":\"0\"}}",
-			"kind": "nested_object",
-			"invalid": true
-		},
-		{ "tags": { "landuse": "meadow", "source:date": "2016-03-03" }, "invalid": false },
-		{ "tags": { "office": "employment_agency" }, "invalid": false },
-		{ "tags": { "leisure": "picnic_table" }, "invalid": false },
-		{
-			"tags": { "barrier": "stile", "material": "metal", "bicycle": "yes", "foot": "designated" },
-			"invalid": false
-		},
-		{
-			"tags": { "landuse": "basin", "man_made": "pond", "natural": "water", "source": "bing" },
-			"invalid": false
-		},
-		{ "tags": { "leisure": "beach_resort" }, "invalid": false },
-		{
-			"tags": { "leisure": "outdoor_seating", "seasonal": "yes", "smoking": "no", "lit": "no" },
-			"invalid": false
-		},
-		{
-			"tags": { "landuse": "religious", "source": "Esri", "religion": "buddhist" },
-			"invalid": false
-		},
-		{ "tags": { "tourism": "camp_site" }, "invalid": false },
-		{
-			"tags": { "emergency": "defibrillator", "wheelchair": "yes", "level": "1" },
-			"invalid": false
-		},
-		{ "tags": { "natural": "spring", "source": "survey, GPS" }, "invalid": false },
-		{ "tags": "{\"sport\":\"tennis\",\"surface\":\"tartan\"}", "invalid": false },
-		{
-			"tags": { "leisure": "picnic_table", "wheelchair": "yes", "sport": "chess" },
-			"invalid": false
-		},
-		{ "tags": { "landuse": "garages", "type": "multipolygon" }, "invalid": false },
-		{ "tags": { "sport": "multi" }, "invalid": false },
-		{ "tags": { "barrier": "kerb", "kerb": "flush" }, "invalid": false },
-		{
-			"tags": "{\"building\":\"outbuilding\",\"source:building\":\"EGiB\",\"source:addr\":\"emuia.gugik.gov.pl\",\"roof:shape\":\"gabled\"}",
-			"invalid": false
-		},
-		{
-			"tags": "\"emergency=water_tank\\nmaterial=plastic\"",
-			"kind": "json_string",
-			"invalid": true
-		},
-		{ "tags": { "place": "farm" }, "invalid": false },
-		{
-			"tags": { "barrier": "wicket_gate", "foot": "yes", "motor_vehicle": "no" },
-			"invalid": false
-		},
-		{ "tags": { "building": "roof", "wall": "no" }, "invalid": false },
-		{
-			"tags": { "cuisine": "seafood", "outdoor_seating": "yes", "takeaway": "yes" },
-			"invalid": false
-		},
-		{ "tags": "{power=portal\nstructure=tubular}", "kind": "flat_text_not_json", "invalid": true },
-		{
-			"tags": { "barrier": "entrance", "motorcycle": "yes", "bicycle": "no", "foot": "yes" },
-			"invalid": false
-		},
-		{ "tags": "{\"tourism\": \"x\"", "kind": "broken_json", "invalid": true },
-		{ "tags": { "service": "crossover", "usage": "main", "voltage": "1500" }, "invalid": false },
-		{
-			"tags": { "aeroway": "aerodrome", "source": "ourairports.com", "type": "multipolygon" },
-			"invalid": false
-		},
-		{ "tags": "{\"route\":\"ferry\",\"type\":\"route\"}", "invalid": false },
-		{ "tags": { "barrier": "city_wall" }, "invalid": false },
-		{ "tags": { "military": "bunker", "tourism": "attraction", "ruins": "yes" }, "invalid": false },
-		{ "tags": "{\"shop\":1,\"source\":1}", "kind": "number_values", "invalid": true },
-		{
-			"tags": {
-				"leisure": "marina",
-				"natural": "water",
-				"seamark:type": "harbour",
-				"power_supply": "yes"
-			},
-			"invalid": false
-		},
-		{
-			"tags": "{\"building\":\"service\",\"source\":\"cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2012\",\"operator:wikidata\":\"Q3587594\",\"utility\":\"telecom\"}",
-			"invalid": false
-		},
-		{ "tags": { "shop": "shoes", "source": "BAG", "wheelchair": "limited" }, "invalid": false },
-		{
-			"tags": { "healthcare": "pharmacy", "wheelchair": "yes", "payment:jcb": "yes" },
-			"invalid": false
-		},
-		{
-			"tags": "\"amenity=bar\\npayment:credit_cards=yes\"",
-			"kind": "json_string",
-			"invalid": true
-		},
-		{
-			"tags": "[[\"railway\",\"proposed\"],[\"tunnel\",\"yes\"]]",
-			"kind": "json_array",
-			"invalid": true
-		},
-		{ "tags": { "highway": "passing_place", "source": "MML Orthofoto" }, "invalid": false },
-		{
-			"tags": {
-				"power": "generator",
-				"source": "GSImaps/ort",
-				"survey:date": "2023",
-				"roof:shape": "skillion"
-			},
-			"invalid": false
-		},
-		{
-			"tags": "{\"tags\":{\"natural\":\"scrub\",\"source\":\"KRT Tilburg\"}}",
-			"kind": "nested_object",
-			"invalid": true
-		},
-		{ "tags": { "highway": "pedestrian", "tunnel": "building_passage" }, "invalid": false },
-		{
-			"tags": "{\"railway\":\"signal\",\"source\":\"estimate; extrapolate; survey\"}",
-			"invalid": false
-		},
-		{ "tags": { "place": "islet" }, "invalid": false },
-		{ "tags": "\"highway=footway\\nsurface=paved\"", "kind": "json_string", "invalid": true },
-		{ "tags": { "healthcare": "centre", "source": "OpenGovernmentData" }, "invalid": false },
-		{ "tags": "{amenity=taxi\ncapacity=3}", "kind": "flat_text_not_json", "invalid": true },
-		{ "tags": { "building": "retail" }, "invalid": false },
-		{
-			"tags": "[[\"highway\",\"secondary_link\"],[\"lit\",\"no\"]]",
-			"kind": "json_array",
-			"invalid": true
-		},
-		{ "tags": "{\"landuse\":\"flowerbed\",\"leisure\":\"garden\"}", "invalid": false },
-		{
-			"tags": {
-				"man_made": "street_cabinet",
-				"source": "Enedis - 06/2018",
-				"operator:wikidata": "Q2397198"
-			},
-			"invalid": false
-		},
-		{
-			"tags": "{landuse=garages\ntype=multipolygon}",
-			"kind": "flat_text_not_json",
-			"invalid": true
-		},
-		{ "tags": { "office": "government", "wheelchair": "yes" }, "invalid": false },
-		{
-			"tags": "[[\"shop\",\"hairdresser\"],[\"source:date\",\"2014-03-24\"]]",
-			"kind": "json_array",
-			"invalid": true
-		},
-		{
-			"tags": "[[\"leisure\",\"resort\"],[\"type\",\"multipolygon\"]]",
-			"kind": "json_array",
-			"invalid": true
-		},
-		{
-			"tags": {
-				"man_made": "water_tap",
-				"source": "survey",
-				"seasonal": "no",
-				"operational_status": "operational"
-			},
-			"invalid": false
-		},
-		{
-			"tags": "[[\"cuisine\",\"korean\"],[\"source\",\"공공데이터포털\"]]",
-			"kind": "json_array",
-			"invalid": true
-		},
-		{
-			"tags": { "railway": "tram", "usage": "main", "voltage": "600", "tracks": "1" },
-			"invalid": false
-		},
-		{ "tags": { "landuse": "allotments", "source": "Bing" }, "invalid": false },
-		{
-			"tags": {
-				"amenity": "recycling",
-				"recycling:scrap_metal": "yes",
-				"recycling:clothes": "yes"
-			},
-			"invalid": false
-		},
-		{ "tags": { "landuse": "commercial", "source": "bing" }, "invalid": false },
-		{
-			"tags": "[[\"building\",\"detached\"],[\"roof:shape\",\"half-hipped\"]]",
-			"kind": "json_array",
-			"invalid": true
-		},
-		{ "tags": { "amenity": "nursing_home" }, "invalid": false },
-		{
-			"tags": { "highway": "path", "smoothness": "good", "surface": "unpaved", "mtb:scale": "1" },
-			"invalid": false
-		},
-		{ "tags": { "railway": "buffer_stop" }, "invalid": false },
-		{ "tags": { "historic": "ruins", "ruins": "yes" }, "invalid": false },
-		{ "tags": { "landuse": "railway" }, "invalid": false },
-		{ "tags": { "place": "island", "source": "NRCan-CanVec-7.0" }, "invalid": false },
-		{ "tags": { "highway": "turning_circle", "source": "survey" }, "invalid": false },
-		{
-			"tags": "{shop=telecommunication\nwheelchair=yes}",
-			"kind": "flat_text_not_json",
-			"invalid": true
-		},
-		{ "tags": { "historic": "charcoal_pile", "source": "survey" }, "invalid": false },
-		{
-			"tags": "{\"shop\":\"yes\",\"source\":\"Reconocimiento cartográfico de campo 2016 por KG.\"}",
-			"invalid": false
-		},
-		{ "tags": { "amenity": "parking_entrance" }, "invalid": false },
-		{ "tags": "{\"service\":\"slipway\",\"surface\":\"concrete\"}", "invalid": false },
-		{ "tags": "{\"building\":\"industrial\"}", "invalid": false },
-		{
-			"tags": "[[\"aeroway\",\"hangar\"],[\"building\",\"hangar\"]]",
-			"kind": "json_array",
-			"invalid": true
-		},
-		{
-			"tags": "{\"tags\":{\"amenity\":\"taxi\",\"capacity\":\"3\"}}",
-			"kind": "nested_object",
-			"invalid": true
-		},
-		{
-			"tags": { "sport": "swimming", "supervised": "no", "swimming_pool": "inground" },
-			"invalid": false
-		},
-		{ "tags": { "service": "irrigation", "waterway": "ditch" }, "invalid": false },
-		{
-			"tags": "{\"railway\":\"light_rail\",\"voltage\":\"750\",\"usage\":\"main\",\"service\":\"yard\"}",
-			"invalid": false
-		},
-		{
-			"tags": { "amenity": "grave_yard", "religion": "muslim", "denomination": "roman_catholic" },
-			"invalid": false
-		},
-		{ "tags": { "leisure": "dog_park" }, "invalid": false },
-		{ "tags": "{amenity=fuel\nlanduse=retail}", "kind": "flat_text_not_json", "invalid": true },
-		{ "tags": { "landuse": "residential", "source": "digitalGlobe" }, "invalid": false },
-		{ "tags": "{\"amenity\":1,\"building:levels\":1}", "kind": "number_values", "invalid": true },
-		{
-			"tags": "[[\"shop\",\"furniture\"],[\"wheelchair\",\"yes\"]]",
-			"kind": "json_array",
-			"invalid": true
-		},
-		{
-			"tags": "{\"place\":\"neighbourhood\",\"source\":\"LSPP\",\"source:url\":\"https://maps.lib.utexas.edu/maps/topo/nicaragua/\"}",
-			"invalid": false
-		},
-		{
-			"tags": { "railway": "platform_edge", "train": "yes", "tactile_paving": "yes" },
-			"invalid": false
-		},
-		{ "tags": "{\"landuse\": \"x\"", "kind": "broken_json", "invalid": true },
-		{
-			"tags": {
-				"cuisine": "thai",
-				"takeaway": "yes",
-				"outdoor_seating": "yes",
-				"diet:vegetarian": "yes"
-			},
-			"invalid": false
-		},
-		{ "tags": "{\"emergency\":\"assembly_point\",\"grades\":\"1-6\"}", "invalid": false },
-		{ "tags": { "office": "religion" }, "invalid": false },
-		{
-			"tags": "{\"natural\":\"beach\",\"surface\":\"pebblestone\",\"source\":\"bing\"}",
-			"invalid": false
-		},
-		{ "tags": "{\"route\":\"foot\"}", "invalid": false },
-		{ "tags": { "building": "slurry_tank", "content": "slurry" }, "invalid": false },
-		{
-			"tags": { "amenity": "water_point", "pump": "manual", "drinking_water": "no" },
-			"invalid": false
-		},
-		{
-			"tags": "{\"tags\":{\"shop\":\"furniture\",\"wheelchair\":\"no\"}}",
-			"kind": "nested_object",
-			"invalid": true
-		},
-		{ "tags": "\"barrier=lift_gate\\nhorse=yes\"", "kind": "json_string", "invalid": true },
-		{ "tags": "\"barrier=handrail\\nmaterial=metal\"", "kind": "json_string", "invalid": true },
-		{ "tags": "{\"leisure\":\"stadium\",\"type\":\"multipolygon\"}", "invalid": false },
-		{ "tags": { "amenity": "pharmacy" }, "invalid": false },
-		{ "tags": "{\"amenity\":\"cafe\"}", "invalid": false },
-		{ "tags": { "natural": "fell", "type": "multipolygon" }, "invalid": false },
-		{ "tags": "{\"building\": \"x\"", "kind": "broken_json", "invalid": true },
-		{ "tags": { "tourism": "information", "wheelchair": "no" }, "invalid": false },
-		{ "tags": "\"amenity=compressed_air\\nfee=yes\"", "kind": "json_string", "invalid": true },
-		{
-			"tags": { "barrier": "gate", "wheelchair": "yes", "motorcycle": "no", "motor_vehicle": "no" },
-			"invalid": false
-		},
-		{ "tags": "{\"barrier\":\"height_restrictor\",\"motorcar\":\"yes\"}", "invalid": false },
-		{
-			"tags": "{\"tags\":{\"sport\":\"basketball\",\"surface\":\"grass\"}}",
-			"kind": "nested_object",
-			"invalid": true
-		},
-		{ "tags": { "amenity": "bbq", "covered": "yes" }, "invalid": false },
-		{ "tags": { "barrier": "block", "vehicle": "no" }, "invalid": false },
-		{
-			"tags": {
-				"man_made": "street_cabinet",
-				"operator": "Enedis",
-				"operator:wikidata": "Q7988183"
-			},
-			"invalid": false
-		},
-		{ "tags": { "man_made": "petroleum_well" }, "invalid": false },
-		{
-			"tags": "{\"tags\":{\"amenity\":\"charging_station\",\"bus\":\"no\"}}",
-			"kind": "nested_object",
-			"invalid": true
-		},
-		{
-			"tags": "\"historic=wayside_cross\\nmaterial=concrete\"",
-			"kind": "json_string",
-			"invalid": true
-		},
-		{ "tags": "{\"power\":\"minor_line\",\"voltage\":\"13800\"}", "invalid": false },
-		{
-			"tags": {
-				"office": "government",
-				"opening_hours": "Mo-Fr 09:00-17:00",
-				"type": "multipolygon"
-			},
-			"invalid": false
-		},
-		{
-			"tags": { "landuse": "farmland", "source:date": "2016-03-03", "natural": "wetland" },
-			"invalid": false
-		},
-		{ "tags": { "landuse": "forest", "leaf_cycle": "evergreen" }, "invalid": false },
-		{
-			"tags": "[[\"man_made\",\"water_well\"],[\"natural\",\"water\"]]",
-			"kind": "json_array",
-			"invalid": true
-		},
-		{
-			"tags": { "man_made": "water_well", "operator:type": "community", "natural": "water" },
-			"invalid": false
-		},
-		{ "tags": { "highway": "tertiary" }, "invalid": false },
-		{ "tags": { "power": "portal" }, "invalid": false },
-		{ "tags": "{highway=crossing\nsegregated=no}", "kind": "flat_text_not_json", "invalid": true },
-		{
-			"tags": { "cuisine": "italian", "level": "0", "toilets": "yes", "payment:cash": "yes" },
-			"invalid": false
-		},
-		{
-			"tags": "[[\"highway\",\"steps\"],[\"surface\",\"metal\"]]",
-			"kind": "json_array",
-			"invalid": true
-		},
-		{ "tags": "\"tourism=museum\\nwheelchair=yes\"", "kind": "json_string", "invalid": true },
-		{ "tags": "\"railway=subway\\ntunnel=no\"", "kind": "json_string", "invalid": true },
-		{ "tags": "{\"boundary\":\"forest_compartment\"}", "invalid": false },
-		{
-			"tags": { "power": "switch", "voltage": "230000", "switch": "circuit_breaker" },
-			"invalid": false
-		},
-		{
-			"tags": "\"man_made=surveillance\\nsurveillance=indoor\"",
-			"kind": "json_string",
-			"invalid": true
-		},
-		{ "tags": { "natural": "cliff", "source": "GSImaps/std" }, "invalid": false },
-		{ "tags": { "railway": "proposed", "usage": "main", "tunnel": "yes" }, "invalid": false },
-		{ "tags": { "natural": "shingle" }, "invalid": false },
-		{ "tags": { "highway": "trunk", "lit": "no", "lanes": "1" }, "invalid": false },
-		{ "tags": { "highway": "give_way", "side": "right" }, "invalid": false },
-		{
-			"tags": { "highway": "busway", "surface": "concrete", "lanes": "2", "maxspeed": "50" },
-			"invalid": false
-		},
-		{
-			"tags": { "amenity": "language_school", "building": "yes", "language:en": "yes" },
-			"invalid": false
-		},
-		{
-			"tags": "[[\"man_made\",\"survey_point\"],[\"material\",\"granite\"]]",
-			"kind": "json_array",
-			"invalid": true
-		},
-		{ "tags": { "power": "cable" }, "invalid": false },
-		{ "tags": { "public_transport": "stop_position", "train": "yes" }, "invalid": false },
-		{ "tags": { "railway": "platform", "subway": "yes" }, "invalid": false },
-		{
-			"tags": "[[\"barrier\",\"cycle_barrier\"],[\"horse\",\"yes\"]]",
-			"kind": "json_array",
-			"invalid": true
-		},
-		{ "tags": "{\"landuse\":\"reservoir\",\"source\":\"NRCan-CanVec-10.0\"}", "invalid": false },
-		{ "tags": { "highway": "motorway_junction" }, "invalid": false },
-		{ "tags": "\"service=slipway\\nsurface=concrete\"", "kind": "json_string", "invalid": true },
-		{ "tags": { "waterway": "stream", "width": "0.5" }, "invalid": false },
-		{
-			"tags": "{\"boundary\":\"protected_area\",\"note\":\"Way has been simplified using a maximum error criterion of 3m\"}",
-			"invalid": false
-		},
-		{
-			"tags": {
-				"aeroway": "helipad",
-				"lit": "no",
-				"source": "ourairports.com",
-				"surface": "grass"
-			},
-			"invalid": false
-		},
-		{
-			"tags": { "railway": "platform", "tram": "yes", "source": "Bing", "shelter": "no" },
-			"invalid": false
-		},
-		{
-			"tags": "[[\"natural\",\"shingle\"],[\"source\",\"Maxar Premium-Luftbilder (Beta)\"]]",
-			"kind": "json_array",
-			"invalid": true
-		},
-		{
-			"tags": "[[\"building\",\"commercial\"],[\"source\",\"cuzk:ruian\"]]",
-			"kind": "json_array",
-			"invalid": true
-		},
-		{ "tags": "\"leisure=dog_park\\nwheelchair=no\"", "kind": "json_string", "invalid": true },
-		{
-			"tags": {
-				"boundary": "cadastral",
-				"official_status": "cz:katastrální území",
-				"type": "multipolygon",
-				"place": "cadastral_community"
-			},
-			"invalid": false
-		},
-		{
-			"tags": "{cuisine=greek\nindoor_seating=yes}",
-			"kind": "flat_text_not_json",
-			"invalid": true
-		},
-		{ "tags": "{\"cuisine\": \"x\"", "kind": "broken_json", "invalid": true },
-		{ "tags": "{\"shop\":\"shoes\"}", "invalid": false },
-		{ "tags": { "railway": "platform_edge" }, "invalid": false },
-		{ "tags": { "highway": "bridleway", "smoothness": "horrible" }, "invalid": false },
-		{
-			"tags": "[[\"power\",\"pole\"],[\"transformer\",\"main\"]]",
-			"kind": "json_array",
-			"invalid": true
-		},
-		{ "tags": { "waterway": "canal", "width": "5" }, "invalid": false },
-		{
-			"tags": "[[\"leisure\",\"horse_riding\"],[\"sport\",\"equestrian\"]]",
-			"kind": "json_array",
-			"invalid": true
-		},
-		{ "tags": { "leisure": "sports_hall", "sport": "multi" }, "invalid": false },
-		{ "tags": { "highway": "footway", "layer": "-1" }, "invalid": false },
-		{
-			"tags": { "man_made": "tower", "material": "wood", "tourism": "attraction" },
-			"invalid": false
-		},
-		{ "tags": "{\"shop\":\"kiosk\"}", "invalid": false },
-		{ "tags": { "route": "bicycle" }, "invalid": false },
-		{
-			"tags": {
-				"cuisine": "chinese",
-				"payment:cash": "yes",
-				"wheelchair": "no",
-				"source": "survey"
-			},
-			"invalid": false
-		},
-		{
-			"tags": "{\"place\":\"city\",\"population:date\":\"2022\",\"source\":\"TIGER/Line® 2008 Place Shapefiles (http://www.census.gov/geo/www/tiger/)\"}",
-			"invalid": false
-		},
-		{
-			"tags": "[[\"shop\",\"car_parts\"],[\"source\",\"Kaart Ground Survey 2017\"]]",
-			"kind": "json_array",
-			"invalid": true
-		},
-		{
-			"tags": { "barrier": "jersey_barrier", "layer": "1", "material": "concrete" },
-			"invalid": false
-		},
-		{
-			"tags": { "healthcare": "yes", "source": "OpenDataTelangana", "operator:type": "government" },
-			"invalid": false
-		},
-		{ "tags": { "building": "mosque", "religion": "muslim" }, "invalid": false },
-		{
-			"tags": "{\"historic\":\"wayside_cross\",\"source\":\"IGN - 2024-03-15\",\"material\":\"wood\"}",
-			"invalid": false
-		},
-		{ "tags": { "natural": "tree", "species:wikidata": "Q161374" }, "invalid": false },
-		{ "tags": "\"highway=bus_stop\\nsource=survey\"", "kind": "json_string", "invalid": true },
-		{ "tags": { "route": "ferry", "toll": "yes", "type": "route" }, "invalid": false },
-		{
-			"tags": { "boundary": "census", "source": "INE - BGRI 2011", "place": "locality" },
-			"invalid": false
-		},
-		{ "tags": "{service=irrigation\nwater=canal}", "kind": "flat_text_not_json", "invalid": true },
-		{
-			"tags": { "cuisine": "thai", "diet:vegetarian": "yes", "outdoor_seating": "yes" },
-			"invalid": false
-		},
-		{ "tags": { "barrier": "swing_gate", "locked": "yes", "material": "metal" }, "invalid": false },
-		{
-			"tags": { "boundary": "protected_area", "natural": "wood", "massgis:FY_FUNDING": "0" },
-			"invalid": false
-		},
-		{
-			"tags": "{\"tags\":{\"public_transport\":\"stop_position\",\"source:name:oc\":\"ieo-bdtopoc\"}}",
-			"kind": "nested_object",
-			"invalid": true
-		},
-		{ "tags": "{\"highway\":1,\"tiger:cfcc\":1}", "kind": "number_values", "invalid": true },
-		{
-			"tags": "{healthcare=doctor\nopening_hours:signed=no}",
-			"kind": "flat_text_not_json",
-			"invalid": true
-		},
-		{
-			"tags": "[[\"amenity\",\"atm\"],[\"opening_hours\",\"Mo-Su 07:00-23:00\"]]",
-			"kind": "json_array",
-			"invalid": true
-		},
-		{ "tags": { "building": "barn", "wall": "no", "source:geometry": "GURS" }, "invalid": false },
-		{
-			"tags": {
-				"barrier": "yes",
-				"landuse": "residential",
-				"residential": "apartments",
-				"foot": "yes"
 			},
 			"invalid": false
 		},
@@ -2249,133 +285,1346 @@
 			},
 			"invalid": false
 		},
+		{ "tags": { "natural": "bare_rock" }, "invalid": false },
 		{
-			"tags": "{man_made=flagpole\nsubject:wikidata=Q30}",
+			"tags": "{\"tags\":{\"service\":\"parking_aisle\",\"vehicle\":\"private\"}}",
+			"kind": "nested_object",
+			"invalid": true
+		},
+		{ "tags": "{\"building\":1,\"source\":1}", "kind": "number_values", "invalid": true },
+		{ "tags": { "historic": "yes", "ruins": "yes" }, "invalid": false },
+		{ "tags": "\"amenity=bench\\narmrest=no\"", "kind": "json_string", "invalid": true },
+		{ "tags": "\"amenity=bar\\nbuilding=yes\"", "kind": "json_string", "invalid": true },
+		{ "tags": { "aeroway": "parking_position", "surface": "concrete" }, "invalid": false },
+		{ "tags": { "railway": "proposed", "tunnel": "yes", "usage": "main" }, "invalid": false },
+		{
+			"tags": "{highway=bridleway\nmotor_vehicle=private}",
 			"kind": "flat_text_not_json",
 			"invalid": true
 		},
+		{ "tags": { "natural": "shrubbery", "shrubbery:density": "medium" }, "invalid": false },
+		{ "tags": "{\"leisure\":\"horse_riding\"}", "invalid": false },
+		{ "tags": { "landuse": "commercial", "source": "bing" }, "invalid": false },
+		{ "tags": { "railway": "miniature", "usage": "tourism", "service": "yard" }, "invalid": false },
+		{ "tags": { "amenity": "parking_entrance" }, "invalid": false },
+		{ "tags": { "railway": "platform", "ref": "1", "source": "Bing" }, "invalid": false },
 		{
-			"tags": "[[\"shop\",\"electronics\"],[\"wheelchair\",\"yes\"]]",
+			"tags": { "cuisine": "seafood", "outdoor_seating": "yes", "takeaway": "yes" },
+			"invalid": false
+		},
+		{ "tags": "{\"power\":\"minor_line\",\"voltage\":\"13800\"}", "invalid": false },
+		{ "tags": { "power": "portal" }, "invalid": false },
+		{
+			"tags": "{\"shop\":\"kiosk\",\"source\":\"survey\",\"wheelchair\":\"no\",\"source:date\":\"2022\"}",
+			"invalid": false
+		},
+		{ "tags": { "landuse": "greenhouse_horticulture", "source": "RABA-KGZ" }, "invalid": false },
+		{
+			"tags": { "natural": "shingle", "type": "multipolygon", "source": "Japan GSI KIBAN 2500" },
+			"invalid": false
+		},
+		{
+			"tags": {
+				"amenity": "post_box",
+				"brand:wikipedia": "en:Royal Mail",
+				"royal_cypher": "GR",
+				"post_box:type": "wall"
+			},
+			"invalid": false
+		},
+		{ "tags": { "landuse": "residential", "source": "digitalGlobe" }, "invalid": false },
+		{ "tags": { "railway": "platform_edge" }, "invalid": false },
+		{
+			"tags": "{\"tags\":{\"cuisine\":\"asian\",\"level\":\"0\"}}",
+			"kind": "nested_object",
+			"invalid": true
+		},
+		{
+			"tags": { "natural": "reef", "type": "multipolygon", "source": "NRCan-CanVec-10.0" },
+			"invalid": false
+		},
+		{ "tags": "{\"sport\":1,\"surface\":1}", "kind": "number_values", "invalid": true },
+		{ "tags": "{\"office\":\"religion\",\"religion\":\"christian\"}", "invalid": false },
+		{ "tags": { "building": "roof", "wall": "no" }, "invalid": false },
+		{
+			"tags": "[[\"cuisine\",\"pizza\"],[\"source\",\"survey\"]]",
 			"kind": "json_array",
 			"invalid": true
 		},
-		{ "tags": { "power": "plant", "type": "site" }, "invalid": false },
+		{ "tags": "null", "kind": "json_null", "invalid": true },
 		{
-			"tags": "[[\"sport\",\"athletics\"],[\"surface\",\"sand\"]]",
-			"kind": "json_array",
+			"tags": "{\"tags\":{\"building\":\"construction\",\"construction\":\"industrial\"}}",
+			"kind": "nested_object",
 			"invalid": true
 		},
+		{ "tags": { "leisure": "stadium" }, "invalid": false },
 		{
-			"tags": "\"historic=boundary_stone\\nmarker=stone\"",
+			"tags": "\"place=farm\\nsource:url=https://maps.lib.utexas.edu/maps/topo/nicaragua/\"",
 			"kind": "json_string",
 			"invalid": true
 		},
-		{ "tags": { "historic": "building" }, "invalid": false },
+		{ "tags": { "service": "siding", "voltage": "3000" }, "invalid": false },
 		{
-			"tags": { "healthcare": "pharmacy", "level": "0", "source": "BAG", "opening_hours": "24/7" },
+			"tags": "{\"place\":\"neighbourhood\",\"source\":\"LSPP\",\"source:url\":\"https://maps.lib.utexas.edu/maps/topo/nicaragua/\"}",
 			"invalid": false
 		},
+		{ "tags": "{\"amenity\":1,\"level\":1}", "kind": "number_values", "invalid": true },
+		{ "tags": { "barrier": "handrail", "material": "metal" }, "invalid": false },
+		{ "tags": "{\"power\":\"plant\"}", "invalid": false },
+		{ "tags": { "landuse": "meadow", "source:date": "2016-03-03" }, "invalid": false },
+		{ "tags": { "leisure": "pitch" }, "invalid": false },
+		{ "tags": { "man_made": "surveillance" }, "invalid": false },
+		{ "tags": "{\"cuisine\":\"coffee_shop\",\"internet_access\":\"wlan\"}", "invalid": false },
 		{
-			"tags": "[[\"railway\",\"tram_stop\"],[\"wheelchair\",\"no\"]]",
+			"tags": { "power": "switch", "voltage": "230000", "switch": "circuit_breaker" },
+			"invalid": false
+		},
+		{ "tags": { "railway": "subway", "voltage": "25000" }, "invalid": false },
+		{
+			"tags": "[[\"amenity\",\"bank\"],[\"contact:phone\",\"+7 800 5555550\"]]",
 			"kind": "json_array",
 			"invalid": true
 		},
-		{ "tags": { "amenity": "parking", "capacity": "3" }, "invalid": false },
+		{ "tags": { "leisure": "ice_rink" }, "invalid": false },
 		{
-			"tags": "{\"tags\":{\"highway\":\"track\",\"tiger:reviewed\":\"no\"}}",
-			"kind": "nested_object",
-			"invalid": true
-		},
-		{ "tags": "{\"service\": \"x\"", "kind": "broken_json", "invalid": true },
-		{ "tags": { "shop": "telecommunication", "wheelchair": "yes" }, "invalid": false },
-		{ "tags": "{\"building\":\"school\",\"source\":\"www.geoportal.gov.pl\"}", "invalid": false },
-		{ "tags": "{\"amenity\":\"water_point\",\"source\":\"survey\"}", "invalid": false },
-		{ "tags": {}, "kind": "empty_record", "invalid": true },
-		{ "tags": { "natural": "heath", "source": "3dShapes" }, "invalid": false },
-		{
-			"tags": { "natural": "bare_rock", "source": "Maxar Premium-Luftbilder (Beta)" },
+			"tags": "{\"healthcare\":\"doctor\",\"opening_hours:signed\":\"no\",\"wheelchair\":\"limited\",\"level\":\"2\"}",
 			"invalid": false
 		},
-		{ "tags": { "leisure": "resort", "tourism": "hotel" }, "invalid": false },
-		{ "tags": { "building": "roof" }, "invalid": false },
-		{ "tags": { "office": "insurance", "wheelchair": "no" }, "invalid": false },
-		{ "tags": { "landuse": "forest" }, "invalid": false },
-		{ "tags": { "route": "mtb", "surface": "dirt", "type": "route" }, "invalid": false },
+		{ "tags": { "waterway": "ditch" }, "invalid": false },
+		{ "tags": { "barrier": "jersey_barrier", "layer": "1" }, "invalid": false },
+		{ "tags": "{\"tourism\":\"chalet\"}", "invalid": false },
 		{
-			"tags": "{\"tags\":{\"leisure\":\"slipway\",\"seamark:type\":\"small_craft_facility\"}}",
+			"tags": {
+				"cuisine": "asian",
+				"wheelchair": "yes",
+				"indoor_seating": "yes",
+				"takeaway": "yes"
+			},
+			"invalid": false
+		},
+		{
+			"tags": "{\"tags\":{\"barrier\":\"cycle_barrier\",\"bicycle\":\"designated\"}}",
 			"kind": "nested_object",
 			"invalid": true
 		},
-		{ "tags": "{\"place\": \"x\"", "kind": "broken_json", "invalid": true },
+		{ "tags": "{\"railway\": \"x\"", "kind": "broken_json", "invalid": true },
 		{
-			"tags": "{\"tags\":{\"healthcare\":\"centre\",\"source\":\"OpenGovernmentData\"}}",
+			"tags": {
+				"natural": "coastline",
+				"source": "MML",
+				"source:location": "NLS.fi Topographic Database",
+				"place": "island"
+			},
+			"invalid": false
+		},
+		{ "tags": { "leisure": "fishing", "natural": "water" }, "invalid": false },
+		{ "tags": { "leisure": "picnic_table", "material": "metal" }, "invalid": false },
+		{ "tags": "{\"amenity\":\"cafe\"}", "invalid": false },
+		{ "tags": "{\"service\":1,\"surface\":1}", "kind": "number_values", "invalid": true },
+		{ "tags": { "highway": "proposed" }, "invalid": false },
+		{ "tags": { "highway": "milestone", "side": "left" }, "invalid": false },
+		{ "tags": { "sport": "bowls", "surface": "grass" }, "invalid": false },
+		{ "tags": { "emergency": "designated" }, "invalid": false },
+		{
+			"tags": { "railway": "platform", "shelter": "yes", "wheelchair": "no", "ref": "3" },
+			"invalid": false
+		},
+		{
+			"tags": "{\"tags\":{\"leisure\":\"dog_park\",\"wheelchair\":\"no\"}}",
+			"kind": "nested_object",
+			"invalid": true
+		},
+		{ "tags": { "amenity": "waste_disposal", "building": "yes", "fee": "no" }, "invalid": false },
+		{ "tags": { "landuse": "cemetery", "source": "NRCan-CanVec-7.0" }, "invalid": false },
+		{ "tags": { "place": "island", "source": "NRCan-CanVec-7.0" }, "invalid": false },
+		{
+			"tags": { "highway": "road", "source": "Bing", "layer": "1", "surface": "unpaved" },
+			"invalid": false
+		},
+		{ "tags": "{\"natural\":\"shrub\",\"source\":\"bing\"}", "invalid": false },
+		{ "tags": "{\"building\":1,\"roof:shape\":1}", "kind": "number_values", "invalid": true },
+		{
+			"tags": {
+				"historic": "yes",
+				"source": "www.geoportal.gov.pl",
+				"place": "locality",
+				"location": "underground"
+			},
+			"invalid": false
+		},
+		{ "tags": { "shop": "car" }, "invalid": false },
+		{ "tags": { "landuse": "greenery", "source": "KRT Tilburg" }, "invalid": false },
+		{ "tags": "{\"place\":\"city_block\",\"residential\":\"urban\"}", "invalid": false },
+		{
+			"tags": { "tourism": "viewpoint", "wheelchair": "yes", "tower:type": "observation" },
+			"invalid": false
+		},
+		{ "tags": "{\"sport\":\"tennis\",\"surface\":\"tartan\"}", "invalid": false },
+		{
+			"tags": { "office": "company", "wheelchair": "no", "source": "Kaart Ground Survey 2017" },
+			"invalid": false
+		},
+		{ "tags": { "barrier": "bollard", "foot": "designated" }, "invalid": false },
+		{
+			"tags": { "amenity": "place_of_worship", "denomination": "protestant", "building": "chapel" },
+			"invalid": false
+		},
+		{
+			"tags": "{\"craft\":\"grinding_mill\",\"source\":\"WFP Field Survey 2021, OMDTZ\",\"man_made\":\"works\"}",
+			"invalid": false
+		},
+		{
+			"tags": {
+				"amenity": "hunting_stand",
+				"seasonal": "no",
+				"source": "aerial imagery",
+				"height": "4"
+			},
+			"invalid": false
+		},
+		{
+			"tags": { "landuse": "brownfield", "source": "Bing", "type": "multipolygon" },
+			"invalid": false
+		},
+		{
+			"tags": "{\"natural\":\"bay\",\"type\":\"multipolygon\",\"source\":\"Nunat Aqqi\"}",
+			"invalid": false
+		},
+		{ "tags": { "natural": "fell" }, "invalid": false },
+		{
+			"tags": { "cuisine": "bubble_tea", "outdoor_seating": "no", "takeaway": "yes" },
+			"invalid": false
+		},
+		{
+			"tags": "{\"tags\":{\"natural\":\"tree_stump\",\"ownership\":\"public\"}}",
+			"kind": "nested_object",
+			"invalid": true
+		},
+		{ "tags": { "highway": "trunk", "maxspeed": "70", "surface": "concrete" }, "invalid": false },
+		{
+			"tags": { "railway": "disused", "usage": "branch", "tunnel": "building_passage" },
+			"invalid": false
+		},
+		{ "tags": "{\"route\":\"bus\"}", "invalid": false },
+		{ "tags": { "natural": "saddle" }, "invalid": false },
+		{
+			"tags": { "shop": "mobile_phone", "wheelchair": "yes", "source": "Kaart Ground Survey 2017" },
+			"invalid": false
+		},
+		{ "tags": { "place": "cadastral_community" }, "invalid": false },
+		{
+			"tags": {
+				"leisure": "marina",
+				"natural": "water",
+				"seamark:type": "harbour",
+				"power_supply": "yes"
+			},
+			"invalid": false
+		},
+		{ "tags": "{\"natural\": \"x\"", "kind": "broken_json", "invalid": true },
+		{ "tags": "{\"leisure\":\"picnic_table\"}", "invalid": false },
+		{ "tags": { "natural": "shrub", "source": "bing" }, "invalid": false },
+		{
+			"tags": {
+				"leisure": "slipway",
+				"seamark:type": "small_craft_facility",
+				"service": "slipway",
+				"surface": "concrete"
+			},
+			"invalid": false
+		},
+		{
+			"tags": { "railway": "platform", "tram": "yes", "source": "Bing", "shelter": "no" },
+			"invalid": false
+		},
+		{ "tags": "\"natural=cave_entrance\\nwheelchair=no\"", "kind": "json_string", "invalid": true },
+		{ "tags": "{\"route\":\"piste\",\"type\":\"route\"}", "invalid": false },
+		{ "tags": { "historic": "railway", "railway": "abandoned", "layer": "1" }, "invalid": false },
+		{
+			"tags": "{\"landuse\":\"aquaculture\",\"source\":\"Maxar\",\"natural\":\"water\"}",
+			"invalid": false
+		},
+		{
+			"tags": { "shop": "yes", "source": "Reconocimiento cartográfico de campo 2016 por KG." },
+			"invalid": false
+		},
+		{
+			"tags": "{\"tags\":{\"amenity\":\"shelter\",\"bin\":\"yes\"}}",
 			"kind": "nested_object",
 			"invalid": true
 		},
 		{
 			"tags": {
-				"leisure": "marina",
-				"seamark:type": "harbour",
-				"power_supply": "yes",
-				"natural": "water"
+				"place": "municipality",
+				"source:population": "IBGE, DOU de 31/08/2023",
+				"source": "IBGE",
+				"type": "boundary"
 			},
 			"invalid": false
 		},
-		{ "tags": "\"natural=coastline\\nsource=MML\"", "kind": "json_string", "invalid": true },
-		{ "tags": "{railway=stop\nsubway=yes}", "kind": "flat_text_not_json", "invalid": true },
+		{ "tags": { "railway": "buffer_stop", "source": "bing" }, "invalid": false },
+		{ "tags": "{\"healthcare\":\"doctor\",\"level\":\"1\"}", "invalid": false },
+		{ "tags": { "tourism": "artwork", "wheelchair": "yes" }, "invalid": false },
+		{ "tags": "\"landuse=grass\\nref=8\"", "kind": "json_string", "invalid": true },
+		{ "tags": { "waterway": "stream", "width": "0.5" }, "invalid": false },
+		{ "tags": { "sport": "equestrian" }, "invalid": false },
+		{ "tags": "{highway=steps\nsurface=metal}", "kind": "flat_text_not_json", "invalid": true },
 		{
-			"tags": "{\"tags\":{\"landuse\":\"farmland\",\"source\":\"Maxar Premium-Luftbilder (Beta)\"}}",
+			"tags": "{\"tags\":{\"historic\":\"tomb\",\"religion\":\"christian\"}}",
 			"kind": "nested_object",
 			"invalid": true
 		},
+		{ "tags": { "route": "power", "voltage": "132000", "wires": "double" }, "invalid": false },
+		{ "tags": "{\"route\":\"foot\"}", "invalid": false },
+		{ "tags": "{\"amenity\":1,\"wheelchair\":1}", "kind": "number_values", "invalid": true },
+		{ "tags": "{\"highway\":\"footway\"}", "invalid": false },
 		{
-			"tags": "{\"tags\":{\"landuse\":\"reservoir\",\"natural\":\"water\"}}",
+			"tags": "{\"tags\":{\"boundary\":\"protected_area\",\"protect_class\":\"4\"}}",
 			"kind": "nested_object",
 			"invalid": true
 		},
-		{ "tags": { "shop": "car" }, "invalid": false },
+		{ "tags": { "barrier": "turnstile", "foot": "yes", "level": "0" }, "invalid": false },
+		{ "tags": { "natural": "sand" }, "invalid": false },
+		{
+			"tags": "[[\"man_made\",\"surveillance\"],[\"surveillance\",\"indoor\"]]",
+			"kind": "json_array",
+			"invalid": true
+		},
+		{ "tags": "{\"route\":\"railway\",\"type\":\"route\"}", "invalid": false },
+		{
+			"tags": { "leisure": "pitch", "sport": "four_square", "surface": "concrete" },
+			"invalid": false
+		},
+		{ "tags": { "natural": "shrubbery", "shrubbery:density": "dense" }, "invalid": false },
+		{ "tags": "{\"barrier\":\"height_restrictor\",\"motorcar\":\"yes\"}", "invalid": false },
+		{ "tags": { "shop": "car_repair", "source": "survey" }, "invalid": false },
+		{
+			"tags": "{\"boundary\":\"administrative\",\"source:postal_code\":\"La Poste - 12/2014\",\"name:prefix:ru\":\"деревня\",\"source\":\"cuzk:ruian\"}",
+			"invalid": false
+		},
+		{
+			"tags": {
+				"highway": "elevator",
+				"indoor": "yes",
+				"operator": "DB InfraGO AG",
+				"level": "-1;0"
+			},
+			"invalid": false
+		},
+		{
+			"tags": "{\"landuse\":\"construction\",\"type\":\"multipolygon\",\"residential\":\"apartments\"}",
+			"invalid": false
+		},
+		{ "tags": { "leisure": "garden" }, "invalid": false },
+		{ "tags": "{highway=track\ntiger:reviewed=no}", "kind": "flat_text_not_json", "invalid": true },
+		{ "tags": { "natural": "shingle" }, "invalid": false },
+		{ "tags": { "building": "hut" }, "invalid": false },
+		{
+			"tags": "{\"amenity\":\"bicycle_parking\",\"capacity\":\"14\",\"bicycle_parking\":\"shed\"}",
+			"invalid": false
+		},
+		{ "tags": { "landuse": "forest", "leaf_cycle": "evergreen" }, "invalid": false },
+		{ "tags": { "shop": "shoes", "source": "BAG", "wheelchair": "limited" }, "invalid": false },
+		{ "tags": { "historic": "ruins", "tourism": "attraction" }, "invalid": false },
+		{ "tags": { "historic": "wayside_shrine", "source": "survey" }, "invalid": false },
+		{
+			"tags": "{\"military\":\"bunker\",\"tourism\":\"attraction\",\"ruins\":\"yes\"}",
+			"invalid": false
+		},
+		{ "tags": { "natural": "spring" }, "invalid": false },
+		{
+			"tags": { "office": "association", "opening_hours:signed": "no", "wheelchair": "yes" },
+			"invalid": false
+		},
+		{ "tags": "{\"landuse\":\"reservoir\",\"source\":\"NRCan-CanVec-10.0\"}", "invalid": false },
+		{
+			"tags": "\"building=detached\\nroof:shape=half-hipped\"",
+			"kind": "json_string",
+			"invalid": true
+		},
+		{ "tags": { "historic": "heritage", "roof:shape": "flat" }, "invalid": false },
+		{
+			"tags": "{service=drive-through\nsource=Bing}",
+			"kind": "flat_text_not_json",
+			"invalid": true
+		},
+		{
+			"tags": "[[\"highway\",\"construction\"],[\"zone:traffic\",\"NL:urban\"]]",
+			"kind": "json_array",
+			"invalid": true
+		},
+		{ "tags": { "barrier": "retaining_wall" }, "invalid": false },
+		{ "tags": { "building": "religious" }, "invalid": false },
+		{
+			"tags": "{\"tags\":{\"power\":\"switch\",\"voltage\":\"66000\"}}",
+			"kind": "nested_object",
+			"invalid": true
+		},
+		{ "tags": { "historic": "charcoal_pile" }, "invalid": false },
+		{
+			"tags": { "man_made": "tower", "material": "wood", "tourism": "attraction" },
+			"invalid": false
+		},
+		{ "tags": { "natural": "ridge" }, "invalid": false },
+		{ "tags": { "service": "utility" }, "invalid": false },
+		{ "tags": "{\"natural\":1,\"source\":1}", "kind": "number_values", "invalid": true },
+		{ "tags": { "man_made": "wastewater_plant", "natural": "water" }, "invalid": false },
+		{ "tags": { "natural": "hill", "place": "locality" }, "invalid": false },
+		{
+			"tags": { "landuse": "farmland", "source": "Maxar Premium-Luftbilder (Beta)" },
+			"invalid": false
+		},
+		{ "tags": "\"highway=raceway\\noneway=yes\"", "kind": "json_string", "invalid": true },
 		{
 			"tags": "{\"amenity\":\"atm\",\"opening_hours\":\"24/7\",\"level\":\"-1\",\"drive_through\":\"no\"}",
 			"invalid": false
 		},
-		{ "tags": "{\"waterway\":1,\"width\":1}", "kind": "number_values", "invalid": true },
-		{ "tags": { "sport": "athletics", "surface": "tartan" }, "invalid": false },
-		{ "tags": "{\"historic\":1,\"religion\":1}", "kind": "number_values", "invalid": true },
 		{
-			"tags": { "building": "farm_auxiliary", "source:geometry:date": "2016-09-14" },
+			"tags": "[[\"shop\",\"vacant\"],[\"wheelchair\",\"no\"]]",
+			"kind": "json_array",
+			"invalid": true
+		},
+		{
+			"tags": "{leisure=picnic_table\ntourism=picnic_site}",
+			"kind": "flat_text_not_json",
+			"invalid": true
+		},
+		{
+			"tags": {
+				"barrier": "yes",
+				"landuse": "residential",
+				"residential": "single_family",
+				"place": "plot"
+			},
 			"invalid": false
 		},
+		{ "tags": "{\"railway\":\"stop\"}", "invalid": false },
+		{
+			"tags": "{\"building\":\"mosque\",\"denomination\":\"sunni\",\"capacity:persons\":\"<50\",\"source\":\"HOT_InAWARESurvey_2017\"}",
+			"invalid": false
+		},
+		{
+			"tags": "{leisure=resort\ntype=multipolygon}",
+			"kind": "flat_text_not_json",
+			"invalid": true
+		},
+		{
+			"tags": { "office": "lawyer", "wheelchair": "yes", "opening_hours": "Mo-Fr 09:00-17:00" },
+			"invalid": false
+		},
+		{
+			"tags": { "man_made": "breakwater", "source": "Bing", "type": "multipolygon" },
+			"invalid": false
+		},
+		{ "tags": { "boundary": "place" }, "invalid": false },
+		{ "tags": { "waterway": "river", "width": "6" }, "invalid": false },
+		{ "tags": { "railway": "switch", "ref": "15" }, "invalid": false },
+		{ "tags": { "emergency": "yes", "healthcare": "hospital", "psv": "yes" }, "invalid": false },
+		{ "tags": { "leisure": "nature_reserve", "operator:type": "government" }, "invalid": false },
+		{
+			"tags": "{\"tags\":{\"landuse\":\"basin\",\"source\":\"ORT10LT\"}}",
+			"kind": "nested_object",
+			"invalid": true
+		},
+		{
+			"tags": { "shop": "car_parts", "wheelchair": "yes", "source": "Kaart Ground Survey 2017" },
+			"invalid": false
+		},
+		{ "tags": "{\"natural\":\"shrubbery\",\"shrubbery:density\":\"medium\"}", "invalid": false },
+		{ "tags": "{\"shop\":\"kiosk\"}", "invalid": false },
+		{ "tags": "{\"cuisine\": \"x\"", "kind": "broken_json", "invalid": true },
+		{
+			"tags": "[[\"building\",\"commercial\"],[\"payment:cash\",\"yes\"]]",
+			"kind": "json_array",
+			"invalid": true
+		},
+		{ "tags": "{leisure=outdoor_seating\nlit=yes}", "kind": "flat_text_not_json", "invalid": true },
+		{ "tags": "{\"amenity\":1,\"capacity\":1}", "kind": "number_values", "invalid": true },
+		{
+			"tags": { "barrier": "jersey_barrier", "layer": "1", "material": "concrete" },
+			"invalid": false
+		},
+		{ "tags": { "natural": "scree", "source": "bgmountains" }, "invalid": false },
+		{
+			"tags": { "cuisine": "german", "wheelchair": "no", "indoor_seating": "yes" },
+			"invalid": false
+		},
+		{ "tags": { "power": "line", "voltage": "46000", "source": "Bing" }, "invalid": false },
+		{ "tags": "{\"tourism\":\"museum\"}", "invalid": false },
+		{ "tags": { "sport": "athletics", "surface": "tartan" }, "invalid": false },
+		{ "tags": "{\"highway\":\"elevator\",\"level\":\"0;1\"}", "invalid": false },
+		{ "tags": { "highway": "speed_camera" }, "invalid": false },
+		{
+			"tags": { "shop": "mobile_phone", "source": "Kaart Ground Survey 2017", "wheelchair": "no" },
+			"invalid": false
+		},
+		{ "tags": "{\"highway\":\"primary_link\",\"turn:lanes\":\"right\"}", "invalid": false },
+		{
+			"tags": "\"shop=hardware\\nsource=Kaart Ground Survey 2017\"",
+			"kind": "json_string",
+			"invalid": true
+		},
+		{ "tags": "{\"man_made\":\"mast\"}", "invalid": false },
+		{ "tags": { "barrier": "cycle_barrier", "horse": "yes", "bicycle": "no" }, "invalid": false },
+		{ "tags": { "boundary": "place", "place": "quarter" }, "invalid": false },
+		{ "tags": { "building": "roof" }, "invalid": false },
+		{
+			"tags": "[[\"railway\",\"tram_stop\"],[\"wheelchair\",\"no\"]]",
+			"kind": "json_array",
+			"invalid": true
+		},
+		{
+			"tags": "{\"boundary\":\"health\",\"type\":\"boundary\",\"source:date\":\"2017\"}",
+			"invalid": false
+		},
+		{ "tags": "{\"amenity\":1,\"building:levels\":1}", "kind": "number_values", "invalid": true },
+		{
+			"tags": "{\"tags\":{\"landuse\":\"basin\",\"type\":\"multipolygon\"}}",
+			"kind": "nested_object",
+			"invalid": true
+		},
+		{
+			"tags": { "natural": "bay", "source": "NRCan-CanVec-8.0", "type": "multipolygon" },
+			"invalid": false
+		},
+		{
+			"tags": {
+				"aeroway": "helipad",
+				"lit": "no",
+				"source": "ourairports.com",
+				"surface": "grass"
+			},
+			"invalid": false
+		},
+		{ "tags": { "barrier": "kerb", "kerb": "flush" }, "invalid": false },
+		{ "tags": { "military": "bunker" }, "invalid": false },
+		{ "tags": "{\"barrier\":\"chain\",\"material\":\"metal\"}", "invalid": false },
+		{
+			"tags": {
+				"barrier": "retaining_wall",
+				"source": "bing",
+				"material": "concrete",
+				"landuse": "grass"
+			},
+			"invalid": false
+		},
+		{
+			"tags": "{\"power\":\"substation\",\"street_cabinet\":\"power\",\"voltage\":\"11000;400\"}",
+			"invalid": false
+		},
+		{
+			"tags": "[[\"amenity\",\"bench\"],[\"seats\",\"4\"]]",
+			"kind": "json_array",
+			"invalid": true
+		},
+		{
+			"tags": {
+				"building": "construction",
+				"start_date": "2020",
+				"source": "Plan polyvalent Maroua"
+			},
+			"invalid": false
+		},
+		{
+			"tags": { "historic": "wayside_shrine", "religion": "shinto", "locked": "yes" },
+			"invalid": false
+		},
+		{ "tags": { "cuisine": "chicken", "outdoor_seating": "no" }, "invalid": false },
+		{ "tags": "\"railway=proposed\\ntunnel=yes\"", "kind": "json_string", "invalid": true },
+		{ "tags": { "building": "retail" }, "invalid": false },
+		{
+			"tags": { "amenity": "grave_yard", "religion": "muslim", "denomination": "roman_catholic" },
+			"invalid": false
+		},
+		{ "tags": "{\"power\": \"x\"", "kind": "broken_json", "invalid": true },
+		{
+			"tags": { "emergency": "siren", "tower:construction": "freestanding", "location": "roof" },
+			"invalid": false
+		},
+		{ "tags": { "highway": "footway", "layer": "-1" }, "invalid": false },
+		{
+			"tags": { "leisure": "picnic_table", "sport": "chess", "material": "wood" },
+			"invalid": false
+		},
+		{ "tags": { "building": "retail", "layer": "1", "internet_access": "wlan" }, "invalid": false },
+		{
+			"tags": {
+				"railway": "crossing",
+				"source": "BDOrtho IGN",
+				"tactile_paving": "yes",
+				"supervised": "no"
+			},
+			"invalid": false
+		},
+		{ "tags": { "building": "slurry_tank" }, "invalid": false },
+		{
+			"tags": "{\"tags\":{\"barrier\":\"jersey_barrier\",\"material\":\"concrete\"}}",
+			"kind": "nested_object",
+			"invalid": true
+		},
+		{ "tags": { "highway": "motorway_junction", "ref": "8" }, "invalid": false },
+		{ "tags": "{highway=construction\nlanes=3}", "kind": "flat_text_not_json", "invalid": true },
+		{ "tags": "{\"boundary\":\"local_authority\"}", "invalid": false },
+		{
+			"tags": "{\"tags\":{\"leisure\":\"horse_riding\",\"sport\":\"equestrian\"}}",
+			"kind": "nested_object",
+			"invalid": true
+		},
+		{ "tags": "{\"sport\":\"karting\",\"surface\":\"asphalt\"}", "invalid": false },
+		{ "tags": "{\"man_made\":1,\"source\":1}", "kind": "number_values", "invalid": true },
+		{
+			"tags": {
+				"cuisine": "thai",
+				"takeaway": "yes",
+				"outdoor_seating": "yes",
+				"diet:vegetarian": "yes"
+			},
+			"invalid": false
+		},
+		{ "tags": "{\"sport\":\"climbing\",\"type\":\"site\"}", "invalid": false },
+		{
+			"tags": "{\"tags\":{\"natural\":\"sand\",\"sport\":\"golf\"}}",
+			"kind": "nested_object",
+			"invalid": true
+		},
+		{ "tags": "{\"amenity\":\"recycling\",\"recycling:glass_bottles\":\"yes\"}", "invalid": false },
+		{ "tags": { "tourism": "information", "wheelchair": "no" }, "invalid": false },
+		{ "tags": "{\"boundary\": \"x\"", "kind": "broken_json", "invalid": true },
+		{ "tags": { "natural": "cliff", "source": "knowledge" }, "invalid": false },
+		{
+			"tags": "{\"tags\":{\"sport\":\"baseball\",\"type\":\"multipolygon\"}}",
+			"kind": "nested_object",
+			"invalid": true
+		},
+		{ "tags": { "route": "piste" }, "invalid": false },
+		{
+			"tags": {
+				"cuisine": "coffee_shop",
+				"diet:vegan": "yes",
+				"outdoor_seating": "yes",
+				"smoking": "no"
+			},
+			"invalid": false
+		},
+		{
+			"tags": {
+				"public_transport": "stop_position",
+				"ref": "C",
+				"service": "regional",
+				"source": "Maxar Premium-Luftbilder (Beta)"
+			},
+			"invalid": false
+		},
+		{ "tags": { "shop": "doityourself", "wheelchair": "yes" }, "invalid": false },
+		{
+			"tags": "{\"amenity\":\"waste_basket\",\"indoor\":\"no\",\"vending\":\"excrement_bags\"}",
+			"invalid": false
+		},
+		{ "tags": { "boundary": "health" }, "invalid": false },
+		{ "tags": { "power": "substation" }, "invalid": false },
+		{
+			"tags": { "historic": "bomb_crater", "natural": "water", "start_date": "1945" },
+			"invalid": false
+		},
+		{ "tags": "{\"railway\":1,\"voltage\":1}", "kind": "number_values", "invalid": true },
+		{ "tags": { "power": "catenary_portal", "source": "BDOrtho IGN" }, "invalid": false },
+		{ "tags": { "historic": "memorial", "memorial": "stolperstein" }, "invalid": false },
+		{
+			"tags": "\"amenity=bar\\npayment:credit_cards=yes\"",
+			"kind": "json_string",
+			"invalid": true
+		},
+		{ "tags": { "highway": "pedestrian", "motor_vehicle": "permit" }, "invalid": false },
+		{
+			"tags": {
+				"place": "city",
+				"source": "TIGER/Line® 2008 Place Shapefiles (http://www.census.gov/geo/www/tiger/)",
+				"type": "boundary",
+				"population:date": "2022"
+			},
+			"invalid": false
+		},
+		{ "tags": "{\"sport\":\"boules\",\"surface\":\"sand\"}", "invalid": false },
+		{ "tags": "{\"shop\":\"hairdresser\",\"source:date\":\"2014-03-24\"}", "invalid": false },
+		{ "tags": { "shop": "hearing_aids", "wheelchair": "yes" }, "invalid": false },
+		{
+			"tags": { "landuse": "religious", "source": "Esri", "religion": "buddhist" },
+			"invalid": false
+		},
+		{ "tags": "\"cuisine=sushi\\noutdoor_seating=yes\"", "kind": "json_string", "invalid": true },
+		{ "tags": "{\"aeroway\":\"apron\"}", "invalid": false },
+		{ "tags": { "highway": "give_way", "side": "right" }, "invalid": false },
+		{ "tags": "{\"shop\": \"x\"", "kind": "broken_json", "invalid": true },
+		{ "tags": "{\"cuisine\":\"korean\"}", "invalid": false },
+		{ "tags": "{\"tourism\":\"museum\",\"wheelchair\":\"yes\"}", "invalid": false },
+		{ "tags": "{\"route\":\"ferry\",\"type\":\"route\"}", "invalid": false },
+		{
+			"tags": "{\"tags\":{\"place\":\"isolated_dwelling\",\"source\":\"cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2012\"}}",
+			"kind": "nested_object",
+			"invalid": true
+		},
+		{ "tags": { "landuse": "basin", "water": "wastewater" }, "invalid": false },
+		{ "tags": "{\"landuse\": \"x\"", "kind": "broken_json", "invalid": true },
+		{ "tags": "{\"landuse\":\"railway\",\"man_made\":\"bridge\"}", "invalid": false },
+		{ "tags": { "route": "mtb", "type": "route" }, "invalid": false },
+		{ "tags": { "boundary": "census" }, "invalid": false },
+		{
+			"tags": "{\"historic\":\"wayside_cross\",\"source\":\"IGN - 2024-03-15\",\"material\":\"wood\"}",
+			"invalid": false
+		},
+		{
+			"tags": "[[\"service\",\"parking_aisle\"],[\"source\",\"BDOrtho IGN\"]]",
+			"kind": "json_array",
+			"invalid": true
+		},
+		{
+			"tags": { "amenity": "language_school", "language:en": "yes", "building": "yes" },
+			"invalid": false
+		},
+		{
+			"tags": "{\"tags\":{\"sport\":\"equestrian\",\"surface\":\"dirt\"}}",
+			"kind": "nested_object",
+			"invalid": true
+		},
+		{ "tags": { "shop": "optician" }, "invalid": false },
+		{
+			"tags": "{\"landuse\":\"industrial\",\"recycling_type\":\"centre\",\"source\":\"survey\"}",
+			"invalid": false
+		},
+		{ "tags": "{\"place\": \"x\"", "kind": "broken_json", "invalid": true },
+		{ "tags": { "place": "hamlet", "source:population": "pmgsy" }, "invalid": false },
+		{ "tags": "{\"cuisine\":\"indian\"}", "invalid": false },
+		{ "tags": { "landuse": "garages" }, "invalid": false },
+		{ "tags": "{\"amenity\":\"recycling\"}", "invalid": false },
+		{ "tags": { "tourism": "camp_site" }, "invalid": false },
+		{ "tags": "{\"boundary\":\"forest_compartment\"}", "invalid": false },
+		{
+			"tags": {
+				"building": "warehouse",
+				"roof:material": "metal",
+				"source": "microsoft/BuildingFootprints"
+			},
+			"invalid": false
+		},
+		{ "tags": { "building": "commercial", "roof:levels": "1", "shop": "car" }, "invalid": false },
+		{
+			"tags": {
+				"barrier": "yes",
+				"landuse": "residential",
+				"residential": "apartments",
+				"foot": "yes"
+			},
+			"invalid": false
+		},
+		{ "tags": "{\"amenity\":\"bench\",\"covered\":\"no\",\"seats\":\"8\"}", "invalid": false },
+		{
+			"tags": { "place": "village", "type": "boundary", "teryt:stan_na": "2009-01-01" },
+			"invalid": false
+		},
+		{ "tags": { "tourism": "camp_site", "type": "multipolygon" }, "invalid": false },
+		{
+			"tags": "{\"amenity\":\"hunting_stand\",\"ladder\":\"yes\",\"building\":\"yes\",\"material\":\"wood\"}",
+			"invalid": false
+		},
+		{
+			"tags": { "cuisine": "korean", "source": "공공데이터포털", "reservation": "yes" },
+			"invalid": false
+		},
+		{ "tags": "{\"natural\":\"cape\"}", "invalid": false },
+		{
+			"tags": { "natural": "cave_entrance", "tourism": "attraction", "wheelchair": "no" },
+			"invalid": false
+		},
+		{ "tags": { "building": "construction" }, "invalid": false },
+		{
+			"tags": { "landuse": "basin", "man_made": "pond", "natural": "water", "source": "bing" },
+			"invalid": false
+		},
+		{ "tags": { "railway": "signal", "source": "BDOrtho IGN" }, "invalid": false },
+		{ "tags": { "route": "mtb", "surface": "ground" }, "invalid": false },
+		{ "tags": { "natural": "heath", "source": "AHN" }, "invalid": false },
+		{
+			"tags": "{amenity=pharmacy\nopening_hours=Mo-Su 09:00-21:00}",
+			"kind": "flat_text_not_json",
+			"invalid": true
+		},
+		{
+			"tags": {
+				"historic": "castle",
+				"source": "cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2012",
+				"source:heritage": "data.gouv.fr, Ministère de la Culture - 2016"
+			},
+			"invalid": false
+		},
+		{ "tags": "{\"amenity\":\"fuel\",\"internet_access\":\"wlan\"}", "invalid": false },
+		{ "tags": "{\"landuse\":\"religious\",\"type\":\"multipolygon\"}", "invalid": false },
+		{ "tags": "{\"leisure\":\"pitch\",\"sport\":\"padel\"}", "invalid": false },
+		{ "tags": "{\"leisure\":\"horse_riding\",\"sport\":\"equestrian\"}", "invalid": false },
+		{ "tags": "{sport=motor\nsurface=asphalt}", "kind": "flat_text_not_json", "invalid": true },
+		{
+			"tags": "{\"emergency\":\"no\",\"healthcare\":\"clinic\",\"psv\":\"no\",\"maxspeed\":\"20\"}",
+			"invalid": false
+		},
+		{ "tags": { "natural": "fell", "type": "multipolygon" }, "invalid": false },
+		{
+			"tags": { "barrier": "wicket_gate", "foot": "yes", "motor_vehicle": "no" },
+			"invalid": false
+		},
+		{
+			"tags": "[[\"public_transport\",\"stop_position\"],[\"railway\",\"halt\"]]",
+			"kind": "json_array",
+			"invalid": true
+		},
+		{ "tags": { "highway": "footway" }, "invalid": false },
+		{ "tags": { "natural": "reef" }, "invalid": false },
+		{ "tags": { "barrier": "wicket_gate", "motor_vehicle": "no" }, "invalid": false },
 		{
 			"tags": "[[\"craft\",\"grinding_mill\"],[\"description\",\"Maize\"]]",
 			"kind": "json_array",
 			"invalid": true
 		},
 		{
-			"tags": "{\"tags\":{\"craft\":\"grinding_mill\",\"source\":\"WFP Field Survey 2021, OMDTZ\"}}",
+			"tags": "{\"tags\":{\"landuse\":\"construction\",\"type\":\"multipolygon\"}}",
 			"kind": "nested_object",
 			"invalid": true
 		},
-		{ "tags": "{\"tourism\":\"guest_house\"}", "invalid": false },
-		{ "tags": { "office": "lawyer" }, "invalid": false },
+		{ "tags": { "barrier": "wall" }, "invalid": false },
+		{ "tags": "{\"amenity\": \"x\"", "kind": "broken_json", "invalid": true },
+		{ "tags": "\"shop=electronics\\nwheelchair=yes\"", "kind": "json_string", "invalid": true },
+		{ "tags": { "barrier": "cattle_grid", "bicycle": "yes", "motorcar": "yes" }, "invalid": false },
+		{ "tags": "{\"sport\":1,\"type\":1}", "kind": "number_values", "invalid": true },
+		{ "tags": { "route": "piste", "type": "route" }, "invalid": false },
 		{
-			"tags": "{historic=wayside_shrine\nreligion=christian}",
+			"tags": "[[\"natural\",\"peak\"],[\"source\",\"USGS\"]]",
+			"kind": "json_array",
+			"invalid": true
+		},
+		{
+			"tags": "\"natural=cape\\nsource=NRCan-CanVec-10.0\"",
+			"kind": "json_string",
+			"invalid": true
+		},
+		{
+			"tags": { "highway": "residential", "sidewalk": "both", "maxspeed": "30 mph" },
+			"invalid": false
+		},
+		{
+			"tags": "[[\"building\",\"static_caravan\"],[\"height\",\"4.6\"]]",
+			"kind": "json_array",
+			"invalid": true
+		},
+		{
+			"tags": "[[\"historic\",\"wayside_cross\"],[\"material\",\"metal\"]]",
+			"kind": "json_array",
+			"invalid": true
+		},
+		{
+			"tags": { "natural": "tree_stump", "ownership": "public", "object:city": "Badalona" },
+			"invalid": false
+		},
+		{ "tags": { "healthcare": "physiotherapist", "wheelchair": "yes" }, "invalid": false },
+		{
+			"tags": "\"public_transport=stop_position\\nsource:name:oc=ieo-bdtopoc\"",
+			"kind": "json_string",
+			"invalid": true
+		},
+		{ "tags": { "leisure": "pitch", "sport": "basketball" }, "invalid": false },
+		{
+			"tags": "{\"man_made\":\"works\",\"type\":\"multipolygon\",\"operator:type\":\"private\"}",
+			"invalid": false
+		},
+		{ "tags": { "railway": "platform", "subway": "yes" }, "invalid": false },
+		{
+			"tags": { "railway": "platform", "tram": "yes", "source": "Bing", "smoothness": "good" },
+			"invalid": false
+		},
+		{ "tags": { "shop": "furniture" }, "invalid": false },
+		{
+			"tags": "{place=city\nsource=TIGER/Line® 2008 Place Shapefiles (http://www.census.gov/geo/www/tiger/)}",
 			"kind": "flat_text_not_json",
 			"invalid": true
 		},
 		{
-			"tags": { "man_made": "breakwater", "source": "Bing", "type": "multipolygon" },
+			"tags": {
+				"building": "static_caravan",
+				"source": "microsoft/BuildingFootprints;esri/USA_NAD_Addresses"
+			},
 			"invalid": false
 		},
+		{ "tags": { "cuisine": "ice_cream", "wheelchair": "yes" }, "invalid": false },
+		{ "tags": "{\"tourism\": \"x\"", "kind": "broken_json", "invalid": true },
 		{
-			"tags": "{\"tags\":{\"barrier\":\"cattle_grid\",\"motorcycle\":\"yes\"}}",
+			"tags": { "building": "farm_auxiliary", "source:geometry:date": "2016-09-14" },
+			"invalid": false
+		},
+		{ "tags": { "barrier": "hedge" }, "invalid": false },
+		{
+			"tags": "{\"tags\":{\"public_transport\":\"stop_area\",\"railway\":\"facility\"}}",
 			"kind": "nested_object",
 			"invalid": true
 		},
-		{ "tags": { "leisure": "picnic_table", "seats": "6" }, "invalid": false },
-		{ "tags": { "aeroway": "aerodrome", "operator:type": "public" }, "invalid": false },
-		{ "tags": { "power": "plant" }, "invalid": false },
-		{ "tags": { "tourism": "artwork" }, "invalid": false },
+		{
+			"tags": {
+				"boundary": "administrative",
+				"natural": "coastline",
+				"source": "BDLL25, EGRN, Instituto Geográfico Nacional",
+				"population:date": "2025"
+			},
+			"invalid": false
+		},
+		{ "tags": "{\"leisure\":\"stadium\",\"type\":\"multipolygon\"}", "invalid": false },
+		{
+			"tags": {
+				"building": "garages",
+				"capacity": "3",
+				"source:outline": "ALKIS NRW",
+				"source": "kapor2"
+			},
+			"invalid": false
+		},
+		{ "tags": { "shop": "alcohol", "wheelchair": "no" }, "invalid": false },
+		{ "tags": { "highway": "motorway", "lanes": "4", "horse": "no" }, "invalid": false },
+		{ "tags": { "waterway": "drain" }, "invalid": false },
+		{ "tags": "{\"landuse\":1,\"type\":1}", "kind": "number_values", "invalid": true },
+		{ "tags": { "shop": "supermarket", "source": "survey", "toilets": "yes" }, "invalid": false },
+		{
+			"tags": "\"leisure=sports_centre\\nsport=equestrian\"",
+			"kind": "json_string",
+			"invalid": true
+		},
+		{
+			"tags": "{\"barrier\":\"kissing_gate\",\"foot\":\"designated\",\"material\":\"wood\"}",
+			"invalid": false
+		},
+		{ "tags": { "power": "cable", "source": "nged_open_data" }, "invalid": false },
+		{
+			"tags": "{\"building\":\"house\",\"survey:date\":\"2022\",\"start_date\":\"1970\"}",
+			"invalid": false
+		},
+		{ "tags": "{\"route\":\"mtb\",\"surface\":\"dirt\"}", "invalid": false },
+		{ "tags": { "leisure": "pitch", "lit": "no", "sport": "softball" }, "invalid": false },
+		{
+			"tags": "{\"amenity\":\"bench\",\"colour\":\"yellow\",\"source\":\"survey\"}",
+			"invalid": false
+		},
+		{
+			"tags": "{boundary=postal_code\nsource=공공데이터포털}",
+			"kind": "flat_text_not_json",
+			"invalid": true
+		},
+		{ "tags": "{\"route\":\"road\"}", "invalid": false },
+		{ "tags": { "shop": "telecommunication", "wheelchair": "yes" }, "invalid": false },
+		{
+			"tags": { "cuisine": "japanese", "outdoor_seating": "no", "wheelchair": "yes" },
+			"invalid": false
+		},
+		{ "tags": "[[\"barrier\",\"log\"],[\"foot\",\"yes\"]]", "kind": "json_array", "invalid": true },
+		{ "tags": { "shop": "mobile_phone", "wheelchair": "no" }, "invalid": false },
+		{
+			"tags": "[[\"highway\",\"passing_place\"],[\"source\",\"MML Orthofoto\"]]",
+			"kind": "json_array",
+			"invalid": true
+		},
+		{ "tags": { "amenity": "compressed_air", "fee": "no" }, "invalid": false },
+		{
+			"tags": { "boundary": "cadastral", "type": "multipolygon", "source": "cuzk:ruian" },
+			"invalid": false
+		},
+		{ "tags": { "boundary": "postal_code" }, "invalid": false },
+		{ "tags": { "shop": "mobile_phone" }, "invalid": false },
+		{
+			"tags": {
+				"office": "government",
+				"opening_hours": "Mo-Fr 09:00-17:00",
+				"type": "multipolygon"
+			},
+			"invalid": false
+		},
+		{
+			"tags": "{emergency=fire_hydrant\nfire_hydrant:diameter=200}",
+			"kind": "flat_text_not_json",
+			"invalid": true
+		},
+		{
+			"tags": "{\"historic\":\"church\",\"tourism\":\"attraction\",\"religion\":\"christian\"}",
+			"invalid": false
+		},
+		{
+			"tags": {
+				"craft": "grinding_mill",
+				"flour_fortified": "no",
+				"operator:type": "private",
+				"source": "nigeriase4all.gov.ng"
+			},
+			"invalid": false
+		},
+		{ "tags": { "service": "irrigation", "waterway": "ditch" }, "invalid": false },
+		{
+			"tags": { "highway": "path", "smoothness": "good", "surface": "unpaved", "mtb:scale": "1" },
+			"invalid": false
+		},
+		{ "tags": { "shop": "bakery" }, "invalid": false },
+		{ "tags": "{\"healthcare\":1,\"wheelchair\":1}", "kind": "number_values", "invalid": true },
+		{
+			"tags": { "building": "retail", "source:addr": "FHRS Open Data", "roof:levels": "1" },
+			"invalid": false
+		},
+		{ "tags": { "barrier": "hedge", "source": "View from path;Bing" }, "invalid": false },
+		{ "tags": { "cuisine": "burger", "toilets:wheelchair": "yes" }, "invalid": false },
+		{
+			"tags": "\"barrier=wall\\nsource=cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2013\"",
+			"kind": "json_string",
+			"invalid": true
+		},
+		{
+			"tags": "[[\"man_made\",\"works\"],[\"product\",\"food\"]]",
+			"kind": "json_array",
+			"invalid": true
+		},
+		{ "tags": { "landuse": "basin", "source": "bing" }, "invalid": false },
+		{ "tags": "{\"boundary\":1,\"type\":1}", "kind": "number_values", "invalid": true },
+		{ "tags": "{\"natural\":\"sand\",\"sport\":\"golf\",\"source\":\"Bing\"}", "invalid": false },
+		{ "tags": { "amenity": "pharmacy", "payment:maestro": "yes" }, "invalid": false },
+		{ "tags": { "natural": "cape", "source": "NRCan-CanVec-10.0" }, "invalid": false },
+		{ "tags": { "shop": "florist", "wheelchair": "limited" }, "invalid": false },
+		{ "tags": { "barrier": "block", "motorcycle": "yes" }, "invalid": false },
+		{ "tags": { "building": "greenhouse", "source": "Bing" }, "invalid": false },
+		{ "tags": { "man_made": "utility_pole", "utility": "telecom;power" }, "invalid": false },
+		{ "tags": { "healthcare": "laboratory" }, "invalid": false },
+		{
+			"tags": { "healthcare": "pharmacy", "wheelchair": "yes", "payment:jcb": "yes" },
+			"invalid": false
+		},
+		{ "tags": { "man_made": "utility_pole", "operator:wikidata": "Q6817918" }, "invalid": false },
+		{
+			"tags": { "healthcare": "yes", "source": "OpenDataTelangana", "operator:type": "government" },
+			"invalid": false
+		},
+		{ "tags": "\"highway=bridleway\\nmtb:scale=0\"", "kind": "json_string", "invalid": true },
+		{
+			"tags": { "man_made": "survey_point", "natural": "hill", "material": "concrete" },
+			"invalid": false
+		},
+		{ "tags": "{\"natural\":\"beach\"}", "invalid": false },
+		{
+			"tags": { "cuisine": "german", "wheelchair": "yes", "indoor_seating": "yes" },
+			"invalid": false
+		},
+		{ "tags": "{\"highway\":1,\"source\":1}", "kind": "number_values", "invalid": true },
+		{ "tags": { "natural": "rock", "tourism": "attraction" }, "invalid": false },
+		{ "tags": { "landuse": "forest" }, "invalid": false },
+		{
+			"tags": "{\"tags\":{\"sport\":\"american_football\",\"surface\":\"grass\"}}",
+			"kind": "nested_object",
+			"invalid": true
+		},
+		{
+			"tags": "[[\"tourism\",\"viewpoint\"],[\"wheelchair\",\"no\"]]",
+			"kind": "json_array",
+			"invalid": true
+		},
+		{ "tags": { "historic": "mine_shaft" }, "invalid": false },
+		{
+			"tags": { "historic": "railway", "railway": "abandoned", "service": "spur" },
+			"invalid": false
+		},
+		{ "tags": "{natural=ridge\nsource=IBGE}", "kind": "flat_text_not_json", "invalid": true },
+		{
+			"tags": "{\"natural\":\"beach\",\"surface\":\"pebblestone\",\"source\":\"bing\"}",
+			"invalid": false
+		},
+		{ "tags": "{\"tourism\":\"viewpoint\"}", "invalid": false },
+		{ "tags": "{\"barrier\":\"turnstile\",\"level\":\"0\",\"fee\":\"yes\"}", "invalid": false },
+		{ "tags": { "place": "square", "surface": "paved", "type": "multipolygon" }, "invalid": false },
+		{ "tags": "\"aeroway=hangar\\nbuilding=hangar\"", "kind": "json_string", "invalid": true },
+		{
+			"tags": {
+				"historic": "railway",
+				"railway": "disused",
+				"service": "spur",
+				"railway:preserved": "yes"
+			},
+			"invalid": false
+		},
+		{ "tags": { "leisure": "park" }, "invalid": false },
+		{ "tags": { "railway": "abandoned", "smoothness": "intermediate" }, "invalid": false },
+		{
+			"tags": { "natural": "bare_rock", "source": "Maxar Premium-Luftbilder (Beta)" },
+			"invalid": false
+		},
+		{ "tags": "{\"highway\":\"trunk\"}", "invalid": false },
+		{
+			"tags": {
+				"man_made": "wastewater_plant",
+				"type": "multipolygon",
+				"source": "NHD",
+				"water": "reservoir"
+			},
+			"invalid": false
+		},
+		{
+			"tags": "{amenity=sanitary_dump_station\nfee=no}",
+			"kind": "flat_text_not_json",
+			"invalid": true
+		},
+		{
+			"tags": { "natural": "valley", "source:name": "ZBGIS", "valley": "balka", "seasonal": "yes" },
+			"invalid": false
+		},
+		{
+			"tags": "{\"shop\":\"yes\",\"source\":\"Reconocimiento cartográfico de campo 2016 por KG.\"}",
+			"invalid": false
+		},
+		{ "tags": { "power": "circuit" }, "invalid": false },
+		{
+			"tags": "{service=irrigation\ntunnel=culvert}",
+			"kind": "flat_text_not_json",
+			"invalid": true
+		},
+		{ "tags": { "natural": "glacier", "source": "Bing" }, "invalid": false },
+		{ "tags": "{\"natural\":1,\"ownership\":1}", "kind": "number_values", "invalid": true },
+		{
+			"tags": { "railway": "signal", "ref": "B", "source": "estimate; extrapolate; survey" },
+			"invalid": false
+		},
+		{
+			"tags": "{\"boundary\":\"protected_area\",\"note\":\"Way has been simplified using a maximum error criterion of 3m\"}",
+			"invalid": false
+		},
+		{
+			"tags": "{\"tags\":{\"route\":\"road\",\"type\":\"route\"}}",
+			"kind": "nested_object",
+			"invalid": true
+		},
+		{
+			"tags": "{\"tags\":{\"amenity\":\"atm\",\"opening_hours\":\"Mo-Su 07:00-23:00\"}}",
+			"kind": "nested_object",
+			"invalid": true
+		},
+		{ "tags": { "service": "regional", "shelter": "yes" }, "invalid": false },
+		{ "tags": { "office": "lawyer" }, "invalid": false },
+		{ "tags": { "boundary": "political", "type": "boundary" }, "invalid": false },
+		{ "tags": "{\"barrier\":1,\"place\":1}", "kind": "number_values", "invalid": true },
+		{
+			"tags": "{\"man_made\":\"water_tap\",\"seasonal\":\"no\",\"operational_status\":\"operational\",\"wheelchair\":\"yes\"}",
+			"invalid": false
+		},
+		{ "tags": { "man_made": "chimney", "material": "brick" }, "invalid": false },
+		{ "tags": { "building": "slurry_tank", "covered": "yes" }, "invalid": false },
+		{ "tags": "{\"boundary\":\"postal_code\",\"landuse\":\"residential\"}", "invalid": false },
+		{ "tags": "{\"historic\":\"charcoal_pile\"}", "invalid": false },
+		{ "tags": { "railway": "milestone", "source": "interpolation" }, "invalid": false },
+		{
+			"tags": "{\"building\":\"hut\",\"source\":\"NextView\",\"roof:material\":\"plastic\"}",
+			"invalid": false
+		},
+		{
+			"tags": { "sport": "swimming", "wheelchair": "yes", "swimming_pool": "inground" },
+			"invalid": false
+		},
+		{ "tags": { "sport": "motor", "surface": "asphalt" }, "invalid": false },
+		{
+			"tags": {
+				"emergency": "defibrillator",
+				"opening_hours": "24/7",
+				"indoor": "yes",
+				"wheelchair": "yes"
+			},
+			"invalid": false
+		},
+		{ "tags": "{\"tourism\":\"camp_site\"}", "invalid": false },
+		{ "tags": { "natural": "tree", "species:wikidata": "Q161374" }, "invalid": false },
+		{ "tags": { "sport": "boules", "surface": "fine_gravel" }, "invalid": false },
+		{
+			"tags": { "power": "generator", "type": "multipolygon", "roof:height": "5" },
+			"invalid": false
+		},
+		{ "tags": { "highway": "primary" }, "invalid": false },
+		{
+			"tags": { "barrier": "gate", "wheelchair": "yes", "motorcycle": "no", "motor_vehicle": "no" },
+			"invalid": false
+		},
+		{
+			"tags": {
+				"man_made": "water_tower",
+				"source": "cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2010"
+			},
+			"invalid": false
+		},
+		{
+			"tags": {
+				"place": "isolated_dwelling",
+				"source": "cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2012",
+				"type": "multipolygon"
+			},
+			"invalid": false
+		},
+		{
+			"tags": "\"office=estate_agent\\nopening_hours:signed=no\"",
+			"kind": "json_string",
+			"invalid": true
+		},
+		{
+			"tags": "[[\"leisure\",\"slipway\"],[\"seamark:type\",\"small_craft_facility\"]]",
+			"kind": "json_array",
+			"invalid": true
+		},
+		{ "tags": { "tourism": "motel" }, "invalid": false },
+		{ "tags": { "man_made": "pier" }, "invalid": false },
+		{ "tags": { "emergency": "phone", "indoor": "no", "source": "survey" }, "invalid": false },
+		{ "tags": { "route": "power", "type": "route", "voltage": "132000" }, "invalid": false },
+		{ "tags": { "natural": "hill", "source": "GNS", "place": "locality" }, "invalid": false },
+		{ "tags": "{\"natural\":1,\"note\":1}", "kind": "number_values", "invalid": true },
+		{ "tags": "\"natural=shrub\\nsource=bing\"", "kind": "json_string", "invalid": true },
+		{ "tags": { "route": "railway", "type": "route" }, "invalid": false },
+		{ "tags": { "leisure": "stadium", "sport": "soccer" }, "invalid": false },
+		{ "tags": { "railway": "buffer_stop", "source": "Bing" }, "invalid": false },
+		{ "tags": { "waterway": "canal", "width": "4" }, "invalid": false },
+		{
+			"tags": "{\"tags\":{\"man_made\":\"pipeline\",\"waterway\":\"pressurised\"}}",
+			"kind": "nested_object",
+			"invalid": true
+		},
+		{ "tags": { "route": "bicycle" }, "invalid": false },
+		{
+			"tags": { "natural": "shingle", "source": "Maxar Premium-Luftbilder (Beta)" },
+			"invalid": false
+		},
+		{
+			"tags": "[[\"highway\",\"milestone\"],[\"information\",\"route_marker\"]]",
+			"kind": "json_array",
+			"invalid": true
+		},
+		{
+			"tags": {
+				"railway": "tram_crossing",
+				"traffic_signals:sound": "yes",
+				"tactile_paving": "no",
+				"traffic_signals:vibration": "no"
+			},
+			"invalid": false
+		},
+		{ "tags": { "cuisine": "indian", "outdoor_seating": "no" }, "invalid": false },
+		{ "tags": "{\"shop\":\"shoes\"}", "invalid": false },
+		{ "tags": "{\"waterway\":\"drain\"}", "invalid": false },
+		{ "tags": "{\"landuse\":\"farmland\",\"source:date\":\"2018-02-28\"}", "invalid": false },
+		{ "tags": "{\"waterway\":1,\"width\":1}", "kind": "number_values", "invalid": true },
+		{ "tags": "{\"shop\":1,\"wheelchair\":1}", "kind": "number_values", "invalid": true },
 		{ "tags": { "leisure": "swimming_pool" }, "invalid": false },
+		{ "tags": { "service": "driveway" }, "invalid": false },
+		{ "tags": { "building": "yes" }, "invalid": false },
+		{
+			"tags": "[[\"building\",\"commercial\"],[\"source\",\"cuzk:ruian\"]]",
+			"kind": "json_array",
+			"invalid": true
+		},
+		{
+			"tags": { "emergency": "defibrillator", "wheelchair": "yes", "level": "1" },
+			"invalid": false
+		},
+		{ "tags": "{\"leisure\":\"dog_park\",\"wheelchair\":\"no\"}", "invalid": false },
+		{
+			"tags": {
+				"railway": "crossing",
+				"source:ref": "#ŻółtaNaklejkaPLK",
+				"tactile_paving": "yes",
+				"source": "BDOrtho IGN"
+			},
+			"invalid": false
+		},
+		{ "tags": "{\"sport\":\"tennis\",\"surface\":\"paved\"}", "invalid": false },
+		{
+			"tags": { "place": "town", "source": "GNS", "type": "boundary", "population:date": "2006" },
+			"invalid": false
+		},
+		{ "tags": "{\"shop\":\"beverages\",\"wheelchair\":\"yes\"}", "invalid": false },
+		{
+			"tags": {
+				"cuisine": "mexican",
+				"takeaway": "yes",
+				"drive_through": "no",
+				"outdoor_seating": "yes"
+			},
+			"invalid": false
+		},
+		{
+			"tags": "[[\"sport\",\"athletics\"],[\"surface\",\"asphalt\"]]",
+			"kind": "json_array",
+			"invalid": true
+		},
+		{
+			"tags": "{railway=abandoned\ntracktype=grade2}",
+			"kind": "flat_text_not_json",
+			"invalid": true
+		},
+		{ "tags": { "landuse": "garages", "type": "multipolygon" }, "invalid": false },
+		{
+			"tags": { "cuisine": "chicken", "delivery": "yes", "outdoor_seating": "no", "level": "0" },
+			"invalid": false
+		},
+		{
+			"tags": { "historic": "wayside_cross", "material": "stone", "source": "turistautak.hu" },
+			"invalid": false
+		},
+		{ "tags": { "place": "island" }, "invalid": false },
+		{ "tags": { "amenity": "post_box" }, "invalid": false },
+		{
+			"tags": "[[\"power\",\"portal\"],[\"structure\",\"tubular\"]]",
+			"kind": "json_array",
+			"invalid": true
+		},
+		{
+			"tags": "{railway=facility\ntype=public_transport}",
+			"kind": "flat_text_not_json",
+			"invalid": true
+		},
+		{ "tags": "{\"highway\":\"turning_circle\",\"source\":\"yahoo\"}", "invalid": false },
+		{ "tags": { "highway": "passing_place", "source": "MML Orthofoto" }, "invalid": false },
+		{
+			"tags": { "natural": "spring", "ownership": "private", "source": "survey" },
+			"invalid": false
+		},
+		{
+			"tags": "{\"amenity\":\"compressed_air\",\"fee\":\"no\",\"covered\":\"no\"}",
+			"invalid": false
+		},
+		{
+			"tags": "[[\"landuse\",\"reservoir\"],[\"natural\",\"water\"]]",
+			"kind": "json_array",
+			"invalid": true
+		},
+		{ "tags": { "shop": "vacant", "source": "survey", "wheelchair": "yes" }, "invalid": false },
+		{ "tags": "\"barrier=toll_booth\\nfoot=no\"", "kind": "json_string", "invalid": true },
+		{ "tags": "{leisure=pitch\nsport=futsal}", "kind": "flat_text_not_json", "invalid": true },
+		{ "tags": { "tourism": "viewpoint", "wheelchair": "limited" }, "invalid": false },
+		{ "tags": "{landuse=grass\nref=3}", "kind": "flat_text_not_json", "invalid": true },
+		{ "tags": "\"emergency=designated\\nlit=yes\"", "kind": "json_string", "invalid": true },
+		{
+			"tags": { "highway": "elevator", "operator": "DB InfraGO AG", "level": "0;-1" },
+			"invalid": false
+		},
+		{
+			"tags": "[[\"healthcare\",\"dentist\"],[\"opening_hours:signed\",\"no\"]]",
+			"kind": "json_array",
+			"invalid": true
+		},
+		{ "tags": { "sport": "climbing" }, "invalid": false },
+		{ "tags": { "tourism": "chalet", "wheelchair": "no" }, "invalid": false },
+		{ "tags": "{\"shop\":1,\"source\":1}", "kind": "number_values", "invalid": true },
+		{ "tags": { "natural": "cliff", "source": "GSImaps/std" }, "invalid": false },
+		{ "tags": "{man_made=pipeline\ntunnel=yes}", "kind": "flat_text_not_json", "invalid": true },
+		{ "tags": { "shop": "sports", "wheelchair": "yes" }, "invalid": false },
+		{
+			"tags": "{\"tags\":{\"barrier\":\"kissing_gate\",\"bicycle\":\"yes\"}}",
+			"kind": "nested_object",
+			"invalid": true
+		},
+		{
+			"tags": "{railway=tram_stop\ntactile_paving=yes}",
+			"kind": "flat_text_not_json",
+			"invalid": true
+		},
+		{ "tags": { "sport": "basketball", "surface": "asphalt" }, "invalid": false },
 		{
 			"tags": {
 				"barrier": "bollard",
@@ -2385,108 +1634,20 @@
 			},
 			"invalid": false
 		},
+		{ "tags": { "landuse": "railway" }, "invalid": false },
 		{
-			"tags": "{building=barn\nsource=cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2010}",
-			"kind": "flat_text_not_json",
-			"invalid": true
-		},
-		{ "tags": { "natural": "shrubbery", "shrubbery:density": "medium" }, "invalid": false },
-		{ "tags": { "building": "service", "source": "Powiat mikołowski" }, "invalid": false },
-		{ "tags": { "shop": "hearing_aids", "wheelchair": "yes" }, "invalid": false },
-		{ "tags": { "shop": "sports" }, "invalid": false },
-		{
-			"tags": { "natural": "valley", "source:name": "ZBGIS", "valley": "balka", "seasonal": "yes" },
-			"invalid": false
-		},
-		{ "tags": "\"barrier=log\\nfoot=yes\"", "kind": "json_string", "invalid": true },
-		{
-			"tags": { "cuisine": "french", "indoor_seating": "yes", "wheelchair": "yes" },
-			"invalid": false
-		},
-		{ "tags": "{\"highway\":1,\"parking\":1}", "kind": "number_values", "invalid": true },
-		{ "tags": { "building": "house", "source:date": "2014-03-24" }, "invalid": false },
-		{ "tags": { "railway": "buffer_stop", "source": "bing" }, "invalid": false },
-		{
-			"tags": "{\"route\":\"power\",\"voltage\":\"138000\",\"wires\":\"double\"}",
-			"invalid": false
-		},
-		{ "tags": { "shop": "bakery" }, "invalid": false },
-		{ "tags": { "sport": "boules", "surface": "fine_gravel" }, "invalid": false },
-		{
-			"tags": { "emergency": "water_tank", "material": "plastic", "man_made": "reservoir_covered" },
-			"invalid": false
-		},
-		{
-			"tags": "[[\"place\",\"islet\"],[\"source\",\"Landsat\"]]",
+			"tags": "[[\"building\",\"school\"],[\"source\",\"survey\"]]",
 			"kind": "json_array",
 			"invalid": true
 		},
-		{ "tags": { "emergency": "siren", "support": "pole" }, "invalid": false },
-		{
-			"tags": "[[\"natural\",\"tree_row\"],[\"source\",\"BDOrtho IGN 2019\"]]",
-			"kind": "json_array",
-			"invalid": true
-		},
-		{
-			"tags": {
-				"highway": "rest_area",
-				"opening_hours": "24/7",
-				"internet_access": "wlan",
-				"toilets": "yes"
-			},
-			"invalid": false
-		},
-		{
-			"tags": { "railway": "platform", "tram": "yes", "source": "Bing", "smoothness": "good" },
-			"invalid": false
-		},
-		{ "tags": { "railway": "construction", "voltage": "3000" }, "invalid": false },
-		{ "tags": "{\"aeroway\":\"taxiway\",\"ref\":\"C\",\"surface\":\"asphalt\"}", "invalid": false },
-		{ "tags": { "barrier": "yes" }, "invalid": false },
-		{ "tags": "{\"barrier\":\"chain\",\"material\":\"metal\"}", "invalid": false },
-		{
-			"tags": "{\"historic\":\"church\",\"tourism\":\"attraction\",\"religion\":\"christian\"}",
-			"invalid": false
-		},
-		{ "tags": { "cuisine": "ice_cream", "wheelchair": "yes" }, "invalid": false },
-		{ "tags": "\"route=bus\\nwheelchair=no\"", "kind": "json_string", "invalid": true },
-		{ "tags": { "landuse": "grass" }, "invalid": false },
-		{ "tags": { "power": "substation" }, "invalid": false },
-		{
-			"tags": "{\"landuse\":\"industrial\",\"recycling_type\":\"centre\",\"source\":\"survey\"}",
-			"invalid": false
-		},
-		{
-			"tags": { "cuisine": "japanese", "outdoor_seating": "no", "wheelchair": "yes" },
-			"invalid": false
-		},
-		{ "tags": "{historic=yes\ntype=boundary}", "kind": "flat_text_not_json", "invalid": true },
-		{
-			"tags": { "landuse": "brownfield", "source": "Bing", "type": "multipolygon" },
-			"invalid": false
-		},
-		{ "tags": "{\"sport\":1,\"surface\":1}", "kind": "number_values", "invalid": true },
-		{
-			"tags": { "building": "residential", "source": "cuzk:ruian", "roof:material": "asbestos" },
-			"invalid": false
-		},
-		{ "tags": { "natural": "spring", "source": "turistautak.hu" }, "invalid": false },
-		{
-			"tags": "{\"tags\":{\"public_transport\":\"stop_area\",\"railway\":\"facility\"}}",
-			"kind": "nested_object",
-			"invalid": true
-		},
-		{ "tags": { "leisure": "stadium" }, "invalid": false },
-		{ "tags": { "emergency": "phone" }, "invalid": false },
-		{
-			"tags": "{\"shop\":\"kiosk\",\"source\":\"survey\",\"wheelchair\":\"no\",\"source:date\":\"2022\"}",
-			"invalid": false
-		},
-		{ "tags": { "shop": "mall", "type": "multipolygon", "wheelchair": "yes" }, "invalid": false },
-		{ "tags": "{\"man_made\":\"chimney\",\"material\":\"metal\"}", "invalid": false },
-		{ "tags": { "route": "railway" }, "invalid": false },
-		{ "tags": "{\"man_made\":\"clearcut\"}", "invalid": false },
-		{ "tags": { "tourism": "motel", "type": "multipolygon" }, "invalid": false },
+		{ "tags": { "office": "insurance", "wheelchair": "no" }, "invalid": false },
+		{ "tags": "\"sport=futsal\\nsurface=concrete\"", "kind": "json_string", "invalid": true },
+		{ "tags": { "power": "switch" }, "invalid": false },
+		{ "tags": "{\"aeroway\":\"helipad\"}", "invalid": false },
+		{ "tags": { "sport": "cricket", "surface": "grass" }, "invalid": false },
+		{ "tags": { "cuisine": "greek" }, "invalid": false },
+		{ "tags": { "building": "barn", "wall": "no", "source:geometry": "GURS" }, "invalid": false },
+		{ "tags": { "highway": "cycleway", "traffic_sign": "NL:G12a" }, "invalid": false },
 		{
 			"tags": {
 				"barrier": "jersey_barrier",
@@ -2496,91 +1657,962 @@
 			},
 			"invalid": false
 		},
-		{ "tags": { "power": "cable", "source": "nged_open_data" }, "invalid": false },
-		{ "tags": { "landuse": "cemetery", "source": "JumpStart International" }, "invalid": false },
+		{ "tags": { "shop": "florist", "source": "BAG" }, "invalid": false },
+		{ "tags": { "aeroway": "aerodrome", "operator:type": "public" }, "invalid": false },
 		{
-			"tags": { "leisure": "picnic_table", "sport": "chess", "material": "wood" },
-			"invalid": false
-		},
-		{ "tags": { "shop": "optician" }, "invalid": false },
-		{
-			"tags": { "cuisine": "german", "wheelchair": "no", "indoor_seating": "yes" },
+			"tags": { "leisure": "firepit", "tents": "yes", "tourism": "camp_site", "seasonal": "no" },
 			"invalid": false
 		},
 		{
-			"tags": { "amenity": "language_school", "language:en": "yes", "building": "yes" },
-			"invalid": false
-		},
-		{ "tags": { "shop": "bakery", "takeaway": "yes" }, "invalid": false },
-		{
-			"tags": "{\"tags\":{\"power\":\"tower\",\"ref\":\"12\"}}",
-			"kind": "nested_object",
-			"invalid": true
-		},
-		{
-			"tags": "{\"tags\":{\"historic\":\"tomb\",\"religion\":\"christian\"}}",
-			"kind": "nested_object",
-			"invalid": true
-		},
-		{ "tags": { "cuisine": "thai", "diet:vegetarian": "yes" }, "invalid": false },
-		{ "tags": "{\"landuse\":\"railway\",\"man_made\":\"bridge\"}", "invalid": false },
-		{ "tags": { "historic": "mine_shaft" }, "invalid": false },
-		{ "tags": "{\"shop\": \"x\"", "kind": "broken_json", "invalid": true },
-		{ "tags": { "cuisine": "barbecue" }, "invalid": false },
-		{ "tags": "{\"amenity\":\"sanitary_dump_station\"}", "invalid": false },
-		{ "tags": { "landuse": "construction" }, "invalid": false },
-		{
-			"tags": "\"place=city\\nsource=TIGER/Line® 2008 Place Shapefiles (http://www.census.gov/geo/www/tiger/)\"",
-			"kind": "json_string",
-			"invalid": true
-		},
-		{ "tags": "{\"power\":\"plant\"}", "invalid": false },
-		{
-			"tags": "{\"tags\":{\"landuse\":\"grass\",\"ref\":\"3\"}}",
-			"kind": "nested_object",
-			"invalid": true
-		},
-		{ "tags": "{\"highway\":1,\"operator\":1}", "kind": "number_values", "invalid": true },
-		{ "tags": "\"barrier=gate\\nmotorcar=no\"", "kind": "json_string", "invalid": true },
-		{ "tags": "{\"sport\":\"multi\",\"type\":\"multipolygon\"}", "invalid": false },
-		{ "tags": "{\"tourism\":\"camp_site\"}", "invalid": false },
-		{
-			"tags": "{historic=ruins\ntourism=attraction}",
+			"tags": "{service=driveway\nsmoothness=intermediate}",
 			"kind": "flat_text_not_json",
 			"invalid": true
 		},
-		{ "tags": { "highway": "living_street", "surface": "paving_stones" }, "invalid": false },
-		{ "tags": { "man_made": "chimney", "material": "brick" }, "invalid": false },
-		{ "tags": { "railway": "subway", "voltage": "25000" }, "invalid": false },
+		{ "tags": "\"man_made=water_tap\\nseasonal=no\"", "kind": "json_string", "invalid": true },
 		{
-			"tags": "{\"tags\":{\"highway\":\"platform\",\"name\":\"B\"}}",
+			"tags": "{\"tags\":{\"tourism\":\"viewpoint\",\"wheelchair\":\"limited\"}}",
 			"kind": "nested_object",
 			"invalid": true
 		},
-		{ "tags": "{\"leisure\": \"x\"", "kind": "broken_json", "invalid": true },
-		{ "tags": "{\"amenity\":\"bicycle_parking\",\"lit\":\"yes\"}", "invalid": false },
+		{ "tags": "{\"craft\":\"grinding_mill\"}", "invalid": false },
+		{ "tags": { "route": "mtb", "surface": "dirt", "type": "route" }, "invalid": false },
+		{ "tags": { "natural": "cape", "source": "NRCan-CanVec-8.0" }, "invalid": false },
+		{ "tags": { "sport": "swimming" }, "invalid": false },
+		{
+			"tags": {
+				"building": "apartments",
+				"source:date": "2014-05-07",
+				"source": "HiRes aerial imagery"
+			},
+			"invalid": false
+		},
+		{
+			"tags": {
+				"landuse": "vineyard",
+				"source:date": "2018-02-28",
+				"source": "Ortofotomozaika SR"
+			},
+			"invalid": false
+		},
+		{ "tags": "{\"route\": \"x\"", "kind": "broken_json", "invalid": true },
+		{
+			"tags": "\"public_transport=stop_position\\nref=B\"",
+			"kind": "json_string",
+			"invalid": true
+		},
+		{ "tags": { "power": "minor_line", "voltage": "400" }, "invalid": false },
+		{
+			"tags": "{\"tags\":{\"historic\":\"mine\",\"landuse\":\"quarry\"}}",
+			"kind": "nested_object",
+			"invalid": true
+		},
+		{ "tags": "\"place=island\\nsource=Bing\"", "kind": "json_string", "invalid": true },
+		{
+			"tags": "{\"tags\":{\"highway\":\"crossing\",\"wheelchair\":\"yes\"}}",
+			"kind": "nested_object",
+			"invalid": true
+		},
+		{
+			"tags": { "amenity": "water_point", "pump": "manual", "drinking_water": "no" },
+			"invalid": false
+		},
+		{ "tags": { "highway": "pedestrian", "tunnel": "building_passage" }, "invalid": false },
+		{
+			"tags": "{\"tags\":{\"building\":\"slurry_tank\",\"man_made\":\"storage_tank\"}}",
+			"kind": "nested_object",
+			"invalid": true
+		},
+		{
+			"tags": "{\"tags\":{\"building\":\"detached\",\"roof:colour\":\"brown\"}}",
+			"kind": "nested_object",
+			"invalid": true
+		},
+		{
+			"tags": { "railway": "crossing", "supervised": "no", "source:date": "2018" },
+			"invalid": false
+		},
+		{ "tags": { "service": "parking_aisle", "vehicle": "private" }, "invalid": false },
+		{ "tags": "{\"barrier\": \"x\"", "kind": "broken_json", "invalid": true },
+		{ "tags": "{\"man_made\":\"breakwater\",\"source\":\"Bing\"}", "invalid": false },
+		{
+			"tags": "\"emergency=water_tank\\nmaterial=plastic\"",
+			"kind": "json_string",
+			"invalid": true
+		},
+		{ "tags": { "cuisine": "burger", "source": "survey" }, "invalid": false },
+		{ "tags": { "highway": "platform" }, "invalid": false },
+		{
+			"tags": "{\"tags\":{\"shop\":\"doityourself\",\"wheelchair\":\"yes\"}}",
+			"kind": "nested_object",
+			"invalid": true
+		},
+		{
+			"tags": { "barrier": "jersey_barrier", "foot": "yes", "material": "plastic" },
+			"invalid": false
+		},
+		{ "tags": { "sport": "running", "surface": "asphalt" }, "invalid": false },
+		{ "tags": { "waterway": "canal", "width": "5" }, "invalid": false },
+		{
+			"tags": "{\"tags\":{\"railway\":\"stop\",\"subway\":\"yes\"}}",
+			"kind": "nested_object",
+			"invalid": true
+		},
+		{ "tags": { "man_made": "pipeline" }, "invalid": false },
+		{ "tags": { "man_made": "surveillance", "surveillance:type": "ALPR" }, "invalid": false },
+		{ "tags": "", "kind": "empty_string", "invalid": true },
+		{ "tags": { "amenity": "parking", "parking": "lane" }, "invalid": false },
+		{
+			"tags": {
+				"building": "slurry_tank",
+				"content": "slurry",
+				"man_made": "storage_tank",
+				"covered": "yes"
+			},
+			"invalid": false
+		},
+		{ "tags": "{\"amenity\":\"sanitary_dump_station\"}", "invalid": false },
+		{ "tags": "{\"amenity\":1,\"bus\":1}", "kind": "number_values", "invalid": true },
+		{ "tags": { "leisure": "sports_hall", "sport": "multi" }, "invalid": false },
+		{
+			"tags": "[[\"natural\",\"tree\"],[\"source\",\"bcc_dec_2016\"]]",
+			"kind": "json_array",
+			"invalid": true
+		},
+		{ "tags": { "tourism": "hotel", "wheelchair": "limited" }, "invalid": false },
+		{ "tags": "{\"highway\":\"crossing\"}", "invalid": false },
+		{ "tags": { "building": "warehouse", "height": "3.7" }, "invalid": false },
+		{
+			"tags": { "railway": "narrow_gauge", "usage": "main", "voltage": "11000" },
+			"invalid": false
+		},
+		{ "tags": { "amenity": "kindergarten", "operator:type": "religious" }, "invalid": false },
+		{ "tags": { "route": "ferry", "toll": "yes", "type": "route" }, "invalid": false },
+		{ "tags": { "leisure": "picnic_table", "seats": "6" }, "invalid": false },
+		{
+			"tags": { "aeroway": "aerodrome", "source": "ourairports.com", "type": "multipolygon" },
+			"invalid": false
+		},
+		{ "tags": { "amenity": "bbq", "covered": "no" }, "invalid": false },
+		{ "tags": "{\"highway\":\"primary\"}", "invalid": false },
+		{
+			"tags": {
+				"boundary": "administrative",
+				"waterway": "river",
+				"source": "Municipal Demarcation Board"
+			},
+			"invalid": false
+		},
+		{ "tags": { "highway": "elevator", "indoor": "yes" }, "invalid": false },
+		{ "tags": "{\"service\":\"irrigation\"}", "invalid": false },
+		{ "tags": "{\"historic\":\"monument\"}", "invalid": false },
+		{ "tags": { "historic": "bomb_crater" }, "invalid": false },
+		{ "tags": "{\"aeroway\":\"navigationaid\",\"light:colour\":\"blue\"}", "invalid": false },
+		{ "tags": { "shop": "butcher" }, "invalid": false },
+		{
+			"tags": { "boundary": "protected_area", "natural": "wood", "massgis:FY_FUNDING": "0" },
+			"invalid": false
+		},
+		{
+			"tags": "[[\"highway\",\"construction\"],[\"maxspeed\",\"50\"]]",
+			"kind": "json_array",
+			"invalid": true
+		},
+		{
+			"tags": { "leisure": "outdoor_seating", "seasonal": "yes", "smoking": "no", "lit": "no" },
+			"invalid": false
+		},
+		{ "tags": "{\"highway\":\"trailhead\",\"network:type\":\"node_network\"}", "invalid": false },
+		{ "tags": { "cuisine": "korean", "source": "공공데이터포털" }, "invalid": false },
+		{ "tags": { "route": "hiking" }, "invalid": false },
+		{ "tags": { "leisure": "ice_rink", "seasonal": "yes" }, "invalid": false },
+		{
+			"tags": "\"amenity=watering_place\\nnatural=water\"",
+			"kind": "json_string",
+			"invalid": true
+		},
+		{ "tags": { "healthcare": "centre", "source": "OpenGovernmentData" }, "invalid": false },
+		{ "tags": { "leisure": "outdoor_seating" }, "invalid": false },
+		{
+			"tags": {
+				"man_made": "street_cabinet",
+				"source": "Enedis - 06/2018",
+				"operator:wikidata": "Q2397198"
+			},
+			"invalid": false
+		},
+		{
+			"tags": "{\"tags\":{\"service\":\"slipway\",\"surface\":\"concrete\"}}",
+			"kind": "nested_object",
+			"invalid": true
+		},
+		{ "tags": "{\"tourism\":1,\"wheelchair\":1}", "kind": "number_values", "invalid": true },
+		{ "tags": { "service": "regional" }, "invalid": false },
+		{
+			"tags": {
+				"amenity": "recycling",
+				"recycling:scrap_metal": "yes",
+				"recycling:clothes": "yes"
+			},
+			"invalid": false
+		},
+		{
+			"tags": "{\"tags\":{\"natural\":\"bare_rock\",\"source\":\"Bing\"}}",
+			"kind": "nested_object",
+			"invalid": true
+		},
+		{
+			"tags": {
+				"place": "city",
+				"population:date": "2022",
+				"source": "TIGER/Line® 2008 Place Shapefiles (http://www.census.gov/geo/www/tiger/)",
+				"type": "boundary"
+			},
+			"invalid": false
+		},
+		{ "tags": { "highway": "busway" }, "invalid": false },
+		{ "tags": { "barrier": "cycle_barrier", "source": "survey" }, "invalid": false },
+		{ "tags": "\"service=driveway\\nsmoothness=good\"", "kind": "json_string", "invalid": true },
+		{ "tags": { "historic": "charcoal_pile", "source": "survey" }, "invalid": false },
+		{ "tags": "{route=hiking\nsac_scale=hiking}", "kind": "flat_text_not_json", "invalid": true },
+		{
+			"tags": { "building": "cabin", "roof:levels": "0", "source": "cuzk:ruian" },
+			"invalid": false
+		},
+		{ "tags": { "healthcare": "doctor" }, "invalid": false },
+		{ "tags": { "aeroway": "jet_bridge", "level": "2" }, "invalid": false },
+		{ "tags": { "power": "cable", "voltage": "15000" }, "invalid": false },
+		{
+			"tags": "{historic=manor\ntourism=attraction}",
+			"kind": "flat_text_not_json",
+			"invalid": true
+		},
+		{ "tags": "{\"building\": \"x\"", "kind": "broken_json", "invalid": true },
+		{ "tags": "{highway=tertiary\nmaxspeed=80}", "kind": "flat_text_not_json", "invalid": true },
 		{ "tags": { "amenity": "parking" }, "invalid": false },
-		{ "tags": { "historic": "memorial", "memorial": "stolperstein" }, "invalid": false },
-		{ "tags": { "leisure": "pitch", "lit": "no", "sport": "softball" }, "invalid": false },
+		{
+			"tags": "\"historic=archaeological_site\\nsource=Bing\"",
+			"kind": "json_string",
+			"invalid": true
+		},
+		{ "tags": "{shop=beauty\nsource=BAG}", "kind": "flat_text_not_json", "invalid": true },
+		{ "tags": "{\"aeroway\":\"taxiway\",\"ref\":\"C\",\"surface\":\"asphalt\"}", "invalid": false },
+		{ "tags": { "amenity": "parking_space", "site": "parking" }, "invalid": false },
+		{
+			"tags": "{\"tags\":{\"service\":\"siding\",\"voltage\":\"750\"}}",
+			"kind": "nested_object",
+			"invalid": true
+		},
+		{
+			"tags": "{\"leisure\":\"firepit\",\"tents\":\"yes\",\"tourism\":\"camp_site\",\"seasonal\":\"no\"}",
+			"invalid": false
+		},
+		{ "tags": { "natural": "rock", "source": "NRCan-CanVec-7.0" }, "invalid": false },
+		{
+			"tags": "{\"barrier\":\"chain\",\"motor_vehicle\":\"no\",\"material\":\"metal\",\"locked\":\"yes\"}",
+			"invalid": false
+		},
+		{
+			"tags": { "landuse": "flowerbed", "type": "multipolygon", "leisure": "garden" },
+			"invalid": false
+		},
+		{
+			"tags": "\"natural=grassland\\nsource=bgmountains\"",
+			"kind": "json_string",
+			"invalid": true
+		},
+		{
+			"tags": "[[\"highway\",\"emergency_access_point\"],[\"hiking\",\"yes\"]]",
+			"kind": "json_array",
+			"invalid": true
+		},
+		{ "tags": { "sport": "american_football", "surface": "artificial_turf" }, "invalid": false },
+		{ "tags": { "man_made": "street_cabinet" }, "invalid": false },
+		{
+			"tags": { "amenity": "vending_machine", "vending": "drinks", "bin": "no" },
+			"invalid": false
+		},
+		{ "tags": { "cuisine": "italian" }, "invalid": false },
+		{ "tags": "{\"amenity\":\"water_point\",\"source\":\"survey\"}", "invalid": false },
+		{
+			"tags": "{\"aeroway\":\"helipad\",\"location\":\"roof\",\"lit\":\"yes\",\"surface\":\"asphalt\"}",
+			"invalid": false
+		},
+		{ "tags": "{\"highway\": \"x\"", "kind": "broken_json", "invalid": true },
+		{
+			"tags": "{\"railway\":\"signal\",\"source\":\"estimate; extrapolate; survey\"}",
+			"invalid": false
+		},
+		{ "tags": "{\"man_made\":\"clearcut\"}", "invalid": false },
+		{ "tags": "{\"building\":\"school\",\"source\":\"www.geoportal.gov.pl\"}", "invalid": false },
+		{ "tags": "{\"office\":\"association\",\"wheelchair\":\"yes\"}", "invalid": false },
+		{ "tags": { "natural": "ridge", "source": "IBGE", "surface": "sand" }, "invalid": false },
+		{ "tags": "{\"place\":\"islet\",\"seamark:type\":\"rock\"}", "invalid": false },
+		{
+			"tags": { "highway": "rest_area", "picnic_table": "yes", "toilets": "yes" },
+			"invalid": false
+		},
+		{
+			"tags": {
+				"leisure": "garden",
+				"surface": "dirt",
+				"operator:type": "private",
+				"source": "bing_imagery"
+			},
+			"invalid": false
+		},
+		{
+			"tags": "{\"shop\":\"butcher\",\"wheelchair\":\"yes\",\"source\":\"survey\"}",
+			"invalid": false
+		},
+		{ "tags": { "cuisine": "barbecue", "takeaway": "yes" }, "invalid": false },
+		{ "tags": "{\"service\":\"slipway\",\"surface\":\"concrete\"}", "invalid": false },
+		{
+			"tags": "[[\"route\",\"mtb\"],[\"surface\",\"dirt\"]]",
+			"kind": "json_array",
+			"invalid": true
+		},
+		{ "tags": "\"railway=stop\\nwheelchair=yes\"", "kind": "json_string", "invalid": true },
+		{ "tags": { "shop": "bakery", "takeaway": "yes" }, "invalid": false },
+		{ "tags": { "tourism": "guest_house" }, "invalid": false },
+		{ "tags": "{\"boundary\":1,\"leisure\":1}", "kind": "number_values", "invalid": true },
+		{
+			"tags": "{\"building\":\"service\",\"source\":\"cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2012\",\"operator:wikidata\":\"Q3587594\",\"utility\":\"telecom\"}",
+			"invalid": false
+		},
+		{ "tags": { "emergency": "siren", "support": "pole" }, "invalid": false },
+		{ "tags": { "sport": "boules", "surface": "gravel" }, "invalid": false },
+		{
+			"tags": {
+				"barrier": "cattle_grid",
+				"source": "survey",
+				"foot": "yes",
+				"motor_vehicle": "yes"
+			},
+			"invalid": false
+		},
+		{ "tags": "\"highway=service\\nlit=yes\"", "kind": "json_string", "invalid": true },
+		{ "tags": "\"railway=stop\\nref=4\"", "kind": "json_string", "invalid": true },
+		{
+			"tags": "{\"landuse\":\"retail\",\"self_service\":\"yes\",\"source\":\"Bing\",\"smoking\":\"no\"}",
+			"invalid": false
+		},
+		{ "tags": { "highway": "cycleway" }, "invalid": false },
+		{ "tags": "{route=piste\ntype=route}", "kind": "flat_text_not_json", "invalid": true },
+		{ "tags": { "amenity": "bench", "lit": "no", "seats": "3" }, "invalid": false },
+		{ "tags": { "cuisine": "indian" }, "invalid": false },
+		{ "tags": "{\"waterway\":\"river\",\"width\":\"7\"}", "invalid": false },
+		{ "tags": { "shop": "mobile_phone", "wheelchair": "yes" }, "invalid": false },
+		{
+			"tags": { "highway": "busway", "surface": "concrete", "lanes": "2", "maxspeed": "50" },
+			"invalid": false
+		},
+		{ "tags": "{\"amenity\":\"bicycle_parking\",\"lit\":\"yes\"}", "invalid": false },
+		{ "tags": { "man_made": "flagpole" }, "invalid": false },
+		{ "tags": { "aeroway": "gate", "level": "2" }, "invalid": false },
+		{
+			"tags": "{\"leisure\":\"firepit\",\"tourism\":\"camp_site\",\"seasonal\":\"no\",\"tents\":\"yes\"}",
+			"invalid": false
+		},
+		{ "tags": { "route": "road" }, "invalid": false },
+		{ "tags": { "barrier": "ditch", "waterway": "ditch" }, "invalid": false },
+		{
+			"tags": "{\"barrier\":\"kerb\",\"surface\":\"asphalt\",\"source\":\"Plan polyvalent Douala\",\"tactile_paving\":\"contrasted\"}",
+			"invalid": false
+		},
+		{ "tags": { "natural": "spring", "source": "turistautak.hu" }, "invalid": false },
+		{ "tags": "{\"railway\":1,\"service\":1}", "kind": "number_values", "invalid": true },
+		{
+			"tags": { "railway": "platform_edge", "tactile_paving": "yes", "ref": "2" },
+			"invalid": false
+		},
+		{ "tags": { "office": "government", "wheelchair": "yes" }, "invalid": false },
+		{ "tags": { "railway": "miniature", "service": "yard" }, "invalid": false },
+		{
+			"tags": {
+				"leisure": "park",
+				"surface": "grass",
+				"massgis:EOEAINVOLV": "0",
+				"ownership": "municipal"
+			},
+			"invalid": false
+		},
+		{
+			"tags": "{\"tags\":{\"highway\":\"services\",\"toilets\":\"yes\"}}",
+			"kind": "nested_object",
+			"invalid": true
+		},
+		{ "tags": { "place": "square" }, "invalid": false },
+		{
+			"tags": "{boundary=administrative\nname:prefix:ru=деревня}",
+			"kind": "flat_text_not_json",
+			"invalid": true
+		},
+		{
+			"tags": { "boundary": "census", "source": "INE - BGRI 2011", "place": "locality" },
+			"invalid": false
+		},
+		{ "tags": { "man_made": "wastewater_plant" }, "invalid": false },
+		{ "tags": { "power": "switch", "voltage": "161000" }, "invalid": false },
+		{ "tags": { "service": "crossover", "source": "bing" }, "invalid": false },
+		{
+			"tags": "[[\"waterway\",\"drain\"],[\"width\",\"2\"]]",
+			"kind": "json_array",
+			"invalid": true
+		},
+		{
+			"tags": {
+				"barrier": "fence",
+				"leisure": "playground",
+				"landuse": "recreation_ground",
+				"layer": "1"
+			},
+			"invalid": false
+		},
+		{ "tags": { "leisure": "dog_park", "wheelchair": "yes" }, "invalid": false },
+		{
+			"tags": { "highway": "road", "surface": "unpaved", "source": "Bing", "layer": "1" },
+			"invalid": false
+		},
+		{
+			"tags": "[[\"highway\",\"proposed\"],[\"lanes\",\"2\"]]",
+			"kind": "json_array",
+			"invalid": true
+		},
+		{ "tags": { "leisure": "beach_resort" }, "invalid": false },
+		{
+			"tags": "{\"amenity\":\"nursing_home\",\"note\":\"National-Land Numerical Information (Public Facility) 2006, MLIT Japan\"}",
+			"invalid": false
+		},
+		{ "tags": "{\"barrier\":\"gate\",\"foot\":\"permissive\"}", "invalid": false },
+		{ "tags": { "power": "line" }, "invalid": false },
+		{
+			"tags": { "leisure": "fitness_station", "wheelchair": "no", "sport": "fitness" },
+			"invalid": false
+		},
+		{ "tags": { "barrier": "wicket_gate", "foot": "yes" }, "invalid": false },
+		{
+			"tags": "\"place=cadastral_community\\nsource=cuzk:ruian\"",
+			"kind": "json_string",
+			"invalid": true
+		},
+		{ "tags": "{\"railway\":1,\"tunnel\":1}", "kind": "number_values", "invalid": true },
+		{
+			"tags": { "barrier": "jersey_barrier", "layer": "1", "motor_vehicle": "no" },
+			"invalid": false
+		},
+		{ "tags": { "amenity": "parking", "capacity": "3" }, "invalid": false },
+		{ "tags": "{\"landuse\":\"vineyard\"}", "invalid": false },
+		{ "tags": { "building": "slurry_tank", "content": "slurry" }, "invalid": false },
+		{
+			"tags": "{\"tags\":{\"natural\":\"valley\",\"place\":\"locality\"}}",
+			"kind": "nested_object",
+			"invalid": true
+		},
+		{ "tags": { "cuisine": "barbecue" }, "invalid": false },
+		{
+			"tags": "[[\"waterway\",\"ditch\"],[\"width\",\"2\"]]",
+			"kind": "json_array",
+			"invalid": true
+		},
+		{ "tags": { "barrier": "city_wall" }, "invalid": false },
+		{
+			"tags": { "railway": "platform_edge", "train": "yes", "tactile_paving": "yes" },
+			"invalid": false
+		},
+		{ "tags": { "sport": "tennis", "surface": "asphalt" }, "invalid": false },
+		{ "tags": { "highway": "turning_circle", "source": "survey" }, "invalid": false },
+		{ "tags": { "aeroway": "gate", "level": "1" }, "invalid": false },
+		{ "tags": { "sport": "karting", "surface": "asphalt" }, "invalid": false },
+		{ "tags": { "natural": "rock" }, "invalid": false },
+		{
+			"tags": "{\"man_made\":\"storage_tank\",\"source_ref\":\"http://www.linz.govt.nz/topography/topo-maps/\",\"source\":\"CanVec 6.0 - NRCan\"}",
+			"invalid": false
+		},
+		{ "tags": { "building": "cabin" }, "invalid": false },
+		{
+			"tags": { "amenity": "cafe", "cuisine": "coffee_shop", "payment:cash": "yes" },
+			"invalid": false
+		},
+		{ "tags": { "power": "cable" }, "invalid": false },
+		{ "tags": { "man_made": "bridge" }, "invalid": false },
+		{ "tags": { "amenity": "compressed_air", "covered": "no", "fee": "yes" }, "invalid": false },
+		{
+			"tags": "[[\"power\",\"line\"],[\"wires\",\"single\"]]",
+			"kind": "json_array",
+			"invalid": true
+		},
+		{ "tags": { "landuse": "aquaculture", "source": "Maxar", "water": "pond" }, "invalid": false },
+		{ "tags": { "route": "bicycle", "surface": "asphalt", "state": "proposed" }, "invalid": false },
+		{ "tags": { "railway": "construction", "voltage": "3000" }, "invalid": false },
+		{ "tags": "{\"leisure\":\"garden\"}", "invalid": false },
+		{ "tags": { "route": "power", "voltage": "220000", "wires": "single" }, "invalid": false },
+		{ "tags": { "railway": "platform_edge", "ref": "3" }, "invalid": false },
+		{
+			"tags": { "leisure": "picnic_table", "wheelchair": "yes", "sport": "chess" },
+			"invalid": false
+		},
+		{ "tags": { "highway": "trunk", "lit": "no", "lanes": "1" }, "invalid": false },
+		{ "tags": { "leisure": "horse_riding" }, "invalid": false },
+		{
+			"tags": "{natural=rock\nsource=NRCan-CanVec-8.0}",
+			"kind": "flat_text_not_json",
+			"invalid": true
+		},
+		{ "tags": "{\"tourism\":\"hotel\",\"wheelchair\":\"no\"}", "invalid": false },
+		{ "tags": "{amenity=shelter\nlit=no}", "kind": "flat_text_not_json", "invalid": true },
+		{
+			"tags": "[[\"place\",\"isolated_dwelling\"],[\"source\",\"cadastre-dgi-fr source : Direction Générale des Finances Publiques - Cadastre. Mise à jour : 2023\"]]",
+			"kind": "json_array",
+			"invalid": true
+		},
+		{ "tags": { "landuse": "cemetery", "source": "JumpStart International" }, "invalid": false },
+		{ "tags": { "man_made": "breakwater" }, "invalid": false },
+		{ "tags": "{\"service\": \"x\"", "kind": "broken_json", "invalid": true },
+		{ "tags": { "amenity": "bbq", "covered": "yes" }, "invalid": false },
+		{ "tags": { "office": "employment_agency" }, "invalid": false },
+		{
+			"tags": "[[\"landuse\",\"orchard\"],[\"source\",\"European Environment Agency (EEA), CORINE Land Cover, 2006\"]]",
+			"kind": "json_array",
+			"invalid": true
+		},
+		{
+			"tags": { "cuisine": "greek", "indoor_seating": "yes", "takeaway": "yes" },
+			"invalid": false
+		},
+		{ "tags": { "historic": "yes" }, "invalid": false },
+		{ "tags": { "shop": "mall", "type": "multipolygon", "wheelchair": "yes" }, "invalid": false },
+		{ "tags": "{\"man_made\":\"chimney\",\"material\":\"metal\"}", "invalid": false },
+		{ "tags": { "cuisine": "chinese" }, "invalid": false },
+		{
+			"tags": { "cuisine": "thai", "diet:vegetarian": "yes", "outdoor_seating": "yes" },
+			"invalid": false
+		},
+		{ "tags": { "highway": "motorway_junction", "ref": "18" }, "invalid": false },
+		{ "tags": { "highway": "primary_link" }, "invalid": false },
+		{
+			"tags": { "emergency": "access_point", "hiking": "yes", "highway": "emergency_access_point" },
+			"invalid": false
+		},
+		{ "tags": { "place": "islet" }, "invalid": false },
+		{ "tags": { "man_made": "chimney", "material": "metal" }, "invalid": false },
+		{
+			"tags": "\"power=catenary_mast\\nsource=PCRS Raster - République française\"",
+			"kind": "json_string",
+			"invalid": true
+		},
+		{ "tags": "{\"barrier\":\"cycle_barrier\"}", "invalid": false },
+		{
+			"tags": {
+				"leisure": "marina",
+				"seamark:type": "harbour",
+				"power_supply": "yes",
+				"natural": "water"
+			},
+			"invalid": false
+		},
+		{ "tags": { "historic": "building" }, "invalid": false },
+		{
+			"tags": {
+				"natural": "sand",
+				"type": "multipolygon",
+				"source_ref": "http://www.linz.govt.nz/topography/topo-maps/",
+				"source": "bing"
+			},
+			"invalid": false
+		},
+		{ "tags": { "route": "railway" }, "invalid": false },
+		{ "tags": { "highway": "service", "source": "bing" }, "invalid": false },
+		{ "tags": { "cuisine": "sushi", "wheelchair": "yes", "level": "0" }, "invalid": false },
+		{ "tags": { "leisure": "sports_centre", "operator:type": "private" }, "invalid": false },
+		{ "tags": { "man_made": "embankment", "source": "ÚGKK SR DMR5.0" }, "invalid": false },
+		{
+			"tags": "{\"highway\":\"busway\",\"layer\":\"1\",\"zone:traffic\":\"NL:urban\"}",
+			"invalid": false
+		},
+		{ "tags": "{\"cuisine\":1,\"source\":1}", "kind": "number_values", "invalid": true },
+		{ "tags": { "leisure": "resort", "tourism": "hotel" }, "invalid": false },
+		{
+			"tags": { "cuisine": "italian", "level": "0", "toilets": "yes", "payment:cash": "yes" },
+			"invalid": false
+		},
+		{
+			"tags": "{\"tags\":{\"highway\":\"tertiary\",\"smoothness\":\"good\"}}",
+			"kind": "nested_object",
+			"invalid": true
+		},
+		{
+			"tags": "[[\"barrier\",\"gate\"],[\"motorcar\",\"no\"]]",
+			"kind": "json_array",
+			"invalid": true
+		},
+		{ "tags": "{\"amenity\":\"pharmacy\",\"building:levels\":\"1\"}", "invalid": false },
+		{
+			"tags": { "highway": "trunk", "maxspeed": "45 mph", "lanes": "1", "shoulder": "no" },
+			"invalid": false
+		},
+		{ "tags": { "landuse": "reservoir", "source": "NRCan-CanVec-7.0" }, "invalid": false },
+		{ "tags": { "barrier": "wicket_gate" }, "invalid": false },
+		{ "tags": { "barrier": "swing_gate", "locked": "yes", "material": "metal" }, "invalid": false },
+		{
+			"tags": "{\"route\":\"power\",\"voltage\":\"138000\",\"wires\":\"double\"}",
+			"invalid": false
+		},
+		{
+			"tags": { "cuisine": "japanese", "takeaway": "yes", "wheelchair": "no", "level": "0" },
+			"invalid": false
+		},
+		{ "tags": { "sport": "skateboard", "surface": "concrete" }, "invalid": false },
+		{ "tags": { "tourism": "caravan_site" }, "invalid": false },
+		{
+			"tags": "{landuse=vineyard\nsource=European Environment Agency (EEA), CORINE Land Cover, 2006}",
+			"kind": "flat_text_not_json",
+			"invalid": true
+		},
+		{ "tags": "{leisure=ice_rink\nseasonal=yes}", "kind": "flat_text_not_json", "invalid": true },
+		{
+			"tags": {
+				"historic": "archaeological_site",
+				"tourism": "attraction",
+				"tumulus": "round_tomb",
+				"protected": "yes"
+			},
+			"invalid": false
+		},
+		{
+			"tags": { "barrier": "entrance", "motorcycle": "yes", "bicycle": "no", "foot": "yes" },
+			"invalid": false
+		},
+		{ "tags": { "boundary": "cadastral", "source": "cuzk:ruian" }, "invalid": false },
+		{
+			"tags": "\"landuse=construction\\nresidential=apartments\"",
+			"kind": "json_string",
+			"invalid": true
+		},
+		{ "tags": { "building": "mosque", "source": "HOT_InAWARESurvey_2018" }, "invalid": false },
+		{ "tags": { "emergency": "suction_point", "source": "GPS(APK:StrazakOSM)" }, "invalid": false },
+		{
+			"tags": "[[\"building\",\"farm_auxiliary\"],[\"roof:shape\",\"skillion\"]]",
+			"kind": "json_array",
+			"invalid": true
+		},
+		{ "tags": { "place": "farm" }, "invalid": false },
+		{ "tags": { "public_transport": "stop_area", "tram": "yes" }, "invalid": false },
+		{
+			"tags": { "public_transport": "stop_position", "source:name:br": "proper translation" },
+			"invalid": false
+		},
+		{ "tags": { "leisure": "pitch", "sport": "table_tennis" }, "invalid": false },
+		{ "tags": { "shop": "sports" }, "invalid": false },
+		{
+			"tags": "[[\"shop\",\"car_parts\"],[\"source\",\"Kaart Ground Survey 2017\"]]",
+			"kind": "json_array",
+			"invalid": true
+		},
+		{ "tags": "{\"natural\":\"sand\",\"source\":\"bing\"}", "invalid": false },
+		{ "tags": { "barrier": "yes" }, "invalid": false },
+		{ "tags": { "highway": "trunk", "shoulder": "no" }, "invalid": false },
+		{ "tags": { "highway": "motorway_junction" }, "invalid": false },
+		{ "tags": "{leisure=fitness_centre\nlevel=1}", "kind": "flat_text_not_json", "invalid": true },
+		{ "tags": "{\"place\":\"suburb\"}", "invalid": false },
+		{ "tags": "\"highway=motorway_link\\ntoll:hgv=yes\"", "kind": "json_string", "invalid": true },
+		{ "tags": { "tourism": "chalet" }, "invalid": false },
+		{
+			"tags": { "leisure": "sports_centre", "sport": "soccer", "wheelchair": "limited" },
+			"invalid": false
+		},
+		{
+			"tags": {
+				"building": "construction",
+				"source": "Imagerie Standard DigitalGlobe",
+				"roof:shape": "gabled"
+			},
+			"invalid": false
+		},
+		{ "tags": "{\"man_made\":1,\"material\":1}", "kind": "number_values", "invalid": true },
+		{
+			"tags": {
+				"boundary": "cadastral",
+				"official_status": "cz:katastrální území",
+				"type": "multipolygon",
+				"place": "cadastral_community"
+			},
+			"invalid": false
+		},
+		{ "tags": { "leisure": "fitness_station", "wheelchair": "yes" }, "invalid": false },
+		{ "tags": { "highway": "service" }, "invalid": false },
+		{ "tags": { "man_made": "gasometer", "source": "Bing" }, "invalid": false },
+		{
+			"tags": "{\"natural\":\"water\",\"water\":\"ditch\",\"source\":\"National Hydrography Dataset (http://nhd.usgs.gov/)\"}",
+			"invalid": false
+		},
+		{
+			"tags": "{\"tags\":{\"office\":\"insurance\",\"wheelchair\":\"no\"}}",
+			"kind": "nested_object",
+			"invalid": true
+		},
+		{
+			"tags": "[[\"man_made\",\"embankment\"],[\"source\",\"ÚGKK SR DMR5.0\"]]",
+			"kind": "json_array",
+			"invalid": true
+		},
+		{ "tags": "{power=circuit\nvoltage=60000}", "kind": "flat_text_not_json", "invalid": true },
+		{
+			"tags": { "cuisine": "mexican", "payment:cash": "yes", "diet:vegetarian": "yes" },
+			"invalid": false
+		},
+		{ "tags": { "shop": "mall" }, "invalid": false },
+		{ "tags": { "healthcare": "hospital", "operator:type": "private" }, "invalid": false },
+		{ "tags": { "aeroway": "aerodrome" }, "invalid": false },
+		{
+			"tags": {
+				"emergency": "yes",
+				"smoothness": "good",
+				"surface": "paving_stones",
+				"foot": "yes"
+			},
+			"invalid": false
+		},
+		{ "tags": "{power=tower\nref=12}", "kind": "flat_text_not_json", "invalid": true },
+		{
+			"tags": "\"highway=bus_stop\\nnetwork:wikidata=Q4859793\"",
+			"kind": "json_string",
+			"invalid": true
+		},
+		{ "tags": { "highway": "primary", "tiger:cfcc": "A41" }, "invalid": false },
+		{ "tags": "{\"man_made\": \"x\"", "kind": "broken_json", "invalid": true },
+		{ "tags": { "tourism": "motel", "type": "multipolygon" }, "invalid": false },
+		{ "tags": { "highway": "emergency_access_point", "source": "survey" }, "invalid": false },
+		{
+			"tags": { "service": "emergency_access", "surface": "asphalt", "smoothness": "good" },
+			"invalid": false
+		},
+		{ "tags": { "public_transport": "stop_position", "train": "yes" }, "invalid": false },
+		{
+			"tags": "{\"tags\":{\"aeroway\":\"jet_bridge\",\"highway\":\"corridor\"}}",
+			"kind": "nested_object",
+			"invalid": true
+		},
+		{
+			"tags": "{leisure=picnic_table\nmaterial=plastic}",
+			"kind": "flat_text_not_json",
+			"invalid": true
+		},
+		{ "tags": { "building": "hut", "source": "geoimage.at" }, "invalid": false },
+		{
+			"tags": "[[\"historic\",\"mine\"],[\"natural\",\"sinkhole\"]]",
+			"kind": "json_array",
+			"invalid": true
+		},
+		{ "tags": { "power": "plant", "type": "site" }, "invalid": false },
+		{ "tags": { "railway": "proposed", "usage": "main", "tunnel": "yes" }, "invalid": false },
+		{
+			"tags": { "aeroway": "helipad", "surface": "concrete", "location": "roof" },
+			"invalid": false
+		},
+		{
+			"tags": { "building": "residential", "source": "cuzk:ruian", "roof:material": "asbestos" },
+			"invalid": false
+		},
+		{ "tags": { "power": "plant" }, "invalid": false },
+		{ "tags": "{\"aeroway\":1,\"level\":1}", "kind": "number_values", "invalid": true },
+		{
+			"tags": "{\"tags\":{\"shop\":\"hardware\",\"wheelchair\":\"yes\"}}",
+			"kind": "nested_object",
+			"invalid": true
+		},
+		{ "tags": { "natural": "heath", "source": "3dShapes" }, "invalid": false },
+		{
+			"tags": "{\"tags\":{\"landuse\":\"grass\",\"source:ro\":\"Agenţia Europeană de Mediu, CORINE Land Cover, 2006\"}}",
+			"kind": "nested_object",
+			"invalid": true
+		},
+		{ "tags": { "railway": "platform", "train": "yes" }, "invalid": false },
+		{ "tags": { "route": "ferry" }, "invalid": false },
+		{ "tags": { "shop": "outpost", "wheelchair": "no" }, "invalid": false },
+		{
+			"tags": { "cuisine": "regional", "indoor_seating": "yes", "source": "survey" },
+			"invalid": false
+		},
+		{
+			"tags": "{\"building\":\"residential\",\"source\":\"esri_USDOT_RiverCom911_WA;microsoft/BuildingFootprints\",\"type\":\"multipolygon\"}",
+			"invalid": false
+		},
+		{ "tags": { "landuse": "cemetery", "religion": "none" }, "invalid": false },
+		{ "tags": { "barrier": "chain", "locked": "yes" }, "invalid": false },
+		{ "tags": { "natural": "beach", "sport": "swimming", "surface": "gravel" }, "invalid": false },
+		{ "tags": { "highway": "trunk_link", "layer": "2" }, "invalid": false },
+		{
+			"tags": { "landuse": "construction", "residential": "apartments", "type": "multipolygon" },
+			"invalid": false
+		},
+		{ "tags": "{\"waterway\":\"stream\",\"width\":\"0.5\"}", "invalid": false },
+		{ "tags": "\"highway=motorway\\nmaxspeed=80\"", "kind": "json_string", "invalid": true },
+		{ "tags": { "historic": "railway" }, "invalid": false },
+		{ "tags": { "shop": "car_parts" }, "invalid": false },
+		{ "tags": "{\"place\":1,\"type\":1}", "kind": "number_values", "invalid": true },
+		{ "tags": "{route=bus\nwheelchair=no}", "kind": "flat_text_not_json", "invalid": true },
+		{ "tags": "{\"leisure\": \"x\"", "kind": "broken_json", "invalid": true },
+		{
+			"tags": "{railway=subway\nservice=crossover}",
+			"kind": "flat_text_not_json",
+			"invalid": true
+		},
+		{
+			"tags": "{landuse=forest\nsource_ref=http://www.linz.govt.nz/topography/topo-maps/}",
+			"kind": "flat_text_not_json",
+			"invalid": true
+		},
+		{ "tags": "{barrier=stile\nhorse=no}", "kind": "flat_text_not_json", "invalid": true },
+		{ "tags": "{\"amenity\":\"place_of_worship\"}", "invalid": false },
+		{ "tags": { "sport": "basketball", "surface": "grass" }, "invalid": false },
+		{ "tags": { "public_transport": "station" }, "invalid": false },
+		{ "tags": "{\"historic\": \"x\"", "kind": "broken_json", "invalid": true },
+		{ "tags": { "craft": "sawmill", "landuse": "industrial" }, "invalid": false },
+		{
+			"tags": {
+				"healthcare": "hospital",
+				"note:ja": "国土数値情報（公共施設データ）平成19年　国土交通省"
+			},
+			"invalid": false
+		},
+		{
+			"tags": { "healthcare": "pharmacy", "level": "0", "source": "BAG", "opening_hours": "24/7" },
+			"invalid": false
+		},
+		{
+			"tags": { "man_made": "water_well", "operator:type": "community", "natural": "water" },
+			"invalid": false
+		},
+		{ "tags": "{\"cuisine\":\"asian\",\"wheelchair\":\"no\"}", "invalid": false },
+		{
+			"tags": "{craft=metal_construction\nwheelchair=yes}",
+			"kind": "flat_text_not_json",
+			"invalid": true
+		},
+		{
+			"tags": {
+				"place": "farm",
+				"source:imagery": "BingSat, ESRI, and other open satellite imagery available to OSM as of 2025"
+			},
+			"invalid": false
+		},
+		{ "tags": { "office": "estate_agent", "wheelchair": "no" }, "invalid": false },
+		{
+			"tags": { "amenity": "compressed_air", "covered": "no", "lit": "yes", "fee": "yes" },
+			"invalid": false
+		},
+		{
+			"tags": "{\"cuisine\":\"sandwich\",\"payment:credit_cards\":\"yes\",\"outdoor_seating\":\"no\"}",
+			"invalid": false
+		},
+		{
+			"tags": { "tourism": "attraction", "wheelchair": "no", "waterway": "waterfall" },
+			"invalid": false
+		},
+		{ "tags": { "office": "religion" }, "invalid": false },
+		{
+			"tags": {
+				"landuse": "orchard",
+				"source:date": "2015-03-31",
+				"trees": "tea_plants",
+				"orchard": "meadow_orchard"
+			},
+			"invalid": false
+		},
+		{ "tags": "{\"waterway\": \"x\"", "kind": "broken_json", "invalid": true },
+		{
+			"tags": {
+				"power": "generator",
+				"source": "GSImaps/ort",
+				"survey:date": "2023",
+				"roof:shape": "skillion"
+			},
+			"invalid": false
+		},
+		{ "tags": { "place": "island", "source": "PGS" }, "invalid": false },
+		{ "tags": { "highway": "cycleway", "surface": "paving_stones" }, "invalid": false },
+		{ "tags": { "tourism": "artwork" }, "invalid": false },
+		{ "tags": { "route": "power" }, "invalid": false },
+		{ "tags": { "leisure": "beach_resort", "natural": "beach" }, "invalid": false },
+		{ "tags": { "shop": "mobile_phone", "source": "Kaart Ground Survey 2017" }, "invalid": false },
+		{ "tags": { "barrier": "bollard" }, "invalid": false },
+		{ "tags": { "barrier": "height_restrictor" }, "invalid": false },
+		{
+			"tags": {
+				"shop": "supermarket",
+				"source": "cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2011",
+				"stroller": "yes"
+			},
+			"invalid": false
+		},
+		{ "tags": { "landuse": "grass" }, "invalid": false },
+		{
+			"tags": { "amenity": "language_school", "building": "yes", "language:en": "yes" },
+			"invalid": false
+		},
+		{
+			"tags": "{\"tags\":{\"landuse\":\"recreation_ground\",\"type\":\"multipolygon\"}}",
+			"kind": "nested_object",
+			"invalid": true
+		},
+		{ "tags": { "service": "crossover", "usage": "main", "voltage": "1500" }, "invalid": false },
+		{
+			"tags": "[[\"tourism\",\"hostel\"],[\"wheelchair\",\"yes\"]]",
+			"kind": "json_array",
+			"invalid": true
+		},
+		{
+			"tags": "\"highway=elevator\\noperator=DB InfraGO AG\"",
+			"kind": "json_string",
+			"invalid": true
+		},
+		{
+			"tags": {
+				"man_made": "water_tap",
+				"source": "survey",
+				"seasonal": "no",
+				"operational_status": "operational"
+			},
+			"invalid": false
+		},
+		{ "tags": "{\"barrier\":1,\"maxheight\":1}", "kind": "number_values", "invalid": true },
+		{ "tags": { "highway": "tertiary" }, "invalid": false },
 		{ "tags": { "leisure": "dog_park", "wheelchair": "limited" }, "invalid": false },
-		{ "tags": "{\"cuisine\":1,\"delivery\":1}", "kind": "number_values", "invalid": true },
-		{ "tags": { "route": "railway", "type": "route" }, "invalid": false },
 		{
-			"tags": { "amenity": "place_of_worship", "denomination": "protestant", "building": "chapel" },
+			"tags": { "shop": "yes", "source": "Reconocimiento cortográfico de campo 2016 por KG" },
 			"invalid": false
 		},
 		{
-			"tags": { "leisure": "playground", "surface": "rubber", "source": "survey" },
-			"invalid": false
+			"tags": "{shop=beauty\nsource=Kaart Ground Survey 2017}",
+			"kind": "flat_text_not_json",
+			"invalid": true
 		},
 		{
-			"tags": "{\"man_made\":\"surveillance\",\"surveillance:zone\":\"entrance\",\"surveillance\":\"outdoor\"}",
-			"invalid": false
+			"tags": "\"natural=coastline\\nsource=OS_OpenData_StreetView\"",
+			"kind": "json_string",
+			"invalid": true
 		},
 		{
-			"tags": { "leisure": "pitch", "sport": "four_square", "surface": "concrete" },
+			"tags": { "landuse": "railway", "layer": "1", "man_made": "bridge", "type": "multipolygon" },
 			"invalid": false
 		},
-		{ "tags": { "route": "road", "type": "route", "surface": "asphalt" }, "invalid": false }
+		{ "tags": { "amenity": "pharmacy" }, "invalid": false },
+		{
+			"tags": "[[\"highway\",\"proposed\"],[\"lanes\",\"3\"]]",
+			"kind": "json_array",
+			"invalid": true
+		},
+		{ "tags": { "historic": "tomb", "religion": "christian" }, "invalid": false },
+		{ "tags": "\"amenity=waste_basket\\ncolour=green\"", "kind": "json_string", "invalid": true },
+		{ "tags": { "railway": "signal", "ref": "A", "source": "BDOrtho IGN" }, "invalid": false },
+		{ "tags": "{\"place\":\"city_block\",\"type\":\"multipolygon\"}", "invalid": false },
+		{ "tags": { "sport": "climbing", "type": "site" }, "invalid": false },
+		{
+			"tags": "[[\"landuse\",\"greenhouse_horticulture\"],[\"source\",\"Regione Liguria\"]]",
+			"kind": "json_array",
+			"invalid": true
+		},
+		{ "tags": { "route": "foot", "source": "gps", "type": "route" }, "invalid": false },
+		{ "tags": { "railway": "platform", "tunnel": "yes", "shelter": "no" }, "invalid": false }
 	]
 }

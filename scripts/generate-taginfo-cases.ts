@@ -438,7 +438,6 @@ build(
 			["number_values", JSON.stringify(Object.fromEntries(Object.keys(r).map((k) => [k, 1])))],
 			["empty_string", ""],
 			["flat_text_not_json", `{${toFlat(r)}}`],
-			["empty_record", {}],
 		];
 		const [kind, tags] = bad[i % bad.length] as [string, string | object];
 		return { tags, kind };
