@@ -86,12 +86,17 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run npm audit
-        run: npm audit --audit-level=moderate
-        continue-on-error: true
+      - name: Run npm audit (production only, high)
+        run: npm audit --omit=dev --audit-level=high
 
-      - name: Run npm audit (production only)
-        run: npm audit --production --audit-level=high
+      # Dev dependencies do not ship to users: informational on push/manual runs,
+      # failing on the daily schedule so new advisories surface as a failed run
+      - name: Run npm audit (all dependencies incl. dev, moderate)
+        run: npm audit --audit-level=moderate
+        continue-on-error: ${{ github.event_name != 'schedule' }}
+
+      - name: Verify registry signatures and provenance
+        run: npm audit signatures
 
   sbom-generation:
     needs: changes
