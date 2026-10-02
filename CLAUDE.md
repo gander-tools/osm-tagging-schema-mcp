@@ -482,23 +482,6 @@ The server follows a modular architecture with distinct layers:
 - **Shared types**: Grouped in `tools/types.ts` to avoid duplication
 - **Tool ordering**: Tools returned in **alphabetical order** by name for API predictability
 
-## Template System
-
-**Status**: ✅ IMPLEMENTED - Field template expansion for presets
-
-The template system allows presets to reference commonly used groups of fields using the `{@templates/name}` syntax. During field expansion (in `get_preset_details` tool), these references are replaced with the actual field IDs.
-
-### Available Templates
-
-| Template Name | Field IDs | Description |
-|---------------|-----------|-------------|
-| `contact` | `["email", "phone", "website", "fax"]` | Contact information fields |
-| `internet_access` | `["internet_access", "internet_access/fee", "internet_access/ssid"]` | Internet connectivity fields |
-| `poi` | `["name", "address"]` | Point of interest basic fields |
-| `crossing/*` | Various crossing-related field arrays | Highway crossing fields |
-
-**Implementation**: Templates are defined in `src/tools/get-preset-details.ts` and validated against actual `fields.json` data.
-
 ## MCP SDK Tool Structure
 
 **Status**: ✅ IMPLEMENTED - Using modern MCP SDK tool registration API
@@ -560,7 +543,7 @@ for (const tool of tools) {
 
 **Current Phase: Phase 8 - COMPLETE ✅**
 
-**Status**: Production-ready MCP server with 9 optimized tools providing complete OSM tagging schema functionality with full localization support, template expansion, and format conversion.
+**Status**: Production-ready MCP server with 9 optimized tools providing complete OSM tagging schema functionality with full localization support and format conversion.
 
 ### Phase Summary
 
@@ -606,7 +589,6 @@ for (const tool of tools) {
 
 **Phase 8: Schema Builder API Refactor ✅ COMPLETE**
 - Full localization support across all tools
-- Template system implementation
 - Structured responses with human-readable names
 - Complete API documentation for all tools
 

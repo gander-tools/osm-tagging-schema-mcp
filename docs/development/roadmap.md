@@ -7,7 +7,7 @@
 **What's Done:**
 - ✅ 7 fully functional MCP tools for OSM tagging (query, presets, validation)
 - ✅ **Phase 8 Complete**: Full localization support with human-readable names for all tools
-- ✅ Template system for field expansion in presets
+- ✅ Template system for field expansion in presets (removed after the move to `id-tagging-schema` v7, which resolves references at build time)
 - ✅ Comprehensive testing: full test suite with 100% pass rate, JSON data integrity validation
 - ✅ Multiple deployment options: npx, Docker, source installation
 - ✅ Security: npm provenance (SLSA Level 3), Docker image signing, SBOM generation
@@ -676,7 +676,7 @@
 
 **Objective:** Support field templates like `@templates/contact`
 
-**Status:** COMPLETE - Field template expansion fully implemented
+**Status:** COMPLETE, later removed - `id-tagging-schema` v7 resolves field references and templates at build time, so the expansion code was dead and was deleted (see change `cleanup-after-schema-v7`)
 
 **Template Definitions:**
 All templates defined and validated against schema:
