@@ -4,6 +4,37 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [3.11.0](https://github.com/gander-tools/osm-tagging-schema-mcp/compare/v3.10.1...v3.11.0) (2026-10-02)
+
+### Build
+
+* **docker:** move images to Node 26
+
+
+### CI/CD
+
+* run workflows on Node 26 with npm 11.19.1
+* **security:** block on prod audit, report dev on schedule (#859)
+
+
+### Documentation
+
+* document Node 24/26 support and amd64-only image
+
+
+### Features
+
+* **deps:** support Node 26 and drop Node 22
+
+
+### Miscellaneous Tasks
+
+* **openspec:** archive support-node-26 change
+* **deps:** update dependency lefthook to ~2.1.16
+* **deps:** lock file maintenance (#858)
+* **deps:** update gcr.io/oss-fuzz-base/base-builder-javascript docker digest to e1b544f
+* **deps:** update dependency @biomejs/biome to ~2.5.15
+
 ## [3.10.1](https://github.com/gander-tools/osm-tagging-schema-mcp/compare/v3.10.0...v3.10.1) (2026-10-02)
 
 ### Bug Fixes
