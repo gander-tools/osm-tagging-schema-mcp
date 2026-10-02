@@ -98,6 +98,30 @@ Tested through the MCP stdio protocol against the `edge` Docker image with schem
 - The typo test removes one character at position 3 and covers no other error types.
 - Results come from a single run of the `edge` image with schema v7.
 
+### Validity coverage (taginfo snapshot 2026-10-01)
+
+A second, repeatable test checks how well each tool recognises **invalid** input. Each of the 10 tools gets 1000 generated cases (`tests/fixtures/taginfo/<date>/`): valid ones drawn from the taginfo database, and deliberately invalid ones (typos in keys and values, swapped key/value, foreign values, uppercase or spaced keys, empty or malformed input, bad limits and geometries). The data is a point-in-time snapshot for the `edge` build (git commit), not a fixed suite: regenerate it from a fresh taginfo database with `scripts/generate-taginfo-cases.ts` and run `npm run test:taginfo`, which writes `report.json` tagged with the tested commit. Only crashes fail the run; everything else is statistics.
+
+| Tool                      | Invalid cases detected | Notes                                                                          |
+|---------------------------|------------------------|--------------------------------------------------------------------------------|
+| `get_preset_details`      | 250/250 (100%)         | all bad ids rejected                                                           |
+| `get_tag_values`          | 250/250 (100%)         | bad keys and limits rejected                                                   |
+| `json_to_flat`            | 249/250 (99.6%)        | only an empty object passes                                                    |
+| `validate_tag_collection` | 821/1000 (82.1%)       | 71/110 value typos, 147/215 foreign values, 32/104 control characters          |
+| `search_tags`             | 227/250 (90.8%)        | `limit` of 0 or negative not always rejected                                   |
+| `search_presets`          | 219/250 (87.6%)        | same `limit` gap                                                               |
+| `validate_tag`            | 198/250 (79.2%)        | 9/25 value typos, 16/47 foreign values                                         |
+| `flat_to_json`            | 171/250 (68.4%)        | duplicate keys (0/39) and control characters (0/38) accepted silently          |
+| `suggest_improvements`    | 112/250 (44.8%)        | typos and foreign values mostly yield suggestions, not a problem report        |
+| `compare_tags`            | 50/250 (20%)           | by design it compares any tag sets; only malformed text/JSON is rejected       |
+
+"Detected" means an error response, a `valid: false` / `deprecated` result, or an empty result, depending on the tool.
+
+- **No crashes** in any of the 10,000 cases.
+- **False alarms:** valid cases never returned an error, except `get_preset_details` (714 of 750 popular taginfo tags have no preset, which is expected).
+- **Main gaps:** misspelled or foreign *values* are accepted as valid because custom tags are allowed (same finding as *Lenient validation* above); duplicate keys and control characters are not reported.
+- **Limits:** the generator only produces the error kinds listed above, and the taginfo database defines what counts as a valid tag, so rare but legitimate tags can look "invalid".
+
 ## Summary
 
 Useful where deterministic logic is enough: format conversion, comparing tag sets, reading presets and values, validating popular tags. Weakest areas: deprecated tag detection and search (typos, multiple words, colon keys).
@@ -206,6 +230,7 @@ Built with **Test-Driven Development (TDD)** and **Property-Based Fuzzing**:
 npm install      # Install dependencies
 npm test         # Run all tests
 npm run test:fuzz # Run fuzz tests
+npm run test:taginfo # Replay taginfo snapshot cases, write report.json
 npm run build    # Build for production
 ```
 
