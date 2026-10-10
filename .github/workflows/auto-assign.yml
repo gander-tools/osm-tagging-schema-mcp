@@ -15,4 +15,4 @@ jobs:
       pull-requests: write
     steps:
       - name: Assign gander
-        uses: gander-actions/auto-assign@v0.1.0
+        uses: gander-actions/auto-assign@fee2810f7c1b7370ab97d701b6ac64612cc9f67f # v0.1.0
