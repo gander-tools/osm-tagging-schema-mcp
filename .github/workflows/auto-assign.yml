@@ -1,0 +1,18 @@
+name: Auto Assign
+
+on:
+  issues:
+    types: [opened, reopened]
+  pull_request_target:
+    types: [opened, reopened, ready_for_review]
+
+jobs:
+  assign:
+    name: Assign
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+    steps:
+      - name: Assign gander
+        uses: gander-actions/auto-assign@fee2810f7c1b7370ab97d701b6ac64612cc9f67f # v0.1.0
